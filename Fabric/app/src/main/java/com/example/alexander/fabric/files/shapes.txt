@@ -1,0 +1,6 @@
+{ "shape": "ellipse", "color": "Red", "data": { "center": { "x": "100", "y": "400" }, "h_radius": 50, "v_radius":80 }}
+{ "shape": "rectangle", "color": "Blue", "data": [ { "x": 10, "y": 5 }, { "x": 200, "y": 300 } ]}
+{ "shape": "triangle", "color": "Green", "data": [ { "x": 300, "y": 10 }, { "x": 600, "y": 10 }, { "x": 450, "y": 400} ]}
+{ "shape": "regular_polygon", "color": "Black", "data": { "center": { "x": 300, "y": 400 }, "vertexes": 8, "radius": 100}}
+{ "shape": "regular_polygon", "color": "Pink", "data": { "center": { "x": 300, "y": 400 }, "vertexes": 6, "radius": 80}}
+{ "shape": "regular_polygon", "color": "Red", "data": { "center": { "x": 300, "y": 400 }, "vertexes": 12, "radius": 60}}
