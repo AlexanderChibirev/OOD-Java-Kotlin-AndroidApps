@@ -14,15 +14,41 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Ликер"
-        android:id="@+id/textView6" />
-
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/listView2"
-        android:layout_gravity="center_horizontal"
-        android:layout_below="@+id/textView6"
+        android:id="@+id/textView6"
+        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <RadioGroup
+        android:id="@+id/radioGroupLiquor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView6"
+        android:layout_alignParentLeft="true">
+
+        <RadioButton
+            android:id="@+id/radioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="шоколадный"
+            android:checked="true" />
+
+        <RadioButton
+            android:id="@+id/radioButton3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="грецкий орех"
+            android:checked="false" />
+    </RadioGroup>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Добавить"
+        android:id="@+id/buttonAdderLiquor"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="58dp"
+        android:layout_below="@+id/radioGroupLiquor"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
