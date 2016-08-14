@@ -7,31 +7,37 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Порция:"
-        android:id="@+id/textView8" />
+        android:text="Выберите чай на свой вкус"
+        android:id="@+id/textView9" />
 
     <RadioGroup
-        android:id="@+id/radioGroupForThreePortion"
+        android:id="@+id/radioGroupForTea"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp" >
         <RadioButton
-            android:id="@+id/radioLittle"
+            android:id="@+id/radioBlackTea"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Маленькая"
+            android:text="Чай черный"
             android:checked="true" />
         <RadioButton
-            android:id="@+id/radioMiddle"
+            android:id="@+id/radioGreenTea"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Средняя"
+            android:text="Чай зеленый"
             android:checked="false" />
         <RadioButton
-            android:id="@+id/radioBig"
+            android:id="@+id/radioYellowTea"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Большая"
+            android:text="Чай желтый"
+            android:checked="false" />
+        <RadioButton
+            android:id="@+id/radioFruitTea"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Чай фруктовый"
             android:checked="false" />
     </RadioGroup>
 
@@ -39,14 +45,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/portionCostForMilkShake"
+        android:id="@+id/portionCostForTeaColor"
         android:layout_gravity="center_horizontal"
-        android:text="50 рублей" />
+        android:text="30 рублей" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Выбрать ингридиенты"
-        android:id="@+id/buttonNextFromMilkshakeActivity" />
+        android:id="@+id/buttonNextFromColorTeaTypeActivity" />
 
 </LinearLayout>
