@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Decorator</string>
+    <string name="radioBlackTea">Чай черный</string>
+    <string name="green_tea">Чай зеленый</string>
+    <string name="yellow_tea">Чай желтый</string>
+    <string name="fruit_tea">Чай фруктовый</string>
 </resources>

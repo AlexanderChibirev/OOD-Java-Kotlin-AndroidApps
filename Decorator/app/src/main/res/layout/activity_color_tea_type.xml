@@ -7,73 +7,70 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".ChocolatePiecesActivity">
+    tools:context="com.example.alexander.decorator.ColorTeaTypeActivity">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Шоколад"
-        android:id="@+id/textView5" />
+        android:text="Выберите чай на свой вкус"
+        android:id="@+id/textView7"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <RadioGroup
-        android:id="@+id/radioGroupChocolatePieces"
+        android:id="@+id/radioGroupForTea"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView5"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_below="@+id/textView7"
+        android:layout_alignParentLeft="true">
 
         <RadioButton
-            android:id="@+id/radioPart1"
+            android:id="@+id/radioBlackTea"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1 кусочек"
+            android:text="@string/radioBlackTea"
             android:checked="true" />
+
         <RadioButton
-            android:id="@+id/radioPart2"
+            android:id="@+id/radioGreenTea"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="2 кусочка"
-            android:checked="false" />
-        <RadioButton
-            android:id="@+id/radioPart3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="3 кусочка"
-            android:checked="false" />
-        <RadioButton
-            android:id="@+id/radioPart4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="4 кусочка"
-            android:checked="false" />
-        <RadioButton
-            android:id="@+id/radioPart5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="5 кусочков"
+            android:text="@string/green_tea"
             android:checked="false" />
 
-        <TextView
+        <RadioButton
+            android:id="@+id/radioYellowTea"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:id="@+id/textViewCostChocolatePieces"
-            android:layout_gravity="center_horizontal"
-            android:text="1 рубль"
-            android:layout_below="@+id/radioGroupChocolatePieces"
-            android:layout_alignRight="@+id/buttonAdder"
-            android:layout_alignEnd="@+id/buttonAdder" />
+            android:text="@string/yellow_tea"
+            android:checked="false" />
+
+        <RadioButton
+            android:id="@+id/radioFruitTea"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/fruit_tea"
+            android:checked="false" />
     </RadioGroup>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/portionCostForTeaColor"
+        android:layout_gravity="center_horizontal"
+        android:text="30 рублей"
+        android:layout_above="@+id/buttonNextFromColorTeaTypeActivity"
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Добавить"
-        android:id="@+id/buttonAdder"
-        android:layout_gravity="center_horizontal"
+        android:text="Выбрать ингридиенты"
+        android:id="@+id/buttonNextFromColorTeaTypeActivity"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
-
+        android:layout_alignRight="@+id/textView7"
+        android:layout_alignEnd="@+id/textView7" />
 </RelativeLayout>

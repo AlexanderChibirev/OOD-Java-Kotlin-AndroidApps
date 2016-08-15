@@ -7,57 +7,62 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.alexander.decorator.LiquorActivity">
+    tools:context="com.example.alexander.decorator.MilkshakePortionTypeActivity">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Ликер"
-        android:id="@+id/textView6"
+        android:text="Порция:"
+        android:id="@+id/textView9"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
     <RadioGroup
-        android:id="@+id/radioGroupLiquor"
+        android:id="@+id/radioGroupForThreePortion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView6"
+        android:layout_below="@+id/textView9"
         android:layout_alignParentLeft="true">
 
         <RadioButton
-            android:id="@+id/radioButtonLiquorChocolate"
+            android:id="@+id/radioLittle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="шоколадный"
+            android:text="Маленькая"
             android:checked="true" />
 
         <RadioButton
-            android:id="@+id/radioButtonLiquorWalnut"
+            android:id="@+id/radioMiddle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="грецкий орех"
+            android:text="Средняя"
+            android:checked="false" />
+
+        <RadioButton
+            android:id="@+id/radioBig"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Большая"
             android:checked="false" />
     </RadioGroup>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Добавить"
-        android:id="@+id/buttonAdderLiquor"
-        android:layout_gravity="center_horizontal"
-        android:layout_below="@+id/textViewCostLiquor"
-        android:layout_alignRight="@+id/textViewCostLiquor"
-        android:layout_alignEnd="@+id/textViewCostLiquor" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="15 рублей"
-        android:id="@+id/textViewCostLiquor"
-        android:layout_below="@+id/radioGroupLiquor"
+        android:id="@+id/portionCostForMilkShake"
+        android:layout_gravity="center_horizontal"
+        android:text="50 рублей"
+        android:layout_below="@+id/radioGroupForThreePortion"
         android:layout_centerHorizontal="true" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Выбрать ингридиенты"
+        android:id="@+id/buttonNextFromMilkshakeActivity"
+        android:layout_below="@+id/portionCostForMilkShake"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>

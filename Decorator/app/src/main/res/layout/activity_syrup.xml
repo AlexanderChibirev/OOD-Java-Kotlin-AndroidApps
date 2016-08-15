@@ -51,4 +51,14 @@
         android:layout_centerVertical="true"
         android:layout_alignRight="@+id/radioGroupSyrup"
         android:layout_alignEnd="@+id/radioGroupSyrup" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="15 рублей"
+        android:id="@+id/textViewCostSyrup"
+        android:layout_above="@+id/buttonAdderSyrup"
+        android:layout_alignRight="@+id/buttonAdderSyrup"
+        android:layout_alignEnd="@+id/buttonAdderSyrup" />
 </RelativeLayout>

@@ -22,6 +22,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:scrollbars="vertical"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Ваш заказ:"
         android:id="@+id/textViewOrder"
@@ -36,8 +37,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Приятного аппетита!"
         android:id="@+id/textView12"
-        android:layout_marginBottom="172dp"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@+id/buttonBeginActivity"
         android:layout_centerHorizontal="true" />
 
     <Button
@@ -45,8 +45,17 @@
         android:layout_height="wrap_content"
         android:text="Новый заказ"
         android:id="@+id/buttonBeginActivity"
-        android:layout_marginBottom="74dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Итог"
+        android:id="@+id/textViewCostOrder"
+        android:layout_above="@+id/textView12"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="47dp" />
 
 </RelativeLayout>

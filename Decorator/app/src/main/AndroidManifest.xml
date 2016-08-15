@@ -15,13 +15,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CreatePortionVisualization" />
         <activity android:name=".CondimentsActivity" />
         <activity android:name=".ChocolatePiecesActivity" />
         <activity android:name=".SyrupActivity" />
         <activity android:name=".LiquorActivity" />
-        <activity android:name=".ChocolatePiecesActivity" />
-        <activity android:name=".LastActivity"></activity>
+        <activity android:name=".LastActivity" />
+        <activity android:name=".ColorTeaTypeActivity" />
+        <activity android:name=".MilkshakePortionTypeActivity" />
+        <activity android:name=".PortionTwoTypeActivity"></activity>
     </application>
 
 </manifest>
