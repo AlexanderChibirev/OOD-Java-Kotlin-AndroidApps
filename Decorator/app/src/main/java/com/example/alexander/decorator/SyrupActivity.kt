@@ -16,7 +16,7 @@ class SyrupActivity : AppCompatActivity() {
 
         var typeCondiment = "шоколадный"
         var costSyrop = 15.0
-        var costOrder = intent.getStringExtra("costOrder").toDouble()
+        var costOrder = intent.getStringExtra("costOrder")
         var materialOrder = intent.getStringExtra("materialOrder")
 
         var costSyrupTextView = findViewById(R.id.textViewCostSyrup) as TextView
@@ -41,7 +41,7 @@ class SyrupActivity : AppCompatActivity() {
         })
         buttonAdderSyrup.setOnClickListener {
             var intent = Intent(this, CondimentsActivity::class.java)
-            costOrder += costSyrop
+            costSyrop += costOrder.toDouble()//не видит цену
             intent.putExtra("costOrder", costSyrop.toString())
             materialOrder += "\nСироп($typeCondiment) ${costSyrupTextView.text}"
             intent.putExtra("materialOrder", materialOrder)

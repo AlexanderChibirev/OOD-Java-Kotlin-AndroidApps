@@ -13,7 +13,7 @@ class LiquorActivity : AppCompatActivity() {
         val radioGroup = findViewById(R.id.radioGroupLiquor) as RadioGroup
 
         var typeLiquor = "шоколадный"
-        var costLiquor = 225.0
+        var costLiquor = 25.0
         var costOrder = intent.getStringExtra("costOrder").toDouble()
         var materialOrder = intent.getStringExtra("materialOrder")
 
@@ -38,8 +38,8 @@ class LiquorActivity : AppCompatActivity() {
         })
         buttonAdderLiquor.setOnClickListener {
             var intent = Intent(this, CondimentsActivity::class.java)
-            costOrder += costLiquor
-            intent.putExtra("costOrder", costLiquor)
+            costLiquor += costOrder.toDouble()
+            intent.putExtra("costOrder", costLiquor.toString())
             materialOrder += "\nЛикер($typeLiquor) ${costLiquorView.text}"
             intent.putExtra("materialOrder", materialOrder)
             startActivity(intent)

@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.RadioGroup
 import android.widget.TextView
-import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_chocolate_pieces.*
 
 class ChocolatePiecesActivity : AppCompatActivity() {
@@ -50,16 +49,13 @@ class ChocolatePiecesActivity : AppCompatActivity() {
                         typeCondiment = "5 кусочков" //запонить количество шоколада и складывать, проверять на их количество, если их больше чем нужно то текст не печатать только цену удвоить
                         costPortion.setText("5 рублей")
                     }
-                }
+                }//вылетает после шоколада в сироп
             }
         })
         buttonAdder.setOnClickListener {
             var intent = Intent(this, CondimentsActivity::class.java)
             costChocolate += costOrder.toDouble()
-            intent.putExtra("costOrder", costChocolate)
-            Toast.makeText(getApplicationContext(),
-                    costChocolate.toString(),
-                    Toast.LENGTH_SHORT).show()
+            intent.putExtra("costOrder", costChocolate.toString())
             materialOrder += "\nШоколад($typeCondiment) ${costPortion.text}"
             intent.putExtra("materialOrder", materialOrder)
             startActivity(intent)
