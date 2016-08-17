@@ -24,7 +24,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun initializeData(){
         persons.add(Person("Emma Wilson", "23 years old", R.drawable.emma))
-        persons.add(Person("Love Dickers", "25 years old", R.drawable.emma))
-        persons.add(Person("Lillie Watts", "35 years old", R.drawable.emma))
+        persons.add(Person("Love Dickers", "25 years old", R.drawable.lavery))
+        persons.add(Person("Lillie Watts", "35 years old", R.drawable.lillie))
     }
 }
+
