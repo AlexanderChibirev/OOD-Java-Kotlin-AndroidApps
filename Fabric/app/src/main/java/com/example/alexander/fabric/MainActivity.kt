@@ -11,7 +11,7 @@ import java.io.InputStream
 
 
 
-class MainActivity : AppCompatActivity()
+class   MainActivity : AppCompatActivity()
 {
 
     val m_designer = Designer(ShapeFactory())
