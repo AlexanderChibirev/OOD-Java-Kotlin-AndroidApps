@@ -17,15 +17,23 @@ class MainActivity : AppCompatActivity() {
         rv = findViewById(R.id.rv) as RecyclerView//возможно тут ошибка// rv = сокращенно RecyclerView
 
         var llm = LinearLayoutManager(this)
-        rv!!.setLayoutManager(llm); // !!бросаем NPE если null, ?возвращаем ноль если null  ?:
-        rv!!.setHasFixedSize(true);//в каких ситуациях лучше ? а в каких !!
+        rv!!.setLayoutManager(llm) // !!бросаем NPE если null, ?возвращаем ноль если null  ?:
+        rv!!.setHasFixedSize(true)//в каких ситуациях лучше ? а в каких !!
         rv!!.setHasFixedSize(true)
+
+        initializeData()
+        initializeAdapter()
     }
 
     private fun initializeData(){
         persons.add(Person("Emma Wilson", "23 years old", R.drawable.emma))
         persons.add(Person("Love Dickers", "25 years old", R.drawable.lavery))
         persons.add(Person("Lillie Watts", "35 years old", R.drawable.lillie))
+    }
+
+    private fun initializeAdapter(){
+        val adapter = RVAdapter(persons)
+        rv!!.setAdapter(adapter)
     }
 }
 

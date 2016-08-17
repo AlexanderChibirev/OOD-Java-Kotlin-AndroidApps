@@ -11,7 +11,8 @@ import android.widget.TextView
 /**
  * Created by Alexander on 17.08.2016.
  */
-abstract class RVAdapter : RecyclerView.Adapter<RVAdapter.PersonViewHolder>() {
+open class RVAdapter : RecyclerView.Adapter<RVAdapter.PersonViewHolder> {
+
     open class PersonViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
         internal var cv: CardView
         internal var personName: TextView
@@ -25,10 +26,8 @@ abstract class RVAdapter : RecyclerView.Adapter<RVAdapter.PersonViewHolder>() {
             personPhoto = itemView.findViewById(R.id.person_photo) as ImageView
         }
     }
-
-    var persons: List<Person>? = null
-
-    fun RVAdapter(persons: List<Person>) {
+    private var persons: List<Person>? = null
+    constructor(persons: List<Person>) {
         this.persons = persons
     }
 
