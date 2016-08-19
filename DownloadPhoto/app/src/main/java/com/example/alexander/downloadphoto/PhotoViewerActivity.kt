@@ -26,9 +26,9 @@ class PhotoViewerActivity : AppCompatActivity() {
     }
 
     private fun initializeData(){
-        photos.add(PhotoData("Emma Wilson", R.drawable.emma))
-        photos.add(PhotoData("Love Dickers",R.drawable.lavery))
-        photos.add(PhotoData("Lillie Watts", R.drawable.lillie))
+        //photos.add(PhotoData("Emma Wilson", R.drawable.emma))
+        //photos.add(PhotoData("Love Dickers",R.drawable.lavery))
+        //photos.add(PhotoData("Lillie Watts", R.drawable.lillie))
     }
     //http://www.jsoneditoronline.org/?id=e831231c5e268c86f742c39f48848717
     private fun initializeAdapter(){

@@ -45,7 +45,7 @@ open class RVAdapter : RecyclerView.Adapter<RVAdapter.PersonViewHolder> {
 
     override fun onBindViewHolder(personViewHolder: PersonViewHolder, i: Int) {// похож на метод getView
         personViewHolder.personName.text = persons!!.get(i).name
-        personViewHolder.personPhoto.setImageResource(persons!!.get(i).photoId)
+        //personViewHolder.personPhoto.setImageResource(persons!!.get(i).photoId)
     }
 
 }
