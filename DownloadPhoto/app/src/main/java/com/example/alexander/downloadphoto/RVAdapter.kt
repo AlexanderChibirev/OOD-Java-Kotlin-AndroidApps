@@ -16,18 +16,16 @@ open class RVAdapter : RecyclerView.Adapter<RVAdapter.PersonViewHolder> {
     open class PersonViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
         internal var cv: CardView
         internal var personName: TextView
-        internal var personAge: TextView
         internal var personPhoto: ImageView
 
         init {
             cv = itemView.findViewById(R.id.cv) as CardView
             personName = itemView.findViewById(R.id.person_name) as TextView
-            personAge = itemView.findViewById(R.id.person_age) as TextView
             personPhoto = itemView.findViewById(R.id.person_photo) as ImageView
         }
     }
-    private var persons: List<Person>? = null
-    constructor(persons: List<Person>) {
+    private var persons: List<PhotoData>? = null
+    constructor(persons: List<PhotoData>) {
         this.persons = persons
     }
 
@@ -47,7 +45,6 @@ open class RVAdapter : RecyclerView.Adapter<RVAdapter.PersonViewHolder> {
 
     override fun onBindViewHolder(personViewHolder: PersonViewHolder, i: Int) {// похож на метод getView
         personViewHolder.personName.text = persons!!.get(i).name
-        personViewHolder.personAge.text = persons!!.get(i).age
         personViewHolder.personPhoto.setImageResource(persons!!.get(i).photoId)
     }
 

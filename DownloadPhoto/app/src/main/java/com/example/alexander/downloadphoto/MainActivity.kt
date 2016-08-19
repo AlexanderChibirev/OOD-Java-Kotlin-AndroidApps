@@ -1,39 +1,36 @@
 package com.example.alexander.downloadphoto
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import java.util.*
+import android.widget.Button
+import android.widget.EditText
 
 class MainActivity : AppCompatActivity() {
 
-    private val persons = ArrayList<Person>()
-    private var rv: RecyclerView? = null
+    var urlName: EditText? = null
+    var btnGetDataFromJsonFile: Button? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        rv = findViewById(R.id.rv) as RecyclerView//возможно тут ошибка// rv = сокращенно RecyclerView
-
-        var llm = LinearLayoutManager(this)
-        rv!!.setLayoutManager(llm) // !!бросаем NPE если null, ?возвращаем ноль если null  ?:
-        rv!!.setHasFixedSize(true)//в каких ситуациях лучше ? а в каких !!
-        rv!!.setHasFixedSize(true)
-
-        initializeData()
-        initializeAdapter()
+        urlName = findViewById(R.id.urlName) as EditText
+        btnGetDataFromJsonFile =  findViewById(R.id.getDataFromJsonFile) as Button
+        btnGetDataFromJsonFile!!.setOnClickListener {
+            getDateFromJsonFile()
+        }
     }
 
-    private fun initializeData(){
-        persons.add(Person("Emma Wilson", "23 years old", R.drawable.emma))
-        persons.add(Person("Love Dickers", "25 years old", R.drawable.lavery))
-        persons.add(Person("Lillie Watts", "35 years old", R.drawable.lillie))
+
+    private fun getDateFromJsonFile() {
+        val urlNameString = urlName!!.getText().toString()
     }
 
-    private fun initializeAdapter(){
-        val adapter = RVAdapter(persons)
-        rv!!.setAdapter(adapter)
+    private fun goToPhotoViewerActivity(){
+        val intent = Intent(this, PhotoViewerActivity::class.java)
+        intent.putExtra("fname", "")
+        startActivity(intent)
     }
+
 }
 
