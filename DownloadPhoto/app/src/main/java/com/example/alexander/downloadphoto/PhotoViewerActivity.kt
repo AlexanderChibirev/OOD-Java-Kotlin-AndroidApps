@@ -10,6 +10,7 @@ class PhotoViewerActivity : AppCompatActivity() {
 
     private var rv: RecyclerView? = null
     private val photos = ArrayList<PhotoData>()
+    private val jsonPhotos = intent.getStringArrayExtra("allPhoto")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,6 +24,11 @@ class PhotoViewerActivity : AppCompatActivity() {
 
         initializeData()
         initializeAdapter()
+    }
+
+    private fun downloadPhotosFromUrl()
+    {
+
     }
 
     private fun initializeData(){

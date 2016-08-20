@@ -19,6 +19,7 @@ import com.google.gson.JsonParser
  */
 class ShapeFactory : IShapeFactory
 {
+
     override fun CreateShape(description: String): Shape?
     {
         val jsonObj = JsonParser().parse(description)
