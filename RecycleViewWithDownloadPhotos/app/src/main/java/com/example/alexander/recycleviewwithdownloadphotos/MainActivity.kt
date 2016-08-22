@@ -1,10 +1,9 @@
 package com.example.alexander.recycleviewwithdownloadphotos
 
+import android.content.Intent
 import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.widget.Button
 import android.widget.EditText
 import org.json.JSONException
@@ -17,17 +16,17 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
-    private var urlName: EditText? = null
-    private var btnGetDataFromJsonFile: Button? = null
-    private var LOG_TAG = "my_log"
+    private lateinit var urlName: EditText
+    private lateinit var btnGetDataFromJsonFile: Button
     private val urlPhotos = ArrayList<String>()
     private val namePhotos = ArrayList<String>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         urlName = findViewById(R.id.urlName) as EditText
         btnGetDataFromJsonFile =  findViewById(R.id.getDataFromJsonFile) as Button
-        btnGetDataFromJsonFile!!.setOnClickListener {
+        btnGetDataFromJsonFile.setOnClickListener {
             ParseTask().execute()
         }
     }
@@ -79,28 +78,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun goToPhotoViewerActivity() {
-        setContentView(R.layout.activity_photo_viewer)
-        initViews();
-    }
-
-    private fun initViews() {
-        val recyclerView = findViewById(R.id.card_recycler_view) as RecyclerView
-        recyclerView.setHasFixedSize(true)
-        val layoutManager = LinearLayoutManager(applicationContext)
-        recyclerView.setLayoutManager(layoutManager)
-
-        val androidVersions = prepareData()
-        val adapter = DataAdapter(applicationContext, androidVersions)
-        recyclerView.setAdapter(adapter)
-
-    }
-
-    private fun prepareData(): ArrayList<PhotoData> {
-
-        val arrayData = ArrayList<PhotoData>()
-        for (i in 0..namePhotos.size - 1) {
-            arrayData.add(PhotoData(namePhotos[i],urlPhotos[i]))
-        }
-        return arrayData
+        var intent = Intent(this, PhotoViewerActivity::class.java)
+        intent.putStringArrayListExtra("urlPhotos",urlPhotos)
+        intent.putStringArrayListExtra("namePhotos",namePhotos)
+        startActivity(intent)
     }
 }

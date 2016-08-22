@@ -8,12 +8,15 @@ import java.util.*
 
 
 class PhotoViewerActivity : AppCompatActivity() {
-    private val jsonUrlPhotos = intent.getStringArrayListExtra("urlPhotos")
-    private val jsonNamePhotos = intent.getStringArrayListExtra("namePhotos")
+
+    private lateinit var jsonNamePhotos: ArrayList<String>
+    private lateinit var jsonUrlPhotos: ArrayList<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_photo_viewer)
+        jsonUrlPhotos = intent.getStringArrayListExtra("urlPhotos")
+        jsonNamePhotos = intent.getStringArrayListExtra("namePhotos")
         initViews();
     }
 
