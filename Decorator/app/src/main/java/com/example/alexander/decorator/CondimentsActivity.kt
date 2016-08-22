@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.activity_condiments.*
 
 class CondimentsActivity : AppCompatActivity() {
 
-    val condimentNames = arrayOf("Сироп","Шоколад","Ликер")
+    private val condimentNames = arrayOf("Сироп","Шоколад","Ликер")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

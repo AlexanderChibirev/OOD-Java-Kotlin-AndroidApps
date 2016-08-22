@@ -9,29 +9,15 @@ import java.util.*
  * Created by Alexander on 11.08.2016.
  */
 class AdapterHelper(_ctx: Context) {
-    val ATTR_GROUP_NAME = "groupName"
-    val ATTR_BEVERAGE_NAME = "beverageName"
-
-    var groups: MutableList<String>  = mutableListOf("КОФЕ", "ЧАЙ", "МОЛОЧНЫЙ КОКТЕЙЛЬ")
-    var coffeeGroup: MutableList<String>  = mutableListOf("Латте", "Каппучино", "Кофе")
-    var teaGroup: MutableList<String>  = mutableListOf("Чай")
-    var milkshakeGroup: MutableList<String>  = mutableListOf("Молочный коктейль")
-    // коллекция для групп
-    var groupData: ArrayList<Map<String, String>>? = null
-    // коллекция для элементов одной группы
-    var childDataItem: ArrayList<Map<String, String>>? = null
-    internal var childData: ArrayList<ArrayList<Map<String, String>>>? = null
-    // в итоге получится childData = ArrayList<childDataItem>
-    // список аттрибутов группы или элемента
-    internal var m: Map<String, String>? = null
-    var elvMain: ExpandableListView? = null
-
-
-
-    internal var ctx: Context? = _ctx
-
-    internal var adapter: SimpleExpandableListAdapter? = null
-
+    private val ATTR_BEVERAGE_NAME = "beverageName"
+    private var groups: MutableList<String>  = mutableListOf("КОФЕ", "ЧАЙ", "МОЛОЧНЫЙ КОКТЕЙЛЬ")
+    private var coffeeGroup: MutableList<String>  = mutableListOf("Латте", "Каппучино", "Кофе")
+    private var teaGroup: MutableList<String>  = mutableListOf("Чай")
+    private var milkshakeGroup: MutableList<String>  = mutableListOf("Молочный коктейль")
+    private var m: Map<String, String>? = null
+    private var elvMain: ExpandableListView? = null
+    private var ctx: Context? = _ctx
+    private var adapter: SimpleExpandableListAdapter? = null
 
     fun getAdapter(): SimpleExpandableListAdapter? {
 
@@ -100,15 +86,11 @@ class AdapterHelper(_ctx: Context) {
         return adapter
     }
 
-    /*fun getGroupText(groupPos: Int): String? {
-        return (adapter?.getGroup(groupPos) as Map<String, String>)[ATTR_GROUP_NAME]
-    }*/
-
     fun getChildText(groupPos: Int, childPos: Int): String? {
         return (adapter?.getChild(groupPos, childPos) as Map<String, String>)[ATTR_BEVERAGE_NAME]
     }
 
     fun getGroupChildText(groupPos: Int, childPos: Int): String? {
-        return getChildText(groupPos, childPos)/* getGroupText(groupPos) + " " + */
+        return getChildText(groupPos, childPos)
     }
 }

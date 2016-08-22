@@ -7,22 +7,17 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.ExpandableListView
 import android.widget.SimpleExpandableListAdapter
-import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
-    val elvMain: ExpandableListView? = null
-    var ah: AdapterHelper? = null
-    var adapter: SimpleExpandableListAdapter? = null
-    var beverageName: String? = null
-    var groups: MutableList<String>  = mutableListOf("КОФЕ", "ЧАЙ", "МОЛОЧНЫЙ КОКТЕЙЛЬ")
+    private var adapter: SimpleExpandableListAdapter? = null
+    private var beverageName: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         buttonBegin.setOnClickListener {
             setContentView(R.layout.expandeblelist)
-            var tvInfo = findViewById(R.id.tvInfo) as TextView
-
             var ah = AdapterHelper(this)
             adapter = ah.getAdapter()
 

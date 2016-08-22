@@ -13,14 +13,11 @@ class SyrupActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_syrup)
         val radioGroup = findViewById(R.id.radioGroupSyrup) as RadioGroup
-
         var typeCondiment = "шоколадный"
         var costSyrop = 15.0
         var costOrder = intent.getStringExtra("costOrder")
         var materialOrder = intent.getStringExtra("materialOrder")
-
         var costSyrupTextView = findViewById(R.id.textViewCostSyrup) as TextView
-
 
         radioGroup.setOnCheckedChangeListener(object : RadioGroup.OnCheckedChangeListener {
             override fun onCheckedChanged(group: RadioGroup, checkedId: Int) {
