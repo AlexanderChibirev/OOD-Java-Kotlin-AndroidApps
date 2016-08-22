@@ -9,7 +9,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.alexander.recycleviewwithdownloadphotos.MainActivity"
     android:contextClickable="false"
-    android:background="#f7f2f2">
+    android:background="#000000">
 
     <ImageView
         android:src="@drawable/emma"
@@ -83,7 +83,8 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/tableRow1"
         android:layout_toRightOf="@+id/tableRow1"
-        android:layout_toEndOf="@+id/tableRow1">
+        android:layout_toEndOf="@+id/tableRow1"
+        android:textColor="#ffffff">
         <requestFocus>
         </requestFocus>
     </EditText>
@@ -96,7 +97,8 @@
         android:layout_alignBaseline="@+id/urlName"
         android:layout_alignBottom="@+id/urlName"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:textColor="#fbc000">
     </TextView>
 
 </RelativeLayout>
