@@ -157,8 +157,7 @@ public class Drop extends ApplicationAdapter implements InputProcessor {
 		});
 
 
-		//stage.clear();
-
+		stage.clear();
 		stage.addActor(dragGroup);
 		stage.addActor(dragGroup1);
 		Gdx.input.setInputProcessor(stage);
@@ -233,117 +232,4 @@ public class Drop extends ApplicationAdapter implements InputProcessor {
 	public boolean scrolled(int amount) {
 		return false;
 	}
-
-
-
-/*	Stage stage;
-	SpriteBatch batch;
-	Image sourceImage;
-	Image validTargetImage;
-	Image invalidTargetImage;
-	//Texture sourceImage;// = new Texture(Gdx.files.internal("image.png"));
-	private Sprite sourceSprite;
-
-	public void create () {
-		stage = new Stage();
-		Gdx.input.setInputProcessor(stage);
-
-		final Skin skin = new Skin();
-		skin.add("default", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-		skin.add("badlogic", new Texture("badlogic.jpg"));
-
-		//sourceImage = new Texture(Gdx.files.internal("bucket.png"));
-		//sourceSprite = new Sprite(sourceImage);
-
-		sourceImage = new Image(skin, "badlogic");
-		sourceImage.setBounds(50, 125, 100, 100);
-		stage.addActor(sourceImage);
-
-		validTargetImage = new Image(skin, "badlogic");
-		validTargetImage.setBounds(200, 50, 100, 100);
-		stage.addActor(validTargetImage);
-
-		invalidTargetImage = new Image(skin, "badlogic");
-		invalidTargetImage.setBounds(200, 200, 100, 100);
-		stage.addActor(invalidTargetImage);
-
-		DragAndDrop dragAndDrop = new DragAndDrop();
-
-		dragAndDrop.addSource(new DragAndDrop.Source(sourceImage) {
-
-			@Override
-			public DragAndDrop.Payload dragStart (InputEvent event, float x, float y, int pointer) {
-				DragAndDrop.Payload payload = new DragAndDrop.Payload();
-				payload.setObject(sourceImage);
-				payload.setDragActor(sourceImage);
-				sourceImage.setSize(120, 120);//увеличиваем размер перемщаемой картинки
-
-
-				*//*
-				Label validLabel = new Label("Some payload!", skin);
-				validLabel.setColor(0, 1, 0, 1);
-				payload.setValidDragActor(validLabel);
-
-				Label invalidLabel = new Label("Some payload!", skin);
-				invalidLabel.setColor(1, 0, 0, 1);
-				payload.setInvalidDragActor(invalidLabel);*//*
-				//getActor().setBounds(x,y,100,100);
-				//validTargetImage.setBounds(100, 200, 100, 100); //когда перетаскиваем
-				return payload;
-			}
-
-			@Override
-			public void dragStop(InputEvent event, float x, float y, int pointer, Payload payload, Target target) {
-				super.dragStop(event, x, y, pointer, payload, target);
-				sourceImage.setBounds(getActor().getX(),getActor().getY(), 100, 100);//увеличиваем размер перемщаемой картинки
-				//sourceImage.setOrigin(sourceImage.getOriginX()/2, sourceImage.getOriginY()/ 2);
-				stage.addActor(sourceImage);
-			}
-		});
-
-
-		dragAndDrop.addTarget(new Target(validTargetImage) {// пришел к второй картинке
-			public boolean drag (Source source, Payload payload, float x, float y, int pointer) {
-				//getActor().setColor(Color.GREEN);
-				return true;
-			}
-
-			public void reset (Source source, Payload payload) {
-				//getActor().setColor(Color.WHITE);
-			}
-
-			public void drop (Source source, Payload payload, float x, float y, int pointer) {
-				//System.out.println("Accepted: " + payload.getObject() + " " + x + ", " + y);
-			}
-		});
-		dragAndDrop.addTarget(new Target(invalidTargetImage) {// пришел к второй картинке
-			public boolean drag (Source source, Payload payload, float x, float y, int pointer) {
-				//getActor().setColor(Color.RED);
-				return false;
-			}
-
-			public void reset (Source source, Payload payload) {
-				//getActor().setColor(Color.WHITE);
-			}
-
-			public void drop (Source source, Payload payload, float x, float y, int pointer) {
-			}
-		});
-	}
-
-	public void render () {
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		stage.act(Gdx.graphics.getDeltaTime());
-		stage.draw();
-	}
-
-	public void resize (int width, int height) {
-		stage.getViewport().update(width, height, true);
-	}
-
-	public void dispose () {
-		stage.dispose();
-	}
-	*/
-
 }
