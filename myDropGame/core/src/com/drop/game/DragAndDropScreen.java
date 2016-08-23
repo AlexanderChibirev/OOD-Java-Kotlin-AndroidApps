@@ -57,7 +57,7 @@ public class DragAndDropScreen implements Screen, InputProcessor{
         backgroundSprite.setScale(backgroundSprite.getScaleX() + 2222,backgroundSprite.getScaleY()+123123);
         this.game = game;
         stage = new Stage();
-        
+
         libgdxImg = new Texture("bucket.png");
         libgdxActor = new Image(libgdxImg);
         libgdxActor.setOrigin(libgdxActor.getWidth()/2,libgdxActor.getHeight()/2);
