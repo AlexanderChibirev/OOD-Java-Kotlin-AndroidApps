@@ -1,7 +1,6 @@
 package com.mygdx.game.states;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Rectangle;
@@ -17,37 +16,45 @@ public class DragAndDropActor extends Group {
 
     Actor dragActor;
     Group dragGroup;
-
     float touchDown_x;
     float touchDown_y;
 
     float dx;
     float dy;
     Rectangle rectDrag;
-    Texture garbageT;
+    Texture garbageTexture;
     Image garbageActor;
+    Image targetDragActor;
+    Texture targetDragTexture;
+    Actor DragActorBegin;
 
-    public DragAndDropActor(final String ingName, final Vector3 initialPosition, final Rectangle rect, final int scoreSuccess, boolean isDisappears) {
 
+    public DragAndDropActor(final String ingName, final Vector3 initialPosition, final Rectangle rect, final int scoreSuccess,final boolean isDisappears) {
 
-        garbageT = new Texture(Gdx.files.internal(ingName));
-        garbageActor = new Image(garbageT);
+        targetDragTexture = new Texture(Gdx.files.internal(ingName));
+        targetDragActor = new Image(targetDragTexture);
+        DragActorBegin = targetDragActor;
+        DragActorBegin.setOrigin( targetDragActor.getWidth() / 2, targetDragActor.getHeight() / 2 );
+
+        garbageTexture = new Texture(Gdx.files.internal(ingName));
+        garbageActor = new Image(garbageTexture);
         dragActor = garbageActor;
         dragActor.setOrigin( garbageActor.getWidth() / 2, garbageActor.getHeight() / 2 );
+
 
         dragActor.addListener(new InputListener() {
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 dragActor.addAction(Actions.parallel(
-                        Actions.scaleTo(1.5f, 1.5f, 0.25f, Interpolation.fade),
-                        Actions.color(new Color(1.0f, 1.0f, 1.0f, 0.5f), 0.45f, Interpolation.fade) )
-                );
+                        Actions.scaleTo(1.5f, 1.5f, 0.25f, Interpolation.swing)//fade выцветание
+                       // Actions.color(new Color(1.0f, 1.0f, 1.0f, 0.5f), 0.45f, Interpolation.swing) )
+                ));
                 return true;
             }
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
                 dragActor.addAction(Actions.parallel(
-                        Actions.scaleTo(1.0f, 1.0f, 0.25f, Interpolation.fade),
-                        Actions.color(new Color(1.0f, 1.0f, 1.0f, 1.0f), 0.45f, Interpolation.fade) )
-                );
+                        Actions.scaleTo(1.0f, 1.0f, 0.25f, Interpolation.swing)
+                      //  Actions.color(new Color(1.0f, 1.0f, 1.0f, 1.0f), 0.45f, Interpolation.swing) ) убрал невидимость когда берешь
+                ));
             }
         });
 
@@ -58,9 +65,9 @@ public class DragAndDropActor extends Group {
 
         dragGroup.setPosition(initialPosition.x, initialPosition.y);
         dragGroup.setSize(dragActor.getWidth(),dragActor.getHeight());
-
         dragGroup.addActor( dragActor );
         rectDrag = new Rectangle(-190, -190, dragGroup.getWidth(), dragGroup.getHeight());// это кординаты картинки и ее размеры
+
         dragGroup.addListener(new InputListener() {
 
             final float h = dragActor.getHeight() / 2;
@@ -83,12 +90,32 @@ public class DragAndDropActor extends Group {
                 //создаем прямоугольник
                 //и если он пересекся с картинкой, то мы удаляем картинку и добавляем очки
                 rectDrag.setPosition(x + dx, y + dy);
-                if(rect.overlaps(rectDrag)){ //если поставили на нужное место
-                    dragGroup.remove();
-                    com.mygdx.game.states.PlayState.allScore+= scoreSuccess;
+                if(isDisappears == true)
+                {
+                    //куда перенесли
+                    if(rect.overlaps(rectDrag)){ //если поставили на нужное место
+                        dragGroup.remove();
+                        com.mygdx.game.states.PlayState.allScore+= scoreSuccess;
+                    }
+                    com.mygdx.game.states.PlayState.allScore+= -10;
+                    dragGroup.setPosition(initialPosition.x , initialPosition.y);
                 }
-                com.mygdx.game.states.PlayState.allScore+= -10;
-                dragGroup.setPosition(initialPosition.x , initialPosition.y);
+                else
+                {
+                    System.out.println("Enter a number: "+ dx + "    "+ dy);
+                    if(rect.overlaps(rectDrag)) { //если поставили на нужное место
+                        com.mygdx.game.states.PlayState.allScore += scoreSuccess;
+                        dragGroup.clear();
+                        dragGroup.setPosition(rect.x, rect.y);
+                        dragGroup.setSize(DragActorBegin.getWidth(),DragActorBegin.getHeight());
+                        dragGroup.addActor(DragActorBegin);
+                        //targetDragActor.setPosition(x + dx, y + dy);
+                    }
+                    else {
+                        dragGroup.setPosition(initialPosition.x , initialPosition.y);
+                        com.mygdx.game.states.PlayState.allScore -= 10;
+                    }
+                }
             }
         });
 
@@ -99,6 +126,6 @@ public class DragAndDropActor extends Group {
         dragGroup.clear();
         dragActor = null;
         dragGroup = null;
-        garbageT.dispose();
+        garbageTexture.dispose();
     }
 }

@@ -1,8 +1,9 @@
 package com.mygdx.game.states;
 
-
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -13,10 +14,9 @@ import com.mygdx.game.BeginScreen;
 /**
  * Created by Alexander on 24.08.2016.
  */
-public class MenuState extends State {
+public class GameOverState extends State  {
 
     private Texture background;
-
 
     private Texture playBtn;
     private TextureAtlas startBt;
@@ -24,13 +24,14 @@ public class MenuState extends State {
     private Sprite startPress;
     private Rectangle playBtnCollision;
     private boolean isPress;
+    private BitmapFont fontScore;
 
-
-    public MenuState(GameStateManager gsm) {
+    public GameOverState(GameStateManager gsm) {
         super(gsm);
-        background = new Texture("bgMenu.jpg");
+        background = new Texture("retry.png");
 
-
+        fontScore = new BitmapFont();
+        fontScore.setColor(Color.BLACK);
         playBtn = new Texture("menu//playbtn.png");
         startBt = new TextureAtlas(Gdx.files.internal("menu//StartBt.txt"));
         startIn = new Sprite(startBt.createSprite("start"));
@@ -38,11 +39,10 @@ public class MenuState extends State {
         playBtnCollision = new Rectangle();
         camera.setToOrtho(false, BeginScreen.WIDTH, BeginScreen.HEIGHT);
 
-    }
 
+    }
     @Override
     protected void handleInput() {
-
         isPress = false;
         if (Gdx.input.isTouched()){
             Vector3 touchPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
@@ -63,23 +63,29 @@ public class MenuState extends State {
     @Override
     public void update(float dt) {
         handleInput();
-        playBtnCollision.set( (BeginScreen.WIDTH / 2) - (playBtn.getWidth() / 2), BeginScreen.HEIGHT / 6, startIn.getWidth(), startIn.getHeight());
+        playBtnCollision.set(490, 150, startIn.getWidth(), startIn.getHeight());
     }
 
     @Override
     public void render(SpriteBatch sb) {
+
+
+
         sb.begin();
+
         sb.setProjectionMatrix(camera.combined);
         sb.draw(background, 0, 0, BeginScreen.WIDTH, BeginScreen.HEIGHT);
         if (isPress)
-            sb.draw(startPress, (BeginScreen.WIDTH / 2) - (playBtn.getWidth() / 2), BeginScreen.HEIGHT / 6);
+            sb.draw(startPress, 490, 150);
         else
-            sb.draw(startIn, (BeginScreen.WIDTH / 2) - (playBtn.getWidth() / 2), BeginScreen.HEIGHT / 6);
+            sb.draw(startIn, 490, 150);
+        fontScore.draw(sb, "Your score: "+PlayState.allScore, 550, 120);
         sb.end();
     }
 
     @Override
     public void dispose() {
+        PlayState.allScore = 0;
         background.dispose();
         playBtn.dispose();
     }
