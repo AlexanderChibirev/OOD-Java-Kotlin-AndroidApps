@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -46,6 +47,7 @@ public class PlayState extends State implements InputProcessor {
     DragAndDropActor pillow;
     DragAndDropActor picture;
     DragAndDropActor clip;
+    private Animation bucketAnimation;
 
 
 
@@ -59,6 +61,10 @@ public class PlayState extends State implements InputProcessor {
 
     public PlayState(GameStateManager gsm) {
         super(gsm);
+
+        Texture texture = new Texture("bucketAll.png");
+        bucketAnimation = new Animation(new TextureRegion(texture),4,0.5f);
+
         bg = new Texture("bgGame.jpg");
         stage = new Stage();
 
@@ -151,11 +157,12 @@ public class PlayState extends State implements InputProcessor {
 
     @Override
     public void update(float dt) {
+        bucketAnimation.update(dt);
         if(secondTime < 1){
             secondTime = 60;
             minTime -= 1;
         }
-        secondTime = secondTime - 0.2f ;//0.02 для норм, 1.5 для проверки
+        secondTime = secondTime - 0.02f ;//0.02 для норм, 1.5 для проверки
 
         if(minTime < 0 ){
             gsm.set(new GameOverState(gsm));// заменяем на сцену повтора
@@ -166,6 +173,7 @@ public class PlayState extends State implements InputProcessor {
     public void render(SpriteBatch sb) {
         sb.begin();
         sb.draw(bg, 0, 0);
+        //sb.draw(bucketAnimation.getFrame(), 0, 0); пустить анимацию
         fontScore.draw(sb, minTime+ ":" + Math.round(secondTime), 155, 450);
         fontScore.draw(sb, "1", 280, 450);
         fontScore.draw(sb, "" + allScore,370,450);
