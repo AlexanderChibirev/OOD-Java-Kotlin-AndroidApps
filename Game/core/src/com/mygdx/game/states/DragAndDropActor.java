@@ -27,7 +27,7 @@ public class DragAndDropActor extends Group {
     Texture garbageT;
     Image garbageActor;
 
-    public DragAndDropActor(final String ingName, final Vector3 initialPosition, Vector3 size, final Rectangle rect, final int scoreSuccess, boolean isDisappears) {
+    public DragAndDropActor(final String ingName, final Vector3 initialPosition, final Rectangle rect, final int scoreSuccess, boolean isDisappears) {
 
 
         garbageT = new Texture(Gdx.files.internal(ingName));
@@ -57,7 +57,7 @@ public class DragAndDropActor extends Group {
         //dragActor.setHeight( actor.getHeight() );
 
         dragGroup.setPosition(initialPosition.x, initialPosition.y);
-        dragGroup.setSize(size.x, size.y);
+        dragGroup.setSize(dragActor.getWidth(),dragActor.getHeight());
 
         dragGroup.addActor( dragActor );
         rectDrag = new Rectangle(-190, -190, dragGroup.getWidth(), dragGroup.getHeight());// это кординаты картинки и ее размеры

@@ -25,6 +25,17 @@ public class PlayState extends State implements InputProcessor {
     DragAndDropActor garbage5;
     DragAndDropActor garbage6;
     DragAndDropActor garbage7;
+    DragAndDropActor garbage8;
+    DragAndDropActor garbage9;
+    DragAndDropActor garbage10;
+    DragAndDropActor garbage11;
+    DragAndDropActor garbage12;
+    DragAndDropActor garbage13;
+    DragAndDropActor garbage14;
+    DragAndDropActor garbage15;
+    DragAndDropActor garbage16;
+
+
 
 
     static int allScore;
@@ -52,18 +63,40 @@ public class PlayState extends State implements InputProcessor {
         stage.addActor(garbage3);
         stage.addActor(garbage4);
         stage.addActor(garbage5);
-    //    stage.addActor(garbage6);
-    //    stage.addActor(garbage7);
-        //stage.addActor(garbage8);
+        stage.addActor(garbage6);
+        stage.addActor(garbage7);
+        stage.addActor(garbage8);
+        stage.addActor(garbage9);
+        stage.addActor(garbage10);
+        stage.addActor(garbage11);
+        stage.addActor(garbage12);
+        stage.addActor(garbage13);
+        stage.addActor(garbage14);
+        stage.addActor(garbage15);
+        stage.addActor(garbage16);
     }
 
     private  void initialDragAndDropActorObject()
     {
-        garbage1 = new DragAndDropActor("lumpOfGarbage1.png", new Vector3(450,0,0), new Vector3 (50,50,0), new Rectangle(30,40,20,20), 20, true);// Rectangle(20,30,20,20) для ведра
-        garbage2 = new DragAndDropActor("lumpOfGarbage1.png", new Vector3(350,0,0), new Vector3 (50,50,0), new Rectangle(30,40,20,20), 20, true);
-        garbage3 = new DragAndDropActor("lumpOfGarbage1.png", new Vector3(650,70,0), new Vector3 (50,50,0), new Rectangle(30,40,20,20), 20, true);
-        garbage4 = new DragAndDropActor("lumpOfGarbage1.png", new Vector3(150,50,0), new Vector3 (50,50,0), new Rectangle(30,40,20,20), 20, true);
-        garbage5 = new DragAndDropActor("lumpOfGarbage1.png", new Vector3(200,70,0), new Vector3 (50,50,0), new Rectangle(30,40,20,20), 20, true);
+        garbage1 = new DragAndDropActor("lumpOfGarbage1.png", new Vector3(450,0,0), new Rectangle(30,40,20,20), 20, true);// Rectangle(20,30,20,20) для ведра
+        garbage2 = new DragAndDropActor("lumpOfGarbage1.png", new Vector3(350,0,0),  new Rectangle(30,40,20,20), 20, true);
+        garbage3 = new DragAndDropActor("lumpOfGarbage1.png", new Vector3(650,70,0),  new Rectangle(30,40,20,20), 20, true);
+        garbage4 = new DragAndDropActor("lumpOfGarbage1.png", new Vector3(150,50,0), new Rectangle(30,40,20,20), 20, true);
+        garbage5 = new DragAndDropActor("lumpOfGarbage1.png", new Vector3(200,70,0),  new Rectangle(30,40,20,20), 20, true);
+        garbage6 = new DragAndDropActor("lumpOfGarbage2.png", new Vector3(100,20,0),  new Rectangle(30,40,20,20), 20, true);
+        garbage7 = new DragAndDropActor("lumpOfGarbage3.png", new Vector3(300,70,0), new Rectangle(30,40,20,20), 20, true);
+        garbage8 = new DragAndDropActor("lumpOfGarbage4.png", new Vector3(350,80,0),  new Rectangle(30,40,20,20), 20, true);
+        garbage9 = new DragAndDropActor("lumpOfGarbage4.png", new Vector3(650,50,0),  new Rectangle(30,40,20,20), 20, true);//под стулом
+        garbage10 = new DragAndDropActor("lumpOfGarbage4.png", new Vector3(690,30,0),  new Rectangle(30,40,20,20), 20, true);//чуть ниже 9ого
+        garbage11 = new DragAndDropActor("lumpOfGarbage4.png", new Vector3(350,20,0),  new Rectangle(30,40,20,20), 20, true);
+        garbage12 = new DragAndDropActor("lumpOfGarbage4.png", new Vector3(120,70,0),  new Rectangle(30,40,20,20), 20, true);
+
+        garbage13 = new DragAndDropActor("lumpOfGarbage2.png", new Vector3(520,70,0),  new Rectangle(30,40,20,20), 20, true);
+        garbage14 = new DragAndDropActor("lumpOfGarbage3.png", new Vector3(620,10,0),  new Rectangle(30,40,20,20), 20, true);
+        garbage15 = new DragAndDropActor("lumpOfGarbage5.png", new Vector3(720,70,0),  new Rectangle(30,40,20,20), 20, true);
+        garbage16 = new DragAndDropActor("lumpOfGarbage5.png", new Vector3(620,70,0),  new Rectangle(30,40,20,20), 20, true);
+
+
     }
 
     private void initialFont()
