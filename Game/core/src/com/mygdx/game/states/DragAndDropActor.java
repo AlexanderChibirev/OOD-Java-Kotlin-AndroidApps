@@ -39,14 +39,14 @@ public class DragAndDropActor extends Group {
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 dragActor.addAction(Actions.parallel(
                         Actions.scaleTo(1.5f, 1.5f, 0.25f, Interpolation.fade),
-                        Actions.color(new Color(1.0f, 1.0f, 1.0f, 0.5f), 0.25f, Interpolation.fade) )
+                        Actions.color(new Color(1.0f, 1.0f, 1.0f, 0.5f), 0.45f, Interpolation.fade) )
                 );
                 return true;
             }
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
                 dragActor.addAction(Actions.parallel(
                         Actions.scaleTo(1.0f, 1.0f, 0.25f, Interpolation.fade),
-                        Actions.color(new Color(1.0f, 1.0f, 1.0f, 1.0f), 0.25f, Interpolation.fade) )
+                        Actions.color(new Color(1.0f, 1.0f, 1.0f, 1.0f), 0.45f, Interpolation.fade) )
                 );
             }
         });
