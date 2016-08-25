@@ -2,6 +2,7 @@ package com.mygdx.game.states;
 
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -16,7 +17,7 @@ import com.mygdx.game.BeginScreen;
 public class MenuState extends State {
 
     private Texture background;
-
+    private Music music;
 
     private Texture playBtn;
     private TextureAtlas startBt;
@@ -30,8 +31,11 @@ public class MenuState extends State {
         super(gsm);
         background = new Texture("bgMenu.jpg");
 
+        music = Gdx.audio.newMusic(Gdx.files.internal("music//GameMenuAndRetry.mp3"));
+        music.setLooping(true);
+        music.setVolume(0.1f);
+        music.play();
 
-        playBtn = new Texture("menu//playbtn.png");
         startBt = new TextureAtlas(Gdx.files.internal("menu//StartBt.txt"));
         startIn = new Sprite(startBt.createSprite("start"));
         startPress = new Sprite(startBt.createSprite("startPress"));
@@ -56,6 +60,7 @@ public class MenuState extends State {
             camera.unproject(touchPos);
             if (playBtnCollision.contains(touchPos.x, touchPos.y)) {
                 gsm.set(new PlayState(gsm));
+                music.stop();
             }
         }
     }
@@ -63,7 +68,7 @@ public class MenuState extends State {
     @Override
     public void update(float dt) {
         handleInput();
-        playBtnCollision.set( (BeginScreen.WIDTH / 2) - (playBtn.getWidth() / 2), BeginScreen.HEIGHT / 6, startIn.getWidth(), startIn.getHeight());
+        playBtnCollision.set( (BeginScreen.WIDTH / 2) , BeginScreen.HEIGHT / 6, startIn.getWidth(), startIn.getHeight());
     }
 
     @Override
@@ -72,15 +77,17 @@ public class MenuState extends State {
         sb.setProjectionMatrix(camera.combined);
         sb.draw(background, 0, 0, BeginScreen.WIDTH, BeginScreen.HEIGHT);
         if (isPress)
-            sb.draw(startPress, (BeginScreen.WIDTH / 2) - (playBtn.getWidth() / 2), BeginScreen.HEIGHT / 6);
+            sb.draw(startPress, (BeginScreen.WIDTH / 2), BeginScreen.HEIGHT / 6);
         else
-            sb.draw(startIn, (BeginScreen.WIDTH / 2) - (playBtn.getWidth() / 2), BeginScreen.HEIGHT / 6);
+            sb.draw(startIn, (BeginScreen.WIDTH / 2) , BeginScreen.HEIGHT / 6);
         sb.end();
     }
 
     @Override
     public void dispose() {
         background.dispose();
-        playBtn.dispose();
+        music.dispose();
+        startBt.dispose();
+
     }
 }

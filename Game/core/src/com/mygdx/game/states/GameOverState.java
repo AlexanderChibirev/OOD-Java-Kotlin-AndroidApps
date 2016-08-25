@@ -1,6 +1,7 @@
 package com.mygdx.game.states;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -17,7 +18,7 @@ import com.mygdx.game.BeginScreen;
 public class GameOverState extends State  {
 
     private Texture background;
-
+    private Music music;
     private Texture playBtn;
     private TextureAtlas startBt;
     private Sprite startIn;
@@ -39,6 +40,10 @@ public class GameOverState extends State  {
         playBtnCollision = new Rectangle();
         camera.setToOrtho(false, BeginScreen.WIDTH, BeginScreen.HEIGHT);
 
+        music = Gdx.audio.newMusic(Gdx.files.internal("music//GameOver.mp3"));
+        music.setLooping(true);
+        music.setVolume(0.1f);
+        music.play();
 
     }
     @Override
@@ -56,6 +61,7 @@ public class GameOverState extends State  {
             camera.unproject(touchPos);
             if (playBtnCollision.contains(touchPos.x, touchPos.y)) {
                 gsm.set(new PlayState(gsm));
+                music.stop();
             }
         }
     }
@@ -88,5 +94,7 @@ public class GameOverState extends State  {
         PlayState.allScore = 0;
         background.dispose();
         playBtn.dispose();
+        music.dispose();
+        fontScore.dispose();
     }
 }
