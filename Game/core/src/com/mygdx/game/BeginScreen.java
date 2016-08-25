@@ -9,7 +9,6 @@ public class BeginScreen extends ApplicationAdapter {
 
 	public static final int WIDTH = 800;
 	public static final int HEIGHT = 480;
-	public static int allSorce  = 0;
 	public static final String TITLE = "ChildrenGame";
 
 	private com.mygdx.game.states.GameStateManager gsm;

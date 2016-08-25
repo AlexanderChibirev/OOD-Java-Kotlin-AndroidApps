@@ -19,6 +19,8 @@ public class DragAndDropActor extends Group {
     float touchDown_x;
     float touchDown_y;
 
+    private boolean isDrop = false;
+
     float dx;
     float dy;
     Rectangle rectDrag;
@@ -29,14 +31,16 @@ public class DragAndDropActor extends Group {
     Actor DragActorBegin;
 
 
-    public DragAndDropActor(final String ingName, final Vector3 initialPosition, final Rectangle rect, final int scoreSuccess,final boolean isDisappears) {
+    public boolean isDrop(){return isDrop;}
 
-        targetDragTexture = new Texture(Gdx.files.internal(ingName));
+    public DragAndDropActor(final String imgName, final Vector3 initialPosition, final Rectangle rect, final int scoreSuccess,final boolean isDisappears) {
+
+        targetDragTexture = new Texture(Gdx.files.internal(imgName));
         targetDragActor = new Image(targetDragTexture);
         DragActorBegin = targetDragActor;
         DragActorBegin.setOrigin( targetDragActor.getWidth() / 2, targetDragActor.getHeight() / 2 );
 
-        garbageTexture = new Texture(Gdx.files.internal(ingName));
+        garbageTexture = new Texture(Gdx.files.internal(imgName));
         garbageActor = new Image(garbageTexture);
         dragActor = garbageActor;
         dragActor.setOrigin( garbageActor.getWidth() / 2, garbageActor.getHeight() / 2 );
@@ -57,7 +61,6 @@ public class DragAndDropActor extends Group {
                 ));
             }
         });
-
 
         dragGroup = new Group();
        // dragActor.setWidth( actor.getWidth() );
@@ -95,9 +98,9 @@ public class DragAndDropActor extends Group {
                     //куда перенесли
                     if(rect.overlaps(rectDrag)){ //если поставили на нужное место
                         dragGroup.remove();
-                        com.mygdx.game.states.PlayState.allScore+= scoreSuccess;
+                        com.mygdx.game.states.PlayState.allScore += scoreSuccess;// + прибавляем очки
                     }
-                    com.mygdx.game.states.PlayState.allScore+= -10;
+                    com.mygdx.game.states.PlayState.allScore += -10;
                     dragGroup.setPosition(initialPosition.x , initialPosition.y);
                 }
                 else

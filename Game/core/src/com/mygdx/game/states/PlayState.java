@@ -11,138 +11,89 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Array;
 
 /**
  * Created by Alexander on 24.08.2016.
  */
 public class PlayState extends State implements InputProcessor {
     private Texture bg;
+    private Texture twentyScore;
+    private Texture tenScore;
+    private Texture fiftyScore;
     Stage stage;
 
-    DragAndDropActor garbage1;
-    DragAndDropActor garbage2;
-    DragAndDropActor garbage3;
-    DragAndDropActor garbage4;
-    DragAndDropActor garbage5;
-    DragAndDropActor garbage6;
-    DragAndDropActor garbage7;
-    DragAndDropActor garbage8;
-    DragAndDropActor garbage9;
-    DragAndDropActor garbage10;
-    DragAndDropActor garbage11;
-    DragAndDropActor garbage12;
-    DragAndDropActor garbage13;
-    DragAndDropActor garbage14;
-    DragAndDropActor garbage15;
-    DragAndDropActor garbage16;
-    DragAndDropActor garbage17;
-    DragAndDropActor garbage18;
-    DragAndDropActor garbage19;
-    DragAndDropActor garbage20;
-
-    DragAndDropActor alarmClock;
-    DragAndDropActor clock;
-    DragAndDropActor stool;
-    DragAndDropActor flower;
-    DragAndDropActor pillow;
-    DragAndDropActor picture;
-    DragAndDropActor clip;
     private Animation bucketAnimation;
 
-
-
-
+    private Rectangle bucketTargetDropCoordinate = new Rectangle(30,40,20,20) ;
 
     static int allScore;
+    private int oldScore = 0;
 
     private BitmapFont fontScore;
     private float secondTime = 60f;
     private int minTime = 1;
+    private Array<DragAndDropActor> dragAndDropObjects;
 
     public PlayState(GameStateManager gsm) {
         super(gsm);
 
         Texture texture = new Texture("bucketAll.png");
+        Texture twentyScore = new Texture("twentyScore.png");
+        Texture fiftyScore= new Texture("fiftyScore.png");
+        Texture tenScore= new Texture("tenScore.png");
+        dragAndDropObjects = new Array<DragAndDropActor>();
         bucketAnimation = new Animation(new TextureRegion(texture),4,0.5f);
 
         bg = new Texture("bgGame.jpg");
         stage = new Stage();
-
-        initialDragAndDropActorObject();
+        addDragAndDropActorObjects();
         addActorForStage();
 
         Gdx.input.setInputProcessor( stage );
         initialFont();
     }
 
+    private  void  addDragAndDropActorObjects()
+    {
+        dragAndDropObjects.add(new DragAndDropActor("lumpOfGarbage1.png", new Vector3(450,0,0), bucketTargetDropCoordinate, 20,true));
+        dragAndDropObjects.add(new DragAndDropActor("lumpOfGarbage1.png", new Vector3(350,0,0),  bucketTargetDropCoordinate, 20, true));
+        dragAndDropObjects.add(new DragAndDropActor("lumpOfGarbage1.png", new Vector3(650,70,0),  bucketTargetDropCoordinate, 20, true));
+        dragAndDropObjects.add(new DragAndDropActor("lumpOfGarbage1.png", new Vector3(150,1,0), bucketTargetDropCoordinate, 20, true));
+        dragAndDropObjects.add(new DragAndDropActor("lumpOfGarbage1.png", new Vector3(200,34,0), bucketTargetDropCoordinate, 20, true));
+        dragAndDropObjects.add(new DragAndDropActor("lumpOfGarbage2.png", new Vector3(100,20,0), bucketTargetDropCoordinate, 20, true));
+        dragAndDropObjects.add(new DragAndDropActor("lumpOfGarbage3.png", new Vector3(300,70,0),bucketTargetDropCoordinate, 20, true));
+        dragAndDropObjects.add(new DragAndDropActor("lumpOfGarbage4.png", new Vector3(350,80,0), bucketTargetDropCoordinate, 20, true));
+        dragAndDropObjects.add(new DragAndDropActor("lumpOfGarbage4.png", new Vector3(650,50,0),  bucketTargetDropCoordinate, 20, true));
+        dragAndDropObjects.add(new DragAndDropActor("lumpOfGarbage4.png", new Vector3(690,30,0),  bucketTargetDropCoordinate, 20, true));
+        dragAndDropObjects.add(new DragAndDropActor("lumpOfGarbage4.png", new Vector3(350,20,0),  bucketTargetDropCoordinate, 20, true));
+        dragAndDropObjects.add( new DragAndDropActor("lumpOfGarbage4.png", new Vector3(120,260,0),  bucketTargetDropCoordinate, 20, true));
+        dragAndDropObjects.add(new DragAndDropActor("lumpOfGarbage2.png", new Vector3(520,70,0),  bucketTargetDropCoordinate, 20, true));
+        dragAndDropObjects.add(new DragAndDropActor("lumpOfGarbage3.png", new Vector3(620,10,0),  bucketTargetDropCoordinate, 20, true));
+        dragAndDropObjects.add(new DragAndDropActor("lumpOfGarbage5.png", new Vector3(720,70,0),  bucketTargetDropCoordinate, 20, true));
+        dragAndDropObjects.add(new DragAndDropActor("lumpOfGarbage5.png", new Vector3(160,230,0), bucketTargetDropCoordinate, 20, true));
+        dragAndDropObjects.add(new DragAndDropActor("lumpOfGarbage6.png", new Vector3(225,70,0),  bucketTargetDropCoordinate, 20, true));
+        dragAndDropObjects.add(new DragAndDropActor("lumpOfGarbage7.png", new Vector3(780,410,0),  bucketTargetDropCoordinate, 20, true));
+        dragAndDropObjects.add(new DragAndDropActor("lumpOfGarbage6.png", new Vector3(375,370,0),  bucketTargetDropCoordinate, 20, true));
+        dragAndDropObjects.add(new DragAndDropActor("lumpOfGarbage7.png", new Vector3(430,200,0),  bucketTargetDropCoordinate, 20, true));
+        dragAndDropObjects.add(new DragAndDropActor("alarmClock.png", new Vector3(30,235,0),  new Rectangle(278, 318,10,10), 50, false));
+        dragAndDropObjects.add(new DragAndDropActor("clock.png", new Vector3(330,100,0),  new Rectangle(290, 375,80,80), 50, false));
+        dragAndDropObjects.add(new DragAndDropActor("stool.png", new Vector3(625,70,0),  new Rectangle(125,70,20,20), 50, false));
+        dragAndDropObjects.add(new DragAndDropActor("flower.png", new Vector3(530,205,0),  new Rectangle(750,275,20,20), 50, false));
+        dragAndDropObjects.add(new DragAndDropActor("pillow.png", new Vector3(350,70,0),  new Rectangle(460,205,40,40), 50, false));
+        dragAndDropObjects.add(new DragAndDropActor("picture.png", new Vector3(260,100,0),  new Rectangle(760,215,10,10), 50, false));
+        dragAndDropObjects.add(new DragAndDropActor("clip.png", new Vector3(0,0,0),  new Rectangle(25,183,30,30), 50, false));
+
+
+    }
+
     private  void addActorForStage()
     {
-        stage.addActor(garbage1);//добавление объектов
-        stage.addActor(garbage2);
-        stage.addActor(garbage3);
-        stage.addActor(garbage4);
-        stage.addActor(garbage5);
-        stage.addActor(garbage6);
-        stage.addActor(garbage7);
-        stage.addActor(garbage8);
-        stage.addActor(garbage9);
-        stage.addActor(garbage10);
-        stage.addActor(garbage11);
-        stage.addActor(garbage12);
-        stage.addActor(garbage13);
-        stage.addActor(garbage14);
-        stage.addActor(garbage15);
-        stage.addActor(garbage16);
-        stage.addActor(garbage17);
-        stage.addActor(garbage18);
-        stage.addActor(garbage19);
-        stage.addActor(garbage20);
-
-        stage.addActor(alarmClock);
-        stage.addActor(clock);
-        stage.addActor(stool);
-        stage.addActor(flower);
-        stage.addActor(pillow);
-        stage.addActor(picture);
-        stage.addActor(clip);
+        for(int i = 0; i < dragAndDropObjects.size; i = i + 1)
+        {
+            stage.addActor(dragAndDropObjects.get(i));
+        }
     }
-
-    private  void initialDragAndDropActorObject()
-    {
-//(final String ingName, final Vector3 initialPosition, final Rectangle rect, final int scoreSuccess,final Vector3 targetDrop, boolean isDisappears) {
-        //                                                                          //ведро//
-        garbage1 = new DragAndDropActor("lumpOfGarbage1.png", new Vector3(450,0,0), new Rectangle(30,40,20,20), 20,true);// Rectangle(20,30,20,20) для ведра
-        garbage2 = new DragAndDropActor("lumpOfGarbage1.png", new Vector3(350,0,0),  new Rectangle(30,40,20,20), 20, true);
-        garbage3 = new DragAndDropActor("lumpOfGarbage1.png", new Vector3(650,70,0),  new Rectangle(30,40,20,20), 20, true);
-        garbage4 = new DragAndDropActor("lumpOfGarbage1.png", new Vector3(150,1,0), new Rectangle(30,40,20,20), 20, true);
-        garbage5 = new DragAndDropActor("lumpOfGarbage1.png", new Vector3(200,34,0),  new Rectangle(30,40,20,20), 20, true);
-        garbage6 = new DragAndDropActor("lumpOfGarbage2.png", new Vector3(100,20,0),  new Rectangle(30,40,20,20), 20, true);
-        garbage7 = new DragAndDropActor("lumpOfGarbage3.png", new Vector3(300,70,0), new Rectangle(30,40,20,20), 20, true);
-        garbage8 = new DragAndDropActor("lumpOfGarbage4.png", new Vector3(350,80,0),  new Rectangle(30,40,20,20), 20, true);
-        garbage9 = new DragAndDropActor("lumpOfGarbage4.png", new Vector3(650,50,0),  new Rectangle(30,40,20,20), 20, true);//под стулом
-        garbage10 = new DragAndDropActor("lumpOfGarbage4.png", new Vector3(690,30,0),  new Rectangle(30,40,20,20), 20, true);//чуть ниже 9ого
-        garbage11 = new DragAndDropActor("lumpOfGarbage4.png", new Vector3(350,20,0),  new Rectangle(30,40,20,20), 20, true);
-        garbage12 = new DragAndDropActor("lumpOfGarbage4.png", new Vector3(120,260,0),  new Rectangle(30,40,20,20), 20, true);// на системном блоке желтый лист
-        garbage13 = new DragAndDropActor("lumpOfGarbage2.png", new Vector3(520,70,0),  new Rectangle(30,40,20,20), 20, true);
-        garbage14 = new DragAndDropActor("lumpOfGarbage3.png", new Vector3(620,10,0),  new Rectangle(30,40,20,20), 20, true);
-        garbage15 = new DragAndDropActor("lumpOfGarbage5.png", new Vector3(720,70,0),  new Rectangle(30,40,20,20), 20, true);
-        garbage16 = new DragAndDropActor("lumpOfGarbage5.png", new Vector3(160,230,0),  new Rectangle(30,40,20,20), 20, true);
-        garbage17 = new DragAndDropActor("lumpOfGarbage6.png", new Vector3(225,70,0),  new Rectangle(30,40,20,20), 20, true);
-        garbage18 = new DragAndDropActor("lumpOfGarbage7.png", new Vector3(780,410,0),  new Rectangle(30,40,20,20), 20, true);
-        garbage19 = new DragAndDropActor("lumpOfGarbage6.png", new Vector3(375,370,0),  new Rectangle(30,40,20,20), 20, true);
-        garbage20 = new DragAndDropActor("lumpOfGarbage7.png", new Vector3(430,200,0),  new Rectangle(30,40,20,20), 20, true);
-
-        alarmClock = new DragAndDropActor("alarmClock.png", new Vector3(30,235,0),  new Rectangle(278, 318,10,10), 50, false);//на подоконнике => в шкаф
-        clock = new DragAndDropActor("clock.png", new Vector3(330,100,0),  new Rectangle(290, 375,80,80), 50, false);//на полу => на стену //уменьшить увеличение картинок
-        stool = new DragAndDropActor("stool.png", new Vector3(625,70,0),  new Rectangle(125,70,20,20), 50, false);
-        flower = new DragAndDropActor("flower.png", new Vector3(530,205,0),  new Rectangle(750,275,20,20), 50, false);
-        pillow = new DragAndDropActor("pillow.png", new Vector3(350,70,0),  new Rectangle(460,205,40,40), 50, false);
-        picture = new DragAndDropActor("picture.png", new Vector3(260,100,0),  new Rectangle(760,215,10,10), 50, false);
-        clip = new DragAndDropActor("clip.png", new Vector3(0,0,0),  new Rectangle(25,183,30,30), 50, false);
-
-    }
-
-
 
     private void initialFont()
     {
@@ -155,17 +106,29 @@ public class PlayState extends State implements InputProcessor {
 
     }
 
+    public void setAnimation(Vector3 coordinate){
+
+    }
+
     @Override
     public void update(float dt) {
         bucketAnimation.update(dt);
         if(secondTime < 1){
-            secondTime = 60;
+            secondTime = 59;
             minTime -= 1;
         }
-        secondTime = secondTime - 0.02f ;//0.02 для норм, 1.5 для проверки
+        secondTime = secondTime - 0.1f ;//0.02 для норм, 1.5 для проверки
 
         if(minTime < 0 ){
             gsm.set(new GameOverState(gsm));// заменяем на сцену повтора
+        }
+
+        for(int i = 0; i < dragAndDropObjects.size; i = i + 1)
+        {
+           if(dragAndDropObjects.get(i).isDrop() == true)
+           {
+
+           }
         }
     }
 
@@ -174,9 +137,21 @@ public class PlayState extends State implements InputProcessor {
         sb.begin();
         sb.draw(bg, 0, 0);
         //sb.draw(bucketAnimation.getFrame(), 0, 0); пустить анимацию
-        fontScore.draw(sb, minTime+ ":" + Math.round(secondTime), 155, 450);
+        if(Math.round(secondTime) < 10){
+            fontScore.draw(sb, minTime+ ":0" + Math.round(secondTime), 155, 450);
+        }
+        else {
+            fontScore.draw(sb, minTime+ ":" + Math.round(secondTime), 155, 450);
+        }
+
         fontScore.draw(sb, "1", 280, 450);
-        fontScore.draw(sb, "" + allScore,370,450);
+
+        if(allScore >= 100) {
+            fontScore.draw(sb, "" + allScore,375,450);
+        }
+        else {
+            fontScore.draw(sb, "" + allScore,385,450);
+        }
         sb.end();
         stage.act();
         stage.draw();
