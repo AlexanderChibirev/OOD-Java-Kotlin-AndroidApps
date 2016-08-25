@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity() {
             try {
                 dataJsonObj = JSONObject(strJson)
                 val photos = dataJsonObj.getJSONArray("arrayPhotos")
-                for(i in 0..photos.length() - 1) {
+                for(i in 0..photos.length()-1) {
                     val jsonPhotos = photos.getJSONObject(i)
                     urlPhotos.add(jsonPhotos.getString("url"))
                     namePhotos.add(jsonPhotos.getString("name"))
@@ -82,5 +82,6 @@ class MainActivity : AppCompatActivity() {
         intent.putStringArrayListExtra("urlPhotos",urlPhotos)
         intent.putStringArrayListExtra("namePhotos",namePhotos)
         startActivity(intent)
+        super.finish()
     }
 }
