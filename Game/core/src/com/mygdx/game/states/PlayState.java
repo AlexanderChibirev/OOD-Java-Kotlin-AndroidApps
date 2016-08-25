@@ -27,7 +27,7 @@ public class PlayState extends State implements InputProcessor {
     private Texture fiftyScore;
     private Texture bucketUp;
     private Texture bucketAll;
-
+    private int countObjects = 0;//27
     private boolean isScore = false;
     private float timeScore = 10000;
     private float dxSorce = 0;
@@ -47,7 +47,7 @@ public class PlayState extends State implements InputProcessor {
 
         music = Gdx.audio.newMusic(Gdx.files.internal("music//GameProcess.mp3"));
         music.setLooping(true);
-        music.setVolume(0.1f);
+        //music.setVolume(0.1f);
         music.play();
 
         bucketUp = new Texture("bucketUp.png");
@@ -120,12 +120,8 @@ public class PlayState extends State implements InputProcessor {
 
     }
 
-    public void setAnimation(Vector3 coordinate){
-
-    }
-
     private void updateForTimer() {
-        float speed = 0.1f;//0.02 для норм, 1.5 для проверки
+        float speed = 0.02f;//0.02 для норм, 1.5 для проверки
         if(secondTime < 1){
             secondTime = 59;
             minTime -= 1;
@@ -153,6 +149,10 @@ public class PlayState extends State implements InputProcessor {
         bucketAnimation.update(dt);
         updateForAnimScore();
         //////////////////////////////////
+        if(countObjects == dragAndDropObjects.size ){
+            music.stop();
+            gsm.push(new com.mygdx.game.states.WinState(gsm));
+        }
         updateForTimer();
     }
     @Override
@@ -185,6 +185,7 @@ public class PlayState extends State implements InputProcessor {
             }
             else  if(scoreOb == 50){
                 sb.draw(fiftyScore, dxSorce, dySorce);
+
             }
             else {
                 sb.draw(tenScore, dxSorce, dySorce);
@@ -206,6 +207,7 @@ public class PlayState extends State implements InputProcessor {
             }
             if(objects.isDrop())
             {
+                countObjects++;
                 objects.setDrop(false);
                 coodinateScore = objects.getDropCoordinate();
                 setDataForScore(objects);

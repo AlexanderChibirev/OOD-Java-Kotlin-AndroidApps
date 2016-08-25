@@ -19,7 +19,6 @@ public class MenuState extends State {
     private Texture background;
     private Music music;
 
-    private Texture playBtn;
     private TextureAtlas startBt;
     private Sprite startIn;
     private Sprite startPress;

@@ -61,7 +61,7 @@ public class DragAndDropActor extends Group {
 
     public DragAndDropActor(final String imgName, final Vector3 initialPosition, final Rectangle rect, final int scoreSuccess,final boolean isDisappears) {
         badScoreSound  = Gdx.audio.newSound(Gdx.files.internal("music//badScore.wav"));
-        successScoreSound = Gdx.audio.newSound(Gdx.files.internal("music//coin.wav"));
+        successScoreSound = Gdx.audio.newSound(Gdx.files.internal("music//s.mp3"));
         score = scoreSuccess;
         m_initialPosition = initialPosition;
         targetDragTexture = new Texture(Gdx.files.internal(imgName));
