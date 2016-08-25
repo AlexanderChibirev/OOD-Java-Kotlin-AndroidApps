@@ -13,7 +13,7 @@ class LiquorActivity : AppCompatActivity() {
         val radioGroup = findViewById(R.id.radioGroupLiquor) as RadioGroup
 
         var typeLiquor = "шоколадный"
-        var costLiquor = 25.0
+        var costLiquor = 15.0
         var costOrder = intent.getStringExtra("costOrder").toDouble()
         var materialOrder = intent.getStringExtra("materialOrder")
 

@@ -10,7 +10,7 @@ import java.util.*
  */
 class AdapterHelper(_ctx: Context) {
     private val ATTR_BEVERAGE_NAME = "beverageName"
-    private var groups: MutableList<String>  = mutableListOf("КОФЕ", "ЧАЙ", "МОЛОЧНЫЙ КОКТЕЙЛЬ")
+    private var groups: MutableList<String>  = mutableListOf("КОФЕ", "ЧАЙ", "МОЛОЧНЫЙ КОКТЕЙЛЬ" )
     private var coffeeGroup: MutableList<String>  = mutableListOf("Латте", "Каппучино", "Кофе")
     private var teaGroup: MutableList<String>  = mutableListOf("Чай")
     private var milkshakeGroup: MutableList<String>  = mutableListOf("Молочный коктейль")
@@ -80,7 +80,7 @@ class AdapterHelper(_ctx: Context) {
                 groupFrom,
                 groupTo,
                 childData,
-                android.R.layout.simple_list_item_1,
+                android.R.layout.simple_gallery_item,
                 childFrom,
                 childTo)
         return adapter
@@ -93,4 +93,5 @@ class AdapterHelper(_ctx: Context) {
     fun getGroupChildText(groupPos: Int, childPos: Int): String? {
         return getChildText(groupPos, childPos)
     }
+
 }
