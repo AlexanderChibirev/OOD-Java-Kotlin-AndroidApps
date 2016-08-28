@@ -1,6 +1,4 @@
-package com.example.alexander.fabric.Interfaces
-
-import com.example.alexander.fabric.WorkWithShapes.PictureDraft
+package com.example.alexander.fabric.WorkWithShapes
 
 /**
  * Created by Alexander on 25.06.2016.

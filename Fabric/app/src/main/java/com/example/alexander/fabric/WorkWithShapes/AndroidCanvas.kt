@@ -3,7 +3,6 @@ package com.example.alexander.fabric.WorkWithShapes
 import android.graphics.*
 import com.example.alexander.fabric.Definitions.ColorEnum
 import com.example.alexander.fabric.Definitions.CordPoint
-import com.example.alexander.fabric.Interfaces.ICanvas
 
 /**
  * Created by Alexander on 25.06.2016.

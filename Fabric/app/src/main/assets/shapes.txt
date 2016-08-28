@@ -1,5 +1,6 @@
 { "shape": "triangle", "color": "Green", "data": [ { "x": 300, "y": 10 }, { "x": 600, "y": 10 }, { "x": 450, "y": 400} ]}
-{ "shape": "triangle", "color": "Green", "data": [ { "x": 300, "y": 10 }, { "x": 600, "y": 10 }, { "x": 450, "y": 400} ]}
 { "shape": "regular_polygon", "color": "Black", "data": { "center": { "x": 300, "y": 400 }, "vertexes": 8, "radius": 100}}
-{ "shape": "regular_polygon", "color": "Pink", "data": { "center": { "x": 300, "y": 400 }, "vertexes": 6, "radius": 80}}
-{ "shape": "regular_polygon", "color": "Red", "data": { "center": { "x": 300, "y": 400 }, "vertexes": 12, "radius": 60}}
+{ "shape": "ellipse", "color": "Yellow", "data": { "center": { "x": 500, "y":700 }, "h_radius": 100, "v_radius": 100}}
+{ "shape": "ellipse", "color": "Yellow", "data": { "center": { "x": 100, "y":700 }, "h_radius": 100, "v_radius": 100}}
+{ "shape": "rectangle", "color": "Red", "data":[ { "x": 100, "y": 100 }, { "x": 0, "y": 0 } ]}
+{ "shape": "regular_polygon", "color": "Black", "data": { "center": { "x": 100, "y": 400 }, "vertexes": 8, "radius": 100}}

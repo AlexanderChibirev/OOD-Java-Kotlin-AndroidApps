@@ -19,7 +19,6 @@ class WinState(gsm: GameStateManager) : State(gsm) {
 
     private val background: Texture
     private val music: Music
-
     private val startBt: TextureAtlas
     private val startIn: Sprite
     private val startPress: Sprite

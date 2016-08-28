@@ -189,7 +189,6 @@ class PlayState(gsm: GameStateManager) : State(gsm), InputProcessor {
                 coordinateScore = objectDrop.getInitialPosition()
                 setDataForScore(objectDrop)
                 objectDrop.setFailDrop(false)
-
             }
             if (objectDrop.isDrop()) {
                 countObjects++

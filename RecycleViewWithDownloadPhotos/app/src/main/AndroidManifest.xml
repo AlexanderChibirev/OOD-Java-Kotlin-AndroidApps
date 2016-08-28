@@ -19,7 +19,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".PhotoViewerActivity" />
-        <activity android:name=".RVActivity"></activity>
+        <activity android:name=".RVActivity" />
+        <activity android:name=".ExitActivity"></activity>
     </application>
 
 </manifest>

@@ -1,8 +1,5 @@
 package com.example.alexander.fabric.WorkWithShapes
 
-import com.example.alexander.fabric.Interfaces.ICanvas
-import com.example.alexander.fabric.Interfaces.IPainter
-
 /**
  * Created by Alexander on 25.06.2016.
  */

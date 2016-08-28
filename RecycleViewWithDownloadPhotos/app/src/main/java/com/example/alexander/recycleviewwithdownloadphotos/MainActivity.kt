@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity() {
             ParseTask().execute()
         }
     }
+
     private inner class ParseTask : AsyncTask<Void, Void, String>() {
 
         internal var urlConnection: HttpURLConnection? = null
@@ -84,4 +85,6 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
         super.finish()
     }
+
+
 }

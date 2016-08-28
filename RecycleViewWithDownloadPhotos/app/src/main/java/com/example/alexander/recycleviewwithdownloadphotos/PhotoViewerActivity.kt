@@ -1,9 +1,11 @@
 package com.example.alexander.recycleviewwithdownloadphotos
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.widget.Button
 import java.util.*
 
 
@@ -18,6 +20,11 @@ class PhotoViewerActivity : AppCompatActivity() {
         jsonUrlPhotos = intent.getStringArrayListExtra("urlPhotos")
         jsonNamePhotos = intent.getStringArrayListExtra("namePhotos")
         initViews();
+        val battonExit =  findViewById(R.id.buttonExit) as Button
+        battonExit.setOnClickListener {
+            startActivity(Intent(applicationContext,ExitActivity::class.java))
+            super.finish()
+        }
     }
 
     private fun initViews() {
@@ -32,7 +39,6 @@ class PhotoViewerActivity : AppCompatActivity() {
     }
 
     private fun prepareData(): ArrayList<PhotoData> {
-
         val arrayData = ArrayList<PhotoData>()
         for (i in 0..jsonNamePhotos.size - 1) {
             arrayData.add(PhotoData(jsonNamePhotos[i],jsonUrlPhotos[i]))

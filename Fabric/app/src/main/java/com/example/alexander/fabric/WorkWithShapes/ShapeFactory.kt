@@ -8,8 +8,6 @@ import com.example.alexander.fabric.DesignerTest.Ellipse
 import com.example.alexander.fabric.DesignerTest.Rectangle
 import com.example.alexander.fabric.DesignerTest.RegularPolygon
 import com.example.alexander.fabric.DesignerTest.Triangle
-import com.example.alexander.fabric.Interfaces.IShapeFactory
-import com.example.alexander.fabric.Interfaces.Shape
 import com.github.salomonbrys.kotson.get
 import com.google.gson.JsonElement
 import com.google.gson.JsonParser
@@ -49,7 +47,7 @@ class ShapeFactory : IShapeFactory
         val center = CordPoint(centerJsonObject["x"].asFloat, centerJsonObject["y"].asFloat)
         return Ellipse(color, center, json["h_radius"].asFloat, json["v_radius"].asFloat)
     }
-
+// это способность обьекта использовать методы производного класса, который не существует на момент создания базового
     private fun GetRegularPolygon(color: ColorEnum ,json: JsonElement): RegularPolygon
     {
         val centerJsonObject = json["center"].asJsonObject

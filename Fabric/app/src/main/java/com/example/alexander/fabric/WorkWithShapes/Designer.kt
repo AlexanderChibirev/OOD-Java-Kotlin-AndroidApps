@@ -1,7 +1,7 @@
 package com.example.alexander.fabric.WorkWithShapes
 
+
 import com.example.alexander.fabric.Interfaces.IDesigner
-import com.example.alexander.fabric.Interfaces.IShapeFactory
 import java.io.InputStream
 
 /**

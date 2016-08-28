@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">RecycleViewWithDownloadPhotos</string>
+    <dimen name="image_size">100dp</dimen>
 </resources>

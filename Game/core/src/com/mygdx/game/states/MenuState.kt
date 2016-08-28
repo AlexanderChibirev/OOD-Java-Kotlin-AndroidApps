@@ -39,7 +39,6 @@ class MenuState(gsm: GameStateManager) : State(gsm) {
         startPress = Sprite(startBt.createSprite("startPress"))
         playBtnCollision = Rectangle()
         camera.setToOrtho(false, BeginScreen.WIDTH.toFloat(), BeginScreen.HEIGHT.toFloat())
-
     }
 
     override fun handleInput() {
