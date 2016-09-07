@@ -10,3 +10,4 @@ open class Beverage(val description: String) : IBeverage
     override fun GetDescription() = description
     override fun GetCost() = 0.0
 }
+//PATTERN DECORATOR

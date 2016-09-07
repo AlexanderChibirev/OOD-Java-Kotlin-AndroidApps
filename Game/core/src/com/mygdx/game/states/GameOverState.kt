@@ -71,10 +71,7 @@ class GameOverState(gsm: GameStateManager) : State(gsm) {
     }
 
     override fun render(sb: SpriteBatch) {
-
-
         sb.begin()
-
         sb.projectionMatrix = camera.combined
         sb.draw(background, 0f, 0f, BeginScreen.WIDTH.toFloat(), BeginScreen.HEIGHT.toFloat())
         if (isPress)

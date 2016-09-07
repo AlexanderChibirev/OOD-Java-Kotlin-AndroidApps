@@ -114,7 +114,7 @@ class PlayState(gsm: GameStateManager) : State(gsm), InputProcessor {
     }
 
     private fun updateForTimer() {
-        val speed = 0.02f//0.02 для норм, 1.5 для проверки
+        val speed = 0.02f//0.02  1.5 для проверки
         if (secondTime < 1) {
             secondTime = 59f
             minTime -= 1
@@ -144,7 +144,7 @@ class PlayState(gsm: GameStateManager) : State(gsm), InputProcessor {
         //////////////////////////////////
         if (countObjects == dragAndDropObjects.size) {
             music.stop()
-            gsm.set(PlayState(gsm))
+            gsm.set(WinState(gsm))
         }
         updateForTimer()
     }

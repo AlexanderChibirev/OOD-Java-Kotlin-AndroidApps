@@ -27,6 +27,12 @@ class MainActivity : AppCompatActivity() {
         urlName = findViewById(R.id.urlName) as EditText
         btnGetDataFromJsonFile =  findViewById(R.id.getDataFromJsonFile) as Button
         btnGetDataFromJsonFile.setOnClickListener {
+            /*   for(i in 0..2000) {
+                //val jsonPhotos = photos.getJSONObject(i)
+                urlPhotos.add("http://cs6136.vk.me/v6136859/186d/_LD_6J89jmY.jpg")
+                namePhotos.add("тигренок и его мама")
+            }*/
+            //goToPhotoViewerActivity()
             ParseTask().execute()
         }
     }
@@ -38,9 +44,8 @@ class MainActivity : AppCompatActivity() {
         internal var resultJson = ""
 
         override fun doInBackground(vararg params: Void): String {
-            // получаем данные с внешнего ресурса
             try {//urlName!!.getText().toString()
-                val url = URL("https://raw.githubusercontent.com/AlexanderChibirev/Json/master/Photos.json")
+                val url = URL("https://raw.githubusercontent.com/AlexanderChibirev/Json/master/Photos2.json")
                 urlConnection = url.openConnection() as HttpURLConnection
                 urlConnection!!.requestMethod = "GET"
                 urlConnection!!.connect()
@@ -48,9 +53,9 @@ class MainActivity : AppCompatActivity() {
                 val inputStream = urlConnection!!.inputStream
                 val buffer = StringBuffer()
 
-                inputStream.reader().forEachLine {
-                    buffer.append(it)
-                }
+                 inputStream.reader().forEachLine {
+                     buffer.append(it)
+                 }
                 reader = BufferedReader(InputStreamReader(inputStream))
                 resultJson = buffer.toString()
 
@@ -77,7 +82,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
     private fun goToPhotoViewerActivity() {
         var intent = Intent(this, PhotoViewerActivity::class.java)
         intent.putStringArrayListExtra("urlPhotos",urlPhotos)
@@ -85,6 +89,4 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
         super.finish()
     }
-
-
 }

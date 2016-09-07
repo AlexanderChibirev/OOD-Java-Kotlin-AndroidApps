@@ -20,6 +20,7 @@ class PhotoViewerActivity : AppCompatActivity() {
         jsonUrlPhotos = intent.getStringArrayListExtra("urlPhotos")
         jsonNamePhotos = intent.getStringArrayListExtra("namePhotos")
         initViews();
+
         val battonExit =  findViewById(R.id.buttonExit) as Button
         battonExit.setOnClickListener {
             startActivity(Intent(applicationContext,ExitActivity::class.java))
