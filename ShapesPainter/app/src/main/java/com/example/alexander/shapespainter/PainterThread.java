@@ -17,7 +17,6 @@ import java.nio.ByteBuffer;
 public class PainterThread extends Thread {
     public static final int SLEEP = 0;
     public static final int READY = 1;
-    public static final int SETUP = 2;
 
     private SurfaceHolder mSurfaceHolder;
     private boolean mIsActive = false;
@@ -29,9 +28,7 @@ public class PainterThread extends Thread {
     private  Paint paint = new Paint();
 
     public PainterThread(SurfaceHolder surfaceHolder) {
-
-       paint.setColor(Color.BLACK);
-
+        paint.setColor(Color.BLACK);
         mSurfaceHolder = surfaceHolder;
     }
 
@@ -56,24 +53,12 @@ public class PainterThread extends Thread {
         mStatus = READY;
     }
 
-    public void setup() {
-        mStatus = SETUP;
-    }
-
     public boolean isFreeze() {
         return (mStatus == SLEEP);
     }
 
-    public boolean isSetup() {
-        return (mStatus == SETUP);
-    }
-
     public boolean isReady() {
         return (mStatus == READY);
-    }
-
-    public boolean isRun() {
-        return mIsActive;
     }
 
     @Override
@@ -87,15 +72,9 @@ public class PainterThread extends Thread {
                 synchronized (mSurfaceHolder) {
                     switch (mStatus) {
                         case READY: {
-                            if (canvas != null) {// init
+                            if (canvas != null) {// drawing shape
                                 canvas.drawBitmap(mBitmap, 0, 0, null);
                                 canvas.drawText("hey", 10, 25, paint);
-                            }
-                            break;
-                        }
-                        case SETUP: {//for shapes drawing
-                            if (canvas != null) {
-                                canvas.drawBitmap(mBitmap, 0, 0, null);
                             }
                             break;
                         }

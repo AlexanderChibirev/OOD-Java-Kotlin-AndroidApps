@@ -19,7 +19,6 @@ public class PainterCanvas extends SurfaceView implements SurfaceHolder.Callback
 
     private PainterThread mPainterThread;
     private Bitmap mBitmap;
-    private boolean mIsSetup;
     public PainterCanvas(Context context) {
         super(context);
         getHolder().addCallback(this);
@@ -40,66 +39,15 @@ public class PainterCanvas extends SurfaceView implements SurfaceHolder.Callback
                     Bitmap.Config.ARGB_8888);//каждый пиксель хранит 4 байта
             mPainterThread.setBitmap(mBitmap, true);
             MainActivity mainActivity = (MainActivity) getContext();
+
             Bitmap bitmap = mainActivity.getLastPicture();
-
             if (bitmap != null) {
-                float bitmapWidth = bitmap.getWidth();
-                float bitmapHeight = bitmap.getHeight();
-                float scale = 1.0f;
-
-                Matrix matrix = new Matrix();
-               /* if (width != bitmapWidth || height != bitmapHeight) {
-                    if (width == bitmapHeight || height == bitmapWidth) {
-                        if (width > height) {
-                            matrix.postRotate(-90, width / 2, height / 2);
-                        } else if (bitmapWidth != bitmapHeight) {
-                            matrix.postRotate(90, width / 2, height / 2);
-                        } else {
-                            if (painter.getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
-                                matrix.postRotate(-90, width / 2, height / 2);
-                            }
-                        }
-                    } else {
-                        if (painter.getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
-                            if (bitmapWidth > bitmapHeight
-                                    && bitmapWidth > width) {
-                                scale = (float) width / bitmapWidth;
-                            } else if (bitmapHeight > bitmapWidth
-                                    && bitmapHeight > height) {
-                                scale = (float) height / bitmapHeight;
-                            }
-                        } else {
-                            if (bitmapHeight > bitmapWidth
-                                    && bitmapHeight > height) {
-                                scale = (float) height / bitmapHeight;
-                            } else if (bitmapWidth > bitmapHeight
-                                    && bitmapWidth > width) {
-                                scale = (float) width / bitmapWidth;
-                            }
-                        }
-                    }
-
-                    if (scale == 1.0f) {
-                        matrix.preTranslate((width - bitmapWidth) / 2,
-                                (height - bitmapHeight) / 2);
-                    } else {
-                        matrix.postScale(scale, scale, bitmapWidth / 2,
-                                bitmapHeight / 2);
-                        matrix.postTranslate((width - bitmapWidth) / 2,
-                                (height - bitmapHeight) / 2);
-                    }
-                }*/
-                mPainterThread.restoreBitmap(bitmap, matrix);
+                mPainterThread.restoreBitmap(bitmap, new Matrix());
             }
         } else {
             mPainterThread.setBitmap(mBitmap, false);
         }
-
-        if (!isSetup()) {
-            mPainterThread.activate();
-        } else {
-            mPainterThread.setup();
-        }
+        mPainterThread.activate();
     }
 
     public void saveBitmap(String pictureName) throws FileNotFoundException {
@@ -108,11 +56,6 @@ public class PainterCanvas extends SurfaceView implements SurfaceHolder.Callback
             mPainterThread.getBitmap().compress(CompressFormat.PNG, 100, fos);
         }
     }
-
-    public boolean isSetup() {
-        return mIsSetup;
-    }
-
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
