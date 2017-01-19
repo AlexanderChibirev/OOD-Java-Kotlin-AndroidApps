@@ -2,11 +2,12 @@ package com.example.alexander.shapespainter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
 import android.graphics.Matrix;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.graphics.Bitmap.CompressFormat;
+
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
@@ -74,7 +75,6 @@ public class PainterCanvas extends SurfaceView implements SurfaceHolder.Callback
 
     public boolean onTouchEvent(MotionEvent event) {
         if (!mPainterThread.isReady()) {
-
             return false;
         }
         switch (event.getAction()) {

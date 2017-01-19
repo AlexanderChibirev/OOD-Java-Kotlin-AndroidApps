@@ -63,6 +63,7 @@ public class PainterThread extends Thread {
 
     @Override
     public  void run() {
+        waitForBitmap();
         Canvas canvas;
         while (mIsActive) {
             canvas = null;
@@ -74,7 +75,10 @@ public class PainterThread extends Thread {
                         case READY: {
                             if (canvas != null) {// drawing shape
                                 canvas.drawBitmap(mBitmap, 0, 0, null);
-                                canvas.drawText("hey", 10, 25, paint);
+                                canvas.drawText("hey", 100, 25, paint);//x= 100, y=25
+                                /*p.setStyle(Paint.Style.STROKE);
+                                rect.offset(150, 0);
+                                canvas.drawRect(rect, p);*/
                             }
                             break;
                         }
@@ -96,6 +100,15 @@ public class PainterThread extends Thread {
         }
     }
 
+    private void waitForBitmap() {
+        while (mBitmap == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     public void setBitmap(Bitmap bitmap, boolean clear) {
         mBitmap = bitmap;
