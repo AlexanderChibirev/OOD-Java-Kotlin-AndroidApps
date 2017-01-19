@@ -7,9 +7,23 @@ import android.graphics.Color;
  */
 
 public class Ellipse extends Shape {
+    private Color mFillColor;
+    private Color mOutlineColor;
+    private Vector2f mCenter;
+    private float mWRadius;
+    private float mHRadius;
 
-    public Ellipse(Vector2f center, VectorSize2f size, Color fillColor, Color outlineColor) {
 
+    public Ellipse(Vector2f center,
+                   float  wRadius,
+                   float hRadius,
+                   Color fillColor,
+                   Color outlineColor) {
+        mCenter = center;
+        mHRadius = hRadius;
+        mWRadius = wRadius;
+        mOutlineColor = outlineColor;
+        mFillColor = fillColor;
     }
 
     @Override

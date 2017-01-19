@@ -8,7 +8,11 @@ import android.graphics.Color;
 
 public class Triangle extends Shape  {
 
-    public Triangle(Vector2f center, VectorSize2f size, Color fillColor, Color outlineColor) {
+    public Triangle(Vector2f vertex1,
+                    Vector2f vertex2,
+                    Vector2f vertex3,
+                    Color fillColor,
+                    Color outlineColor) {
 
     }
 

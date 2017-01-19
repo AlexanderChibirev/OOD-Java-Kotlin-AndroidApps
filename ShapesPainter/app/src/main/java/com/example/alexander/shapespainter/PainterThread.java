@@ -25,7 +25,7 @@ public class PainterThread extends Thread implements ICanvas {
     private Canvas mCanvas;
     private State mState;
     private int mStatus;
-    private  Paint mPaint = new Paint();
+    private  Paint paint = new Paint();
 
     public PainterThread(SurfaceHolder surfaceHolder) {
         paint.setColor(Color.BLACK);
@@ -75,7 +75,7 @@ public class PainterThread extends Thread implements ICanvas {
                         case READY: {
                             if (canvas != null) {// drawing shape
                                 canvas.drawBitmap(mBitmap, 0, 0, null);
-                                canvas.drawText("hey", 100, 25, paint);//x= 100, y=25
+                                //canvas.drawText("hey", 100, 25, paint);//x= 100, y=25
                                 /*p.setStyle(Paint.Style.STROKE);
                                 rect.offset(150, 0);
                                 canvas.drawRect(rect, p);*/
@@ -136,7 +136,6 @@ public class PainterThread extends Thread implements ICanvas {
         mState.redoBuffer = null;
     }
 
-
     @Override
     public void setFillColor(Color color) {
 
@@ -156,10 +155,10 @@ public class PainterThread extends Thread implements ICanvas {
     public void setSize(Vector2f size) {
 
     }
-    Paint paint;
+
     @Override
-    public void drawRectangle(Vector2f leftTop, VectorSize2f size, Color fillColor, Color outlineColor) {
-        mCanvas.drawRect(leftTop.getX(), leftTop.getY(), size.getmWidth(), size.getmHeight(), mPaint);
+    public void drawRectangle(Vector2f leftTop, Vector2f size, Color fillColor, Color outlineColor) {
+
     }
 
     @Override

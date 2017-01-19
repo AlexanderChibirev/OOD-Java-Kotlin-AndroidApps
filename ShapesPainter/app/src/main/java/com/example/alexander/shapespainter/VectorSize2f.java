@@ -4,7 +4,7 @@ import static android.R.attr.x;
 import static android.R.attr.y;
 
 /**
- * Created by Alexander on 19.01.2017.
+ * Created by Alexander on 20.01.2017.
  */
 
 public class VectorSize2f {
@@ -16,11 +16,11 @@ public class VectorSize2f {
         mHeight = h;
     }
 
-    public float getmWidth() {
+    public float getWidth() {
         return x;
     }
 
-    public float getmHeight() {
+    public float getHeight() {
         return y;
     }
 }

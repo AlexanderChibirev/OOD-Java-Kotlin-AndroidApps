@@ -10,11 +10,11 @@ public class Rectangle extends Shape {
     private Color mFillColor;
     private Color mOutlineColor;
     private Vector2f mLeftTop;
-    private VectorSize2f mSize;
+    private Vector2f mRightBottom;
 
-    Rectangle(Vector2f leftTop, VectorSize2f size, Color fillColor, Color outlineColor) {
+    Rectangle(Vector2f leftTop, Vector2f rightBottom, Color fillColor, Color outlineColor) {
         mLeftTop = leftTop;
-        mSize = size;
+        mRightBottom = rightBottom;
         mFillColor = fillColor;
         mOutlineColor = outlineColor;
     }
@@ -23,7 +23,7 @@ public class Rectangle extends Shape {
     void draw(ICanvas canvas) {
         canvas.setFillColor(mFillColor);
         canvas.setOutlineColor(mOutlineColor);
-        canvas.drawRectangle(mLeftTop, mSize, mFillColor, mOutlineColor);
+        canvas.drawRectangle(mLeftTop, mRightBottom, mFillColor, mOutlineColor);
     }
 
     @Override
