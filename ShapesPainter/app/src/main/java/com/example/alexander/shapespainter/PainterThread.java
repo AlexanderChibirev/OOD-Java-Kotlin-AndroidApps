@@ -14,7 +14,7 @@ import java.nio.ByteBuffer;
  * Created by Alexander on 18.01.2017.
  */
 
-public class PainterThread extends Thread {
+public class PainterThread extends Thread implements ICanvas {
     public static final int SLEEP = 0;
     public static final int READY = 1;
 
@@ -25,7 +25,7 @@ public class PainterThread extends Thread {
     private Canvas mCanvas;
     private State mState;
     private int mStatus;
-    private  Paint paint = new Paint();
+    private  Paint mPaint = new Paint();
 
     public PainterThread(SurfaceHolder surfaceHolder) {
         paint.setColor(Color.BLACK);
@@ -134,6 +134,42 @@ public class PainterThread extends Thread {
         mBitmap.eraseColor(mCanvasBgColor);
         mState.undoBuffer = null;
         mState.redoBuffer = null;
+    }
+
+
+    @Override
+    public void setFillColor(Color color) {
+
+    }
+
+    @Override
+    public void setOutlineColor(Color color) {
+
+    }
+
+    @Override
+    public void setCenter(Vector2f pos) {
+
+    }
+
+    @Override
+    public void setSize(Vector2f size) {
+
+    }
+    Paint paint;
+    @Override
+    public void drawRectangle(Vector2f leftTop, Vector2f size, Color fillColor, Color outlineColor) {
+        mCanvas.drawRect(leftTop.getX(), leftTop.getY(), size.getX(), size.getY(), mPaint);
+    }
+
+    @Override
+    public void drawEllipse(Vector2f center, float hRadius, float vRadius, Color fillColor, Color outlineColor) {
+
+    }
+
+    @Override
+    public void drawTriangle(Vector2f leftPoint, Vector2f rightPoint, Vector2f topPoint, Color fillColor, Color outlineColor) {
+
     }
 
     public static class State {
