@@ -158,8 +158,8 @@ public class PainterThread extends Thread implements ICanvas {
     }
     Paint paint;
     @Override
-    public void drawRectangle(Vector2f leftTop, Vector2f size, Color fillColor, Color outlineColor) {
-        mCanvas.drawRect(leftTop.getX(), leftTop.getY(), size.getX(), size.getY(), mPaint);
+    public void drawRectangle(Vector2f leftTop, VectorSize2f size, Color fillColor, Color outlineColor) {
+        mCanvas.drawRect(leftTop.getX(), leftTop.getY(), size.getmWidth(), size.getmHeight(), mPaint);
     }
 
     @Override

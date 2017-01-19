@@ -8,7 +8,7 @@ import android.graphics.Color;
 
 interface IShapeFactory {
     void createShape(final Vector2f center,
-                     final Vector2f size,
+                     final VectorSize2f size,
                      final Color fillColor,
                      final Color outlineColor,
                      final ShapeType shapeType);

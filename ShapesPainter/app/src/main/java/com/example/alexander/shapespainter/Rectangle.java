@@ -10,9 +10,9 @@ public class Rectangle extends Shape {
     private Color mFillColor;
     private Color mOutlineColor;
     private Vector2f mLeftTop;
-    private Vector2f mSize;
+    private VectorSize2f mSize;
 
-    Rectangle(Vector2f leftTop, Vector2f size, Color fillColor, Color outlineColor) {
+    Rectangle(Vector2f leftTop, VectorSize2f size, Color fillColor, Color outlineColor) {
         mLeftTop = leftTop;
         mSize = size;
         mFillColor = fillColor;
