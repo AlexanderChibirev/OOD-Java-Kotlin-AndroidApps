@@ -1,10 +1,11 @@
 package com.example.alexander.shapespainter;
 
+
+import android.graphics.drawable.shapes.Shape;
+
 import java.util.ArrayList;
 
-/**
- * Created by Alexander on 19.01.2017.
- */
+
 
 public class PictureDraft {
     private ArrayList<Shape> shapeArrayList = new ArrayList<>();

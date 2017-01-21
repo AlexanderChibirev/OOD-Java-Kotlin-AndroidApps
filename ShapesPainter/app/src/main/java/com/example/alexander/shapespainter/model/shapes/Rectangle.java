@@ -1,29 +1,33 @@
-package com.example.alexander.shapespainter;
+package com.example.alexander.shapespainter.model.shapes;
 
 import android.graphics.Color;
 
-/**
- * Created by Alexander on 19.01.2017.
- */
+import com.example.alexander.shapespainter.ICanvas;
+import com.example.alexander.shapespainter.model.ShapeDiagram;
+import com.example.alexander.shapespainter.model.ShapeType;
+import com.example.alexander.shapespainter.model.Shape;
+
+import javax.vecmath.Vector2f;
+
 
 public class Rectangle extends Shape {
     private Color mFillColor;
     private Color mOutlineColor;
     private Vector2f mLeftTop;
-    private Vector2f mRightBottom;
+    private float mWidth;
+    private float mHeight;
 
-    Rectangle(Vector2f leftTop, Vector2f rightBottom, Color fillColor, Color outlineColor) {
+    public Rectangle(Vector2f leftTop, float width, float height, Color fillColor, Color outlineColor) {
         mLeftTop = leftTop;
-        mRightBottom = rightBottom;
+        mWidth = width;
+        mHeight = height;
         mFillColor = fillColor;
         mOutlineColor = outlineColor;
     }
 
     @Override
-    void draw(ICanvas canvas) {
-        canvas.setFillColor(mFillColor);
-        canvas.setOutlineColor(mOutlineColor);
-        canvas.drawRectangle(mLeftTop, mRightBottom, mFillColor, mOutlineColor);
+    protected void draw(ICanvas canvas) {
+
     }
 
     @Override

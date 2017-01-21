@@ -2,6 +2,7 @@
 *.apk
 *.ap_
 Pretty-Painter-master
+shapesApp
 
 # Files for the ART/Dalvik VM
 *.dex

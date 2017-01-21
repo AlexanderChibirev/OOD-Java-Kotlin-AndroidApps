@@ -2,18 +2,9 @@ package com.example.alexander.shapespainter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.CompressFormat;
-import android.graphics.Matrix;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-
-/**
- * Created by Alexander on 18.01.2017.
- */
 
 
 public class PainterCanvas extends SurfaceView implements SurfaceHolder.Callback  {
@@ -39,24 +30,25 @@ public class PainterCanvas extends SurfaceView implements SurfaceHolder.Callback
             mBitmap = Bitmap.createBitmap(width, height,
                     Bitmap.Config.ARGB_8888);//каждый пиксель хранит 4 байта
             mPainterThread.setBitmap(mBitmap, true);
-            MainActivity mainActivity = (MainActivity) getContext();
 
-            Bitmap bitmap = mainActivity.getLastPicture();
+            /*  TODO :: добавить после создания сохранения Bitmap bitmap = mainActivity.getLastPicture();
+            MainActivity mainActivity = (MainActivity) getContext();
             if (bitmap != null) {
                 mPainterThread.restoreBitmap(bitmap, new Matrix());
-            }
+            }*/
         } else {
             mPainterThread.setBitmap(mBitmap, false);
         }
         mPainterThread.activate();
     }
 
+    /*TODO :: раскомментировать когда будет готов класс сохранения состояния приложения
     public void saveBitmap(String pictureName) throws FileNotFoundException {
         synchronized (getHolder()) {
             FileOutputStream fos = new FileOutputStream(pictureName);
             mPainterThread.getBitmap().compress(CompressFormat.PNG, 100, fos);
         }
-    }
+    }*/
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
@@ -67,7 +59,7 @@ public class PainterCanvas extends SurfaceView implements SurfaceHolder.Callback
                 mPainterThread.join();
                 retry = false;
             } catch (InterruptedException e) {
-
+                e.printStackTrace();
             }
         }
         mPainterThread = null;

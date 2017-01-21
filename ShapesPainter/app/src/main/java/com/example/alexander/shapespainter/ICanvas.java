@@ -2,28 +2,27 @@ package com.example.alexander.shapespainter;
 
 import android.graphics.Color;
 
-/**
- * Created by Alexander on 19.01.2017.
- */
+import javax.vecmath.Vector2f;
+
 
 public interface ICanvas {
-    public void setFillColor(Color color);
-    public void setOutlineColor(Color color);
-    public void setCenter(final Vector2f pos);
-    public void setSize(final Vector2f size);
+    void setFillColor(Color color);
+    void setOutlineColor(Color color);
+    void setCenter(final Vector2f pos);
+    void setSize(float width, float height);
 
-    public void drawRectangle(Vector2f leftTop,
-                              Vector2f size,
+    void drawRectangle(Vector2f leftTop,
+                              float width, float height,
                               Color fillColor,
                               Color outlineColor);
 
-    public void drawEllipse(Vector2f center,
+    void drawEllipse(Vector2f center,
                             float hRadius,
                             float vRadius,
                             Color fillColor,
                             Color outlineColor);
 
-    public void drawTriangle(Vector2f leftPoint,
+    void drawTriangle(Vector2f leftPoint,
                              Vector2f rightPoint,
                              Vector2f topPoint,
                              Color fillColor,

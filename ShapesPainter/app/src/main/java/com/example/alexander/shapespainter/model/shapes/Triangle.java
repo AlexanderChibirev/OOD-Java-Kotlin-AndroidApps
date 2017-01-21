@@ -1,35 +1,23 @@
-package com.example.alexander.shapespainter;
+package com.example.alexander.shapespainter.model.shapes;
 
 import android.graphics.Color;
 
-/**
- * Created by Alexander on 20.01.2017.
- */
+import com.example.alexander.shapespainter.ICanvas;
+import com.example.alexander.shapespainter.model.ShapeDiagram;
+import com.example.alexander.shapespainter.model.ShapeType;
+import com.example.alexander.shapespainter.model.Shape;
 
-public class Ellipse extends Shape {
-    private Color mFillColor;
-    private Color mOutlineColor;
-    private Vector2f mCenter;
-    private float mWRadius;
-    private float mHRadius;
+import javax.vecmath.Vector2f;
 
+public class Triangle extends Shape {
 
-    public Ellipse(Vector2f center,
-                   float  wRadius,
-                   float hRadius,
-                   Color fillColor,
-                   Color outlineColor) {
-        mCenter = center;
-        mHRadius = hRadius;
-        mWRadius = wRadius;
-        mOutlineColor = outlineColor;
-        mFillColor = fillColor;
+    public Triangle(Vector2f vertex1,
+                    Vector2f vertex2,
+                    Vector2f vertex3,
+                    Color fillColor,
+                    Color outlineColor) {
     }
 
-    @Override
-    void draw(ICanvas canvas) {
-
-    }
 
     @Override
     public ShapeType getType() {
@@ -69,5 +57,10 @@ public class Ellipse extends Shape {
     @Override
     public Vector2f getSize() {
         return null;
+    }
+
+    @Override
+    protected void draw(ICanvas canvas) {
+
     }
 }

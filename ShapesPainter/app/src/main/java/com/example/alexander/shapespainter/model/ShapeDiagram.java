@@ -1,8 +1,4 @@
-package com.example.alexander.shapespainter;
-
-/**
- * Created by Alexander on 19.01.2017.
- */
+package com.example.alexander.shapespainter.model;
 
 public class ShapeDiagram {
     private float mTop;
