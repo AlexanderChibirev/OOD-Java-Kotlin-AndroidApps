@@ -2,6 +2,7 @@ package com.example.alexander.shapespainter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -14,6 +15,7 @@ public class PainterCanvas extends SurfaceView implements SurfaceHolder.Callback
     private Bitmap mBitmap;
     private Designer mDesigner = new Designer();
     private PictureDraft mPictureDraft = mDesigner.createDraft();
+    public static boolean sMousePress = false;
 
     public PainterCanvas(Context context) {
         super(context);
@@ -57,5 +59,21 @@ public class PainterCanvas extends SurfaceView implements SurfaceHolder.Callback
             }
         }
         mPainterThread = null;
+    }
+
+    public boolean onTouchEvent(MotionEvent event) {
+        mDesigner.setMousePos(event.getX(), event.getY());
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                sMousePress = true;
+                break;
+            case MotionEvent.ACTION_MOVE:
+                break;
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+                sMousePress = false;
+                break;
+        }
+        return true;
     }
 }

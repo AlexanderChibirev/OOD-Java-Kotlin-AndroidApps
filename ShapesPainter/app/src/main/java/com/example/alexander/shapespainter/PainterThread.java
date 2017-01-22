@@ -115,6 +115,7 @@ public class PainterThread extends Thread implements ICanvas {
         mPaint.setStyle(Paint.Style.FILL);
         Rect rect = new Rect((int) left, (int) top, (int) right,(int) bottom);
         mCanvas.drawRect(rect, mPaint);
+        //////////////////////////////////////////////////////////////////////
         mPaint.setColor(Color.BLACK);
         mPaint.setStyle(Paint.Style.STROKE);
         mCanvas.drawRect(rect, mPaint);
@@ -127,6 +128,7 @@ public class PainterThread extends Thread implements ICanvas {
         mPaint.setColor(Color.BLUE);
         mPaint.setStyle(Paint.Style.FILL);
         mCanvas.drawOval(rectangle, mPaint);
+        //////////////////////////////////////////////////////////////////////
         mPaint.setColor(Color.BLACK);
         mPaint.setStyle(Paint.Style.STROKE);
         mCanvas.drawOval(rectangle, mPaint);
@@ -140,6 +142,7 @@ public class PainterThread extends Thread implements ICanvas {
                         new Vector2f(vertex2.x, vertex2.y),
                         new Vector2f(vertex3.x, vertex3.y)
                 });
+        //////////////////////////////////////////////////////////////////////
         int shiftForOutlineColor = 1;
         PainterUtils.drawPoly(mCanvas, Color.BLUE,
                 new Vector2f[]{

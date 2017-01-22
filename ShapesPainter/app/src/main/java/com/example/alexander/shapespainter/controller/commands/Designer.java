@@ -1,7 +1,5 @@
 package com.example.alexander.shapespainter.controller.commands;
 
-import android.view.MotionEvent;
-
 import com.example.alexander.shapespainter.PainterThread;
 import com.example.alexander.shapespainter.PictureDraft;
 import com.example.alexander.shapespainter.model.Shape;
@@ -9,6 +7,8 @@ import com.example.alexander.shapespainter.model.ShapeFactory;
 import com.example.alexander.shapespainter.model.ShapeType;
 
 import javax.vecmath.Vector2f;
+
+import static com.example.alexander.shapespainter.PainterCanvas.sMousePress;
 
 
 public class Designer extends Thread implements IDesigner {
@@ -48,41 +48,55 @@ public class Designer extends Thread implements IDesigner {
     public  void run() {
         while (mIsActive) {
             try {
-                if(mWasAddShape) {
-                    Shape shape = mShapeFactory.createShape(
-                            new Vector2f(SHAPE_DEFAULT_POSITION, SHAPE_DEFAULT_POSITION),
-                            SHAPE_DEFAULT_WIDTH,
-                            SHAPE_DEFAULT_HEIGHT,
-                            ShapeType.Ellipse);
-                    mPictureDraft.addShape(shape);
-                    mPainterThread.setPictureDraft(mPictureDraft);
-                    mWasAddShape = false;
-                }
-                for(Shape shape : mPictureDraft.getShapes()){
-                    shape.setCenter(SHAPE_MAX_SIZE);
+
+                int count = 0;
+                final int baseShapeQuantity = 2;
+                for(int i = 0; i < mPictureDraft.getShapeCount(); i++){
+                    if(count > baseShapeQuantity) {
+                        //shape.setSize(SHAPE_MAX_SIZE.x,SHAPE_MAX_SIZE.y );
+
+                    }
+                    else {
+                        if(mPictureDraft.getShape(i).isPointInside(mMousePos) && sMousePress){
+                            mPictureDraft.getShape(i).setCenter(mMousePos);
+                            mPainterThread.setPictureDraft(mPictureDraft);
+                            //createNewShape();
+                        }
+
+
+                    }
+                    count++;
                 }
             }
             finally {
 
             }
         }
-    }
 
-    public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                break;
-            case MotionEvent.ACTION_MOVE:
-                break;
-            case MotionEvent.ACTION_UP:
-            case MotionEvent.ACTION_CANCEL:
-                break;
+        if(mWasAddShape) {
+
+            mWasAddShape = false;
         }
-        return true;
     }
 
+    private void createNewShape(Shape shape) {
+        switch (shape.getType()){
+            case Ellipse:
+                shape = mShapeFactory.createShape(
+                        new Vector2f(SHAPE_DEFAULT_POSITION, SHAPE_DEFAULT_POSITION),
+                        SHAPE_DEFAULT_WIDTH,
+                        SHAPE_DEFAULT_HEIGHT,
+                        ShapeType.Ellipse);
+                mPictureDraft.addShape(shape);
+                mPainterThread.setPictureDraft(mPictureDraft);
+        }
+    }
 
     public void setPainterThread(PainterThread painterThread) {
         mPainterThread = painterThread;
+    }
+
+    public void setMousePos(float x, float y) {
+        mMousePos.set(x, y);
     }
 }
