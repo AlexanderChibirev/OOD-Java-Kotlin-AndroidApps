@@ -1,73 +1,89 @@
 package com.example.alexander.shapespainter.model.shapes;
 
-import android.graphics.Color;
-
 import com.example.alexander.shapespainter.ICanvas;
+import com.example.alexander.shapespainter.model.Shape;
 import com.example.alexander.shapespainter.model.ShapeDiagram;
 import com.example.alexander.shapespainter.model.ShapeType;
-import com.example.alexander.shapespainter.model.Shape;
+
+import java.util.Vector;
 
 import javax.vecmath.Vector2f;
 
 
 public class Rectangle extends Shape {
-    private Color mFillColor;
-    private Color mOutlineColor;
     private Vector2f mLeftTop;
-    private float mWidth;
-    private float mHeight;
+    private Vector2f mRightBottom;
 
-    public Rectangle(Vector2f leftTop, float width, float height, Color fillColor, Color outlineColor) {
+    public Rectangle(
+            final Vector2f leftTop,
+            final float width,
+            final float height) {
+
         mLeftTop = leftTop;
-        mWidth = width;
-        mHeight = height;
-        mFillColor = fillColor;
-        mOutlineColor = outlineColor;
+        mRightBottom = new Vector2f(mLeftTop.x + width, mLeftTop.y + height);
     }
 
     @Override
-    protected void draw(ICanvas canvas) {
-
+    public void draw(ICanvas canvas) {
     }
 
     @Override
     public ShapeType getType() {
-        return null;
+        return ShapeType.Rectangle;
     }
 
     @Override
     public ShapeDiagram getDiagram() {
-        return null;
+        return new ShapeDiagram(mLeftTop.y, mLeftTop.x, mRightBottom.x, mRightBottom.y);
     }
 
     @Override
-    public Color getFillColor() {
-        return null;
+    public void setCenter(Vector2f pos) {
+        float width = mRightBottom.x - mLeftTop.x;
+        float height = mRightBottom.y - mLeftTop.y;
+        mLeftTop = new Vector2f( pos.x - width / 2f, pos.y - height / 2f);
+        mRightBottom =  new Vector2f( pos.x + width / 2f, pos.y + height / 2f);
     }
 
     @Override
-    public Color getOutlineColor() {
-        return null;
+    public void setSize(float width, float height) {
+        Vector2f center = getCenter();
+        mLeftTop = new Vector2f( center.x - width / 2f, center.y - height / 2f );
+        mRightBottom = new Vector2f( center.x + width / 2f, center.y + height / 2f);
     }
 
     @Override
-    public Vector2f getVertices() {
-        return null;
+    public Vector<Vector2f> getVertices() {
+        Vector<Vector2f> v = new Vector<>();
+        v.add(mLeftTop);
+        v.add(new Vector2f(mRightBottom.x, mLeftTop.y));
+        v.add(mRightBottom);
+        v.add(new Vector2f(mLeftTop.x, mRightBottom.y));
+        return v;
     }
-
 
     @Override
     public boolean isPointInside(Vector2f point) {
-        return false;
+        ShapeDiagram diagram = getDiagram();
+        return point.x <= diagram.getRight()
+                && point.x >= diagram.getLeft()
+                && point.y >= diagram.getTop()
+                && point.y <= diagram.getBottom();
     }
 
     @Override
     public Vector2f getCenter() {
-        return null;
+        return new Vector2f(
+                mLeftTop.x / 2f + mRightBottom.x /2f,
+                mLeftTop.y / 2f + mRightBottom.y /2f);
     }
 
     @Override
     public Vector2f getSize() {
-        return null;
+        ShapeDiagram diagram = getDiagram();
+        return new  Vector2f(
+                diagram.getRight() - diagram.getLeft(),
+                diagram.getBottom() - diagram.getTop());
     }
+
 }

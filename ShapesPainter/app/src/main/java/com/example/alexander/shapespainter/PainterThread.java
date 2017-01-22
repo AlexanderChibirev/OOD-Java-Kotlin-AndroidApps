@@ -1,60 +1,57 @@
 package com.example.alexander.shapespainter;
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.view.SurfaceHolder;
+
+import com.example.alexander.shapespainter.model.Shape;
+import com.example.alexander.shapespainter.model.ShapeDiagram;
+
+import java.util.Vector;
 
 import javax.vecmath.Vector2f;
 
 
 class PainterThread extends Thread implements ICanvas {
-    private final int SLEEP = 0;
-    private final int READY = 1;
+
 
     private final SurfaceHolder mSurfaceHolder;
     private boolean mIsActive = false;
     private Bitmap mBitmap;
-    private int mCanvasBgColor = Color.WHITE;
     private Canvas mCanvas;
-    private State mState;
-    private int mStatus;
-    private  Paint paint= new Paint();
+    private  Paint mPaint = new Paint();
 
-    PainterThread(SurfaceHolder surfaceHolder) {
-        paint.setColor(Color.BLACK);
+    private Bitmap bitmapIconRedo;
+    private Bitmap bitmapIconUndo;
+    private Bitmap bitmapIconTrash;
+    private PictureDraft mPictureDraft;
+
+
+    PainterThread(SurfaceHolder surfaceHolder, Context context, PictureDraft pictureDraft) {
+        mPictureDraft = pictureDraft;
+        initIcons(context);
+        mPaint.setColor(Color.BLACK);
         mSurfaceHolder = surfaceHolder;
+    }
+
+    private void initIcons(Context context) {
+        int resizeValue = 80;
+        bitmapIconRedo = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_menu_redo);
+        bitmapIconRedo = PainterUtils.getResizedBitmap(bitmapIconRedo, resizeValue, resizeValue);
+        bitmapIconUndo  = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_menu_undo);
+        bitmapIconUndo = PainterUtils.getResizedBitmap(bitmapIconUndo, resizeValue, resizeValue);
+        bitmapIconTrash = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_menu_trash);
+        bitmapIconTrash = PainterUtils.getResizedBitmap(bitmapIconTrash, resizeValue, resizeValue);
     }
 
     void setRunning(boolean run) {
         mIsActive = run;
-    }
-
-    Bitmap getBitmap() {
-        return mBitmap;
-    }
-
-    void restoreBitmap(Bitmap bitmap, Matrix matrix) {
-        mCanvas.drawBitmap(bitmap, matrix, new Paint(Paint.FILTER_BITMAP_FLAG));
-        //TODO:: добавить эту строку после создания redo undo mState.undoBuffer = saveBuffer();
-    }
-
-    public void freeze() {
-        mStatus = SLEEP;
-    }
-
-    void activate() {
-        mStatus = READY;
-    }
-
-    boolean isFreeze() {
-        return (mStatus == SLEEP);
-    }
-
-    boolean isReady() {
-        return (mStatus == READY);
     }
 
     @Override
@@ -67,7 +64,9 @@ class PainterThread extends Thread implements ICanvas {
                 // получаем объект Canvas и выполняем отрисовку
                 canvas = mSurfaceHolder.lockCanvas(null);
                 synchronized (mSurfaceHolder) {
-                    draw(canvas);
+                    canvas.drawBitmap(mBitmap, 0, 0, null);
+                    drawTools();
+                    drawShapes();
                 }
             }
             finally {
@@ -75,31 +74,51 @@ class PainterThread extends Thread implements ICanvas {
                     // отрисовка выполнена. выводим результат на экран
                     mSurfaceHolder.unlockCanvasAndPost(canvas);
                 }
-                if (isFreeze()) {
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
             }
         }
     }
 
-    private void draw(Canvas canvas) {
-        switch (mStatus) {
-            case READY: {
-                if (canvas != null) {// drawing shape
-                    canvas.drawBitmap(mBitmap, 0, 0, null);
-                    //canvas.drawText("hey", 100, 25, paint);//x= 100, y=25
-                                /*p.setStyle(Paint.Style.STROKE);
-                                rect.offset(150, 0);
-                                canvas.drawRect(rect, p);*/
-                }
-                break;
+    private void drawShapes() {
+        for(Shape shape : mPictureDraft.getShapes()){
+            ShapeDiagram diagram = shape.getDiagram();
+            switch(shape.getType()) {
+                case Ellipse:
+                    drawEllipse(
+                            shape.getCenter(),
+                            (diagram.getRight() - diagram.getLeft()),
+                            (diagram.getBottom() - diagram.getTop()));
+                    break;
+                case Rectangle:
+                    diagram = shape.getDiagram();
+                    drawRectangle(
+                            diagram.getLeft(),
+                            diagram.getTop(),
+                            diagram.getRight(),
+                            diagram.getBottom());
+                    break;
+                case Triangle:
+                    Vector<Vector2f> vertices =  shape.getVertices();
+                    drawTriangle(
+                            vertices.get(0),
+                            vertices.get(1),
+                            vertices.get(2));
+                    break;
             }
         }
+        mPictureDraft.getShapes();
     }
+
+    private void drawTools() {
+        int x = 450;
+        int y = 9;
+        int shiftX = 100;
+        mCanvas.drawBitmap(bitmapIconUndo, x, y, mPaint);
+        x += shiftX;
+        mCanvas.drawBitmap(bitmapIconRedo, x, y, mPaint);
+        x += shiftX;
+        mCanvas.drawBitmap(bitmapIconTrash, x, y, mPaint);
+    }
+
     private void waitForBitmap() {
         while (mBitmap == null) {
             try {
@@ -113,51 +132,48 @@ class PainterThread extends Thread implements ICanvas {
     void setBitmap(Bitmap bitmap, boolean clear) {
         mBitmap = bitmap;
         if (clear) {
-            mBitmap.eraseColor(mCanvasBgColor);
+            mBitmap.eraseColor(Color.WHITE);
         }
         mCanvas = new Canvas(mBitmap);
     }
 
-/*   TODO:: добавить, когда будет готов класс сохранения
-        private byte[] saveBuffer() {
-        byte[] buffer = new byte[mBitmap.getRowBytes() * mBitmap.getHeight()];
-        Buffer byteBuffer = ByteBuffer.wrap(buffer);
-        mBitmap.copyPixelsToBuffer(byteBuffer);
-        return buffer;
-    }*/
-
     @Override
-    public void setFillColor(Color color) {
-
+    public void drawRectangle(float left, float top, float right, float bottom) {
+        mPaint.setColor(Color.BLUE);
+        mPaint.setStyle(Paint.Style.FILL);
+        Rect rect = new Rect((int) left, (int) top, (int) right,(int) bottom);
+        mCanvas.drawRect(rect, mPaint);
+        mPaint.setColor(Color.BLACK);
+        mPaint.setStyle(Paint.Style.STROKE);
+        mCanvas.drawRect(rect, mPaint);
     }
 
     @Override
-    public void setOutlineColor(Color color) {
-
+    public void drawEllipse(Vector2f center, float hRadius, float vRadius) {
+        RectF rectangle = new RectF(center.x - hRadius, center.y - vRadius, center.x + hRadius, center.y + vRadius);
+        System.out.print(rectangle);
+        mPaint.setColor(Color.BLUE);
+        mPaint.setStyle(Paint.Style.FILL);
+        mCanvas.drawOval(rectangle, mPaint);
+        mPaint.setColor(Color.BLACK);
+        mPaint.setStyle(Paint.Style.STROKE);
+        mCanvas.drawOval(rectangle, mPaint);
     }
 
     @Override
-    public void setCenter(Vector2f pos) {
-
-    }
-
-    @Override
-    public void setSize(float width, float height) {
-
-    }
-
-    @Override
-    public void drawRectangle(Vector2f leftTop, float width, float height, Color fillColor, Color outlineColor) {
-
-    }
-
-    @Override
-    public void drawEllipse(Vector2f center, float hRadius, float vRadius, Color fillColor, Color outlineColor) {
-
-    }
-
-    @Override
-    public void drawTriangle(Vector2f leftPoint, Vector2f rightPoint, Vector2f topPoint, Color fillColor, Color outlineColor) {
-
+    public void drawTriangle(Vector2f vertex1, Vector2f vertex2, Vector2f vertex3) {
+        PainterUtils.drawPoly(mCanvas, Color.BLACK,
+                new Vector2f[]{
+                        new Vector2f(vertex1.x, vertex1.y),
+                        new Vector2f(vertex2.x, vertex2.y),
+                        new Vector2f(vertex3.x, vertex3.y)
+                });
+        int shiftForOutlineColor = 1;
+        PainterUtils.drawPoly(mCanvas, Color.BLUE,
+                new Vector2f[]{
+                        new Vector2f(vertex1.x + shiftForOutlineColor, vertex1.y - shiftForOutlineColor),
+                        new Vector2f(vertex2.x, vertex2.y + shiftForOutlineColor),
+                        new Vector2f(vertex3.x - shiftForOutlineColor, vertex3.y - shiftForOutlineColor)
+                });
     }
 }

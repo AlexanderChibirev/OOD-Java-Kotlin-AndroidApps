@@ -3,6 +3,7 @@
 *.ap_
 Pretty-Painter-master
 shapesApp
+Fabric
 
 # Files for the ART/Dalvik VM
 *.dex

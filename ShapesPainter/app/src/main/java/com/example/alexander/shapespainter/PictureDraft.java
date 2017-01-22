@@ -1,16 +1,16 @@
 package com.example.alexander.shapespainter;
 
 
-import android.graphics.drawable.shapes.Shape;
+
+import com.example.alexander.shapespainter.model.Shape;
 
 import java.util.ArrayList;
-
 
 
 public class PictureDraft {
     private ArrayList<Shape> shapeArrayList = new ArrayList<>();
 
-    public void addShape(Shape shape){
+    public void addShape(Shape shape) {
         shapeArrayList.add(shape);
     }
 
@@ -18,8 +18,17 @@ public class PictureDraft {
         return shapeArrayList.size();
     }
 
-    public Shape getShape(int idx){
+    public Shape getShape(int idx) {
         return shapeArrayList.get(idx);
+    }
+
+
+    public  ArrayList<Shape> getShapes() {
+        return shapeArrayList;
+    }
+
+    public void deleteAllShapes() {
+        shapeArrayList.clear();
     }
 
     public void removeShape(Shape shape) {

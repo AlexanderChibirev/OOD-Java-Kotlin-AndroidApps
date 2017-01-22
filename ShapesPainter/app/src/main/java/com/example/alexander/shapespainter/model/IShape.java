@@ -1,16 +1,15 @@
 package com.example.alexander.shapespainter.model;
 
-import android.graphics.Color;
+import java.util.Vector;
 
 import javax.vecmath.Vector2f;
 
-
-public interface IShape {
+interface IShape {
     ShapeType getType();
     ShapeDiagram getDiagram();
-    Color getFillColor();
-    Color getOutlineColor();
-    Vector2f getVertices();
+    void setCenter(final Vector2f pos);
+    void setSize(float width, float height);
+    Vector <Vector2f> getVertices();
     boolean isPointInside(final Vector2f point);
     Vector2f getCenter();
     Vector2f getSize();
