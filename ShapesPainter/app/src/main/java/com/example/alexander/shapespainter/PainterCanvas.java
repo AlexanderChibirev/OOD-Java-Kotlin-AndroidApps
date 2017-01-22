@@ -25,6 +25,10 @@ public class PainterCanvas extends SurfaceView implements SurfaceHolder.Callback
         mPainterThread = new PainterThread(getHolder(), getContext(), mPictureDraft);
         mPainterThread.setRunning(true);
         mPainterThread.start();
+
+        mDesigner.setPainterThread(mPainterThread);
+        mDesigner.setRunning(true);
+        mDesigner.start();
     }
 
     @Override

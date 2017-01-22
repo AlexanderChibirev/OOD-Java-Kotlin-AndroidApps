@@ -15,13 +15,13 @@ import com.example.alexander.shapespainter.utils.PainterUtils;
 import javax.vecmath.Vector2f;
 
 
-class PainterThread extends Thread implements ICanvas {
+public class PainterThread extends Thread implements ICanvas {
 
     private final SurfaceHolder mSurfaceHolder;
     private boolean mIsActive = false;
     private Bitmap mBitmap;
     private Canvas mCanvas;
-    private  Paint mPaint = new Paint();
+    private Paint mPaint = new Paint();
     private Painter mPainter = new Painter();
 
     private Bitmap bitmapIconRedo;
@@ -46,6 +46,10 @@ class PainterThread extends Thread implements ICanvas {
         bitmapIconUndo = PainterUtils.getResizedBitmap(bitmapIconUndo, resizeValue, resizeValue);
         bitmapIconTrash = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_menu_trash);
         bitmapIconTrash = PainterUtils.getResizedBitmap(bitmapIconTrash, resizeValue, resizeValue);
+    }
+
+    public void setPictureDraft(PictureDraft pictureDraft) {
+        mPictureDraft = pictureDraft;
     }
 
     void setRunning(boolean run) {
