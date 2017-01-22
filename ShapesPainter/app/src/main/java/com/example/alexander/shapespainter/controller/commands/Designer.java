@@ -1,7 +1,8 @@
-package com.example.alexander.shapespainter;
+package com.example.alexander.shapespainter.controller.commands;
 
 import android.view.MotionEvent;
 
+import com.example.alexander.shapespainter.PictureDraft;
 import com.example.alexander.shapespainter.model.Shape;
 import com.example.alexander.shapespainter.model.ShapeFactory;
 import com.example.alexander.shapespainter.model.ShapeType;
@@ -19,7 +20,7 @@ public class Designer implements IDesigner {
     }
 
     private void createBaseIcon(PictureDraft pictureDraft, ShapeFactory shapeFactory) {
-        Shape shape = shapeFactory.createShape(new Vector2f(150,45), 26, 26, ShapeType.Ellipse);
+        Shape shape = shapeFactory.createShape(new Vector2f(150, 45), 26, 26, ShapeType.Ellipse);
         pictureDraft.addShape(shape);
         shape = shapeFactory.createShape(new Vector2f(220, 20), 80, 50, ShapeType.Rectangle);
         pictureDraft.addShape(shape);
