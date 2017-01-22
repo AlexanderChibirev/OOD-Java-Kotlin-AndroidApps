@@ -16,7 +16,7 @@ public class Ellipse extends Shape {
 
 
     public Ellipse(Vector2f center,
-                   float  wRadius,
+                   float wRadius,
                    float hRadius) {
         mCenter = center;
         mHRadius = hRadius;
@@ -45,7 +45,7 @@ public class Ellipse extends Shape {
     @Override
     public void setSize(float width, float height) {
         mWRadius = width / 2f;
-        mHRadius = height/ 2f;
+        mHRadius = height / 2f;
     }
 
     @Override
@@ -57,8 +57,9 @@ public class Ellipse extends Shape {
 
     @Override
     public boolean isPointInside(Vector2f point) {
-        return (point.x	- mCenter.x) * (point.x - mCenter.x) / (mWRadius * mWRadius)
-                + (point.y - mCenter.y) * (point.y - mCenter.y) / (mHRadius * mHRadius) <= 1;
+        return (point.x	- mCenter.x) * (point.x - mCenter.x) /
+                (mWRadius * mWRadius) + (point.y - mCenter.y) *
+                (point.y - mCenter.y) / (mHRadius * mHRadius) <= 1;
     }
 
     @Override
@@ -75,7 +76,5 @@ public class Ellipse extends Shape {
     }
 
     @Override
-    public void draw(ICanvas canvas) {
-
-    }
+    public void draw(ICanvas canvas) { canvas.drawEllipse(mCenter, mWRadius, mHRadius); }
 }

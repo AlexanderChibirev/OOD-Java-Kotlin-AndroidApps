@@ -24,8 +24,7 @@ public class Rectangle extends Shape {
     }
 
     @Override
-    public void draw(ICanvas canvas) {
-    }
+    public void draw(ICanvas canvas) { canvas.drawRectangle(mLeftTop.x, mLeftTop.x, mRightBottom.x, mRightBottom.y); }
 
     @Override
     public ShapeType getType() {

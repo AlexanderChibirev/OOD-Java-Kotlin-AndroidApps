@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.example.alexander.shapespainter.controller.commands.Designer;
+
 
 public class PainterCanvas extends SurfaceView implements SurfaceHolder.Callback  {
 
