@@ -10,10 +10,10 @@ import com.example.alexander.shapespainter.controller.commands.Designer;
 
 public class PainterCanvas extends SurfaceView implements SurfaceHolder.Callback  {
 
-
     private PainterThread mPainterThread;
     private Bitmap mBitmap;
     private Designer mDesigner = new Designer();
+    private PictureDraft mPictureDraft = mDesigner.createDraft();
 
     public PainterCanvas(Context context) {
         super(context);
@@ -22,12 +22,10 @@ public class PainterCanvas extends SurfaceView implements SurfaceHolder.Callback
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        PictureDraft pictureDraft = mDesigner.createDraft();
-        mPainterThread = new PainterThread(getHolder(), getContext(), pictureDraft);
+        mPainterThread = new PainterThread(getHolder(), getContext(), mPictureDraft);
         mPainterThread.setRunning(true);
         mPainterThread.start();
     }
-
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {

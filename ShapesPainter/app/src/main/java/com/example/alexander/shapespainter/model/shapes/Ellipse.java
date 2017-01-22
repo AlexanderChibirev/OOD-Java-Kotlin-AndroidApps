@@ -76,5 +76,9 @@ public class Ellipse extends Shape {
     }
 
     @Override
-    public void draw(ICanvas canvas) { canvas.drawEllipse(mCenter, mWRadius, mHRadius); }
+    public void draw(ICanvas canvas) {
+        canvas.drawEllipse(
+                mCenter,
+                this.getDiagram().getRight() - this.getDiagram().getLeft(),
+                this.getDiagram().getBottom() - this.getDiagram().getTop()); }
 }

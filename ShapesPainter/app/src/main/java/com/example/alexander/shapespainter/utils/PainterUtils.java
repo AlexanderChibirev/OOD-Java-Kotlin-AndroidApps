@@ -1,4 +1,4 @@
-package com.example.alexander.shapespainter;
+package com.example.alexander.shapespainter.utils;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -8,8 +8,8 @@ import android.graphics.Path;
 
 import javax.vecmath.Vector2f;
 
-class PainterUtils {
-    static void drawPoly(Canvas canvas, int color, Vector2f[] points) {
+public class PainterUtils {
+    public static void drawPoly(Canvas canvas, int color, Vector2f[] points) {
         // line at minimum...
         if (points.length < 2) {
             return;
@@ -30,7 +30,7 @@ class PainterUtils {
         canvas.drawPath(polyPath, polyPaint);
     }
 
-    static Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
+    public static Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
         int width = bm.getWidth();
         int height = bm.getHeight();
         float scaleWidth = ((float) newWidth) / width;

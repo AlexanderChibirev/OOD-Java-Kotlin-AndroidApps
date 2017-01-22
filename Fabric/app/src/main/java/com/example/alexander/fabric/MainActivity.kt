@@ -32,7 +32,6 @@ class   MainActivity : AppCompatActivity()
 
     fun drawPicture(stream: InputStream)
     {
-
         m_painter.DrawPicture(m_designer.CreateDraft(stream), m_canvas)
         imageView.setImageBitmap(m_canvas.getBitmap())
         imageView.invalidate()

@@ -10,26 +10,24 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.view.SurfaceHolder;
 
-import com.example.alexander.shapespainter.model.Shape;
-import com.example.alexander.shapespainter.model.ShapeDiagram;
-
-import java.util.Vector;
+import com.example.alexander.shapespainter.utils.PainterUtils;
 
 import javax.vecmath.Vector2f;
 
 
 class PainterThread extends Thread implements ICanvas {
 
-
     private final SurfaceHolder mSurfaceHolder;
     private boolean mIsActive = false;
     private Bitmap mBitmap;
     private Canvas mCanvas;
     private  Paint mPaint = new Paint();
+    private Painter mPainter = new Painter();
 
     private Bitmap bitmapIconRedo;
     private Bitmap bitmapIconUndo;
     private Bitmap bitmapIconTrash;
+
     private PictureDraft mPictureDraft;
 
 
@@ -66,7 +64,7 @@ class PainterThread extends Thread implements ICanvas {
                 synchronized (mSurfaceHolder) {
                     canvas.drawBitmap(mBitmap, 0, 0, null);
                     drawTools();
-                    drawShapes();
+                    mPainter.drawPicture(mPictureDraft, this);
                 }
             }
             finally {
@@ -76,36 +74,6 @@ class PainterThread extends Thread implements ICanvas {
                 }
             }
         }
-    }
-
-    private void drawShapes() {
-        for(Shape shape : mPictureDraft.getShapes()){
-            ShapeDiagram diagram = shape.getDiagram();
-            switch(shape.getType()) {
-                case Ellipse:
-                    drawEllipse(
-                            shape.getCenter(),
-                            (diagram.getRight() - diagram.getLeft()),
-                            (diagram.getBottom() - diagram.getTop()));
-                    break;
-                case Rectangle:
-                    diagram = shape.getDiagram();
-                    drawRectangle(
-                            diagram.getLeft(),
-                            diagram.getTop(),
-                            diagram.getRight(),
-                            diagram.getBottom());
-                    break;
-                case Triangle:
-                    Vector<Vector2f> vertices =  shape.getVertices();
-                    drawTriangle(
-                            vertices.get(0),
-                            vertices.get(1),
-                            vertices.get(2));
-                    break;
-            }
-        }
-        mPictureDraft.getShapes();
     }
 
     private void drawTools() {
