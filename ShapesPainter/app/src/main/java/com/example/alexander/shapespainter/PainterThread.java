@@ -10,12 +10,13 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.view.SurfaceHolder;
 
+import com.example.alexander.shapespainter.controller.commands.Designer;
 import com.example.alexander.shapespainter.utils.PainterUtils;
 
 import javax.vecmath.Vector2f;
 
 
-public class PainterThread extends Thread implements ICanvas {
+class PainterThread extends Thread implements ICanvas {
 
     private final SurfaceHolder mSurfaceHolder;
     private boolean mIsActive = false;
@@ -24,15 +25,17 @@ public class PainterThread extends Thread implements ICanvas {
     private Paint mPaint = new Paint();
     private Painter mPainter = new Painter();
 
-    private Bitmap bitmapIconRedo;
-    private Bitmap bitmapIconUndo;
-    private Bitmap bitmapIconTrash;
+    private Bitmap mBitmapIconRedo;
+    private Bitmap mBitmapIconUndo;
+    private Bitmap mBitmapIconTrash;
 
-    private PictureDraft mPictureDraft;
+    private Designer mDesigner = new Designer();
+    private PictureDraft mPictureDraft = mDesigner.createDraft();
 
+    //////////////////TODO:: для отображения количества фигур в массиве
+    private Paint fontPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
-    PainterThread(SurfaceHolder surfaceHolder, Context context, PictureDraft pictureDraft) {
-        mPictureDraft = pictureDraft;
+    PainterThread(SurfaceHolder surfaceHolder, Context context) {
         initIcons(context);
         mPaint.setColor(Color.BLACK);
         mSurfaceHolder = surfaceHolder;
@@ -40,16 +43,12 @@ public class PainterThread extends Thread implements ICanvas {
 
     private void initIcons(Context context) {
         int resizeValue = 80;
-        bitmapIconRedo = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_menu_redo);
-        bitmapIconRedo = PainterUtils.getResizedBitmap(bitmapIconRedo, resizeValue, resizeValue);
-        bitmapIconUndo  = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_menu_undo);
-        bitmapIconUndo = PainterUtils.getResizedBitmap(bitmapIconUndo, resizeValue, resizeValue);
-        bitmapIconTrash = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_menu_trash);
-        bitmapIconTrash = PainterUtils.getResizedBitmap(bitmapIconTrash, resizeValue, resizeValue);
-    }
-
-    public void setPictureDraft(PictureDraft pictureDraft) {
-        mPictureDraft = pictureDraft;
+        mBitmapIconRedo = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_menu_redo);
+        mBitmapIconRedo = PainterUtils.getResizedBitmap(mBitmapIconRedo, resizeValue, resizeValue);
+        mBitmapIconUndo = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_menu_undo);
+        mBitmapIconUndo = PainterUtils.getResizedBitmap(mBitmapIconUndo, resizeValue, resizeValue);
+        mBitmapIconTrash = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_menu_trash);
+        mBitmapIconTrash = PainterUtils.getResizedBitmap(mBitmapIconTrash, resizeValue, resizeValue);
     }
 
     void setRunning(boolean run) {
@@ -66,9 +65,16 @@ public class PainterThread extends Thread implements ICanvas {
                 // получаем объект Canvas и выполняем отрисовку
                 canvas = mSurfaceHolder.lockCanvas(null);
                 synchronized (mSurfaceHolder) {
+                    mDesigner.update();
                     canvas.drawBitmap(mBitmap, 0, 0, null);
                     drawTools();
                     mPainter.drawPicture(mPictureDraft, this);
+
+                    ////////////////////////////////TODO:: для отображения количества фигур в массиве
+                    fontPaint.setTextSize(200);
+                    fontPaint.setStyle(Paint.Style.STROKE);
+                    mCanvas.drawText(String.valueOf(mPictureDraft.getShapeCount()),10,100,fontPaint);
+                    ////////////////////////////////////////////////////////////////////////////////
                 }
             }
             finally {
@@ -84,11 +90,11 @@ public class PainterThread extends Thread implements ICanvas {
         int x = 450;
         int y = 9;
         int shiftX = 100;
-        mCanvas.drawBitmap(bitmapIconUndo, x, y, mPaint);
+        mCanvas.drawBitmap(mBitmapIconUndo, x, y, mPaint);
         x += shiftX;
-        mCanvas.drawBitmap(bitmapIconRedo, x, y, mPaint);
+        mCanvas.drawBitmap(mBitmapIconRedo, x, y, mPaint);
         x += shiftX;
-        mCanvas.drawBitmap(bitmapIconTrash, x, y, mPaint);
+        mCanvas.drawBitmap(mBitmapIconTrash, x, y, mPaint);
     }
 
     private void waitForBitmap() {
@@ -109,11 +115,13 @@ public class PainterThread extends Thread implements ICanvas {
         mCanvas = new Canvas(mBitmap);
     }
 
+
+
     @Override
-    public void drawRectangle(float left, float top, float right, float bottom) {
+    public void drawRectangle(Vector2f leftTop, Vector2f topBottom) {
         mPaint.setColor(Color.BLUE);
         mPaint.setStyle(Paint.Style.FILL);
-        Rect rect = new Rect((int) left, (int) top, (int) right,(int) bottom);
+        Rect rect = new Rect((int) leftTop.x, (int) leftTop.y, (int) topBottom.x, (int) topBottom.y);
         mCanvas.drawRect(rect, mPaint);
         //////////////////////////////////////////////////////////////////////
         mPaint.setColor(Color.BLACK);
@@ -122,7 +130,7 @@ public class PainterThread extends Thread implements ICanvas {
     }
 
     @Override
-    public void drawEllipse(Vector2f center, float hRadius, float vRadius) {
+    public void drawEllipse(Vector2f center, float vRadius, float hRadius) {
         RectF rectangle = new RectF(center.x - hRadius, center.y - vRadius, center.x + hRadius, center.y + vRadius);
         System.out.print(rectangle);
         mPaint.setColor(Color.BLUE);
@@ -150,5 +158,9 @@ public class PainterThread extends Thread implements ICanvas {
                         new Vector2f(vertex2.x, vertex2.y + shiftForOutlineColor),
                         new Vector2f(vertex3.x - shiftForOutlineColor, vertex3.y - shiftForOutlineColor)
                 });
+    }
+
+    void setMousePos(float x, float y) {
+        mDesigner.setMousePos(x, y);
     }
 }

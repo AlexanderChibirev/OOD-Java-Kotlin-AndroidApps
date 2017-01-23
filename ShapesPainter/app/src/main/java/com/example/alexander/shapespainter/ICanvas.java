@@ -4,10 +4,8 @@ import javax.vecmath.Vector2f;
 
 
 public interface ICanvas {
-    void drawRectangle(float left,
-                       float right,
-                       float top,
-                       float bottom);
+    void drawRectangle(Vector2f leftTop,
+                       Vector2f topBottom);
 
     void drawEllipse(Vector2f center,
                             float hRadius,

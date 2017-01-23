@@ -1,6 +1,5 @@
 package com.example.alexander.shapespainter.controller.commands;
 
-import com.example.alexander.shapespainter.PainterThread;
 import com.example.alexander.shapespainter.PictureDraft;
 import com.example.alexander.shapespainter.model.Shape;
 import com.example.alexander.shapespainter.model.ShapeFactory;
@@ -8,20 +7,19 @@ import com.example.alexander.shapespainter.model.ShapeType;
 
 import javax.vecmath.Vector2f;
 
-import static com.example.alexander.shapespainter.PainterCanvas.sMousePress;
 
+public class Designer implements IDesigner {
 
-public class Designer extends Thread implements IDesigner {
+/*  TODO:: перенести в отдельный класс констант, сделать статическими, но не публичными
     private static final Vector2f SHAPE_MAX_SIZE = new Vector2f(200f, 200f);
     private static final Vector2f SHAPE_MIN_SIZE = new Vector2f(25f, 25f);
     private static final float SHAPE_DEFAULT_WIDTH =  100f;
     private static final float SHAPE_DEFAULT_HEIGHT = 25f;
-    private static final float SHAPE_DEFAULT_POSITION = 400f;
+    private static final float SHAPE_DEFAULT_POSITION = 400f;*/
 
-    private boolean mIsActive = false;
-    private PainterThread mPainterThread;
+
     private PictureDraft mPictureDraft = new PictureDraft();
-    private boolean mWasAddShape = true;
+
     private ShapeFactory mShapeFactory = new ShapeFactory();
     private Vector2f mMousePos = new Vector2f(0,0);
 
@@ -40,45 +38,29 @@ public class Designer extends Thread implements IDesigner {
         mPictureDraft.addShape(shape);
     }
 
-    public void setRunning(boolean run) {
-        mIsActive = run;
-    }
 
-    @Override
-    public  void run() {
-        while (mIsActive) {
-            try {
-
-                int count = 0;
-                final int baseShapeQuantity = 2;
-                for(int i = 0; i < mPictureDraft.getShapeCount(); i++){
-                    if(count > baseShapeQuantity) {
-                        //shape.setSize(SHAPE_MAX_SIZE.x,SHAPE_MAX_SIZE.y );
-
-                    }
-                    else {
-                        if(mPictureDraft.getShape(i).isPointInside(mMousePos) && sMousePress){
-                            mPictureDraft.getShape(i).setCenter(mMousePos);
-                            mPainterThread.setPictureDraft(mPictureDraft);
-                            //createNewShape();
-                        }
-
-
-                    }
-                    count++;
+    public  void update() {
+        int count = 0;
+        final int baseShapeQuantity = 2;
+        for(Shape shape : mPictureDraft.getShapes()){
+            if(count < baseShapeQuantity) {
+                if(shape.isPointInside(mMousePos)) {
+                    shape.setCenter(mMousePos);
                 }
-            }
-            finally {
 
             }
-        }
+            /*TODO ::реализовать блок, когда shape != основным иконкам
+            else {
 
-        if(mWasAddShape) {
-
-            mWasAddShape = false;
+                //shape.setSize(SHAPE_MAX_SIZE.x,SHAPE_MAX_SIZE.y );
+            }
+            */
+            count++;
         }
     }
 
+
+    /*TODO :: запилить в класс команд
     private void createNewShape(Shape shape) {
         switch (shape.getType()){
             case Ellipse:
@@ -90,12 +72,7 @@ public class Designer extends Thread implements IDesigner {
                 mPictureDraft.addShape(shape);
                 mPainterThread.setPictureDraft(mPictureDraft);
         }
-    }
-
-    public void setPainterThread(PainterThread painterThread) {
-        mPainterThread = painterThread;
-    }
-
+    }*/
     public void setMousePos(float x, float y) {
         mMousePos.set(x, y);
     }

@@ -3,7 +3,7 @@ package com.example.alexander.shapespainter;
 
 import com.example.alexander.shapespainter.model.Shape;
 
-public class Painter implements IPainter {
+class Painter implements IPainter {
     @Override
     public void drawPicture(PictureDraft draft, ICanvas canvas) {
         for(Shape shape : draft.getShapes()){
