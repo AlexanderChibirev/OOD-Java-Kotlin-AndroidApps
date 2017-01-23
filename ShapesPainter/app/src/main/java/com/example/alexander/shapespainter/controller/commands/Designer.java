@@ -21,7 +21,7 @@ public class Designer implements IDesigner {
     private PictureDraft mPictureDraft = new PictureDraft();
 
     private ShapeFactory mShapeFactory = new ShapeFactory();
-    private Vector2f mMousePos = new Vector2f(0,0);
+    private Vector2f mMousePos = new Vector2f(0, 0);
 
     @Override
     public PictureDraft createDraft() {
@@ -38,13 +38,12 @@ public class Designer implements IDesigner {
         mPictureDraft.addShape(shape);
     }
 
-
-    public  void update() {
+    public void update() {
         int count = 0;
         final int baseShapeQuantity = 2;
-        for(Shape shape : mPictureDraft.getShapes()){
-            if(count < baseShapeQuantity) {
-                if(shape.isPointInside(mMousePos)) {
+        for (Shape shape : mPictureDraft.getShapes()) {
+            if (count < baseShapeQuantity) {
+                if (shape.isPointInside(mMousePos)) {
                     shape.setCenter(mMousePos);
                 }
 
@@ -58,7 +57,6 @@ public class Designer implements IDesigner {
             count++;
         }
     }
-
 
     /*TODO :: запилить в класс команд
     private void createNewShape(Shape shape) {

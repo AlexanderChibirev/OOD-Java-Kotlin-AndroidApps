@@ -27,7 +27,7 @@ public class PictureDraft {
         return shapeArrayList;
     }
 
-    public void deleteAllShapes() {
+    public void removeAllShapes() {
         shapeArrayList.clear();
     }
 
