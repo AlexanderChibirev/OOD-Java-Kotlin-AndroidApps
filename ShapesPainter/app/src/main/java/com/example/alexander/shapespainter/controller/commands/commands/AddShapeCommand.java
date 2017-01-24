@@ -4,11 +4,11 @@ import com.example.alexander.shapespainter.ShapesList;
 import com.example.alexander.shapespainter.controller.commands.ICommand;
 import com.example.alexander.shapespainter.model.Shape;
 
-public class CreateShapeCommand implements ICommand {
+public class AddShapeCommand implements ICommand {
     private ShapesList mPictureDraft;
     private Shape mShape;
 
-    public CreateShapeCommand(ShapesList pictureDraft, Shape shape) {
+    public AddShapeCommand(ShapesList pictureDraft, Shape shape) {
         mPictureDraft = pictureDraft;
         mShape = shape;
     }
@@ -16,5 +16,10 @@ public class CreateShapeCommand implements ICommand {
     @Override
     public void execute() {
         mPictureDraft.addShape(mShape);
+    }
+
+    @Override
+    public void unExecute() {
+
     }
 }
