@@ -54,12 +54,11 @@ public class PointInsideShapeManager {
     private boolean isPointInsideEllipse(Shape shape, Vector2f point) {
         Vector2f center = shape.getCenter();
         ShapeDiagram shapeDiagram = shape.getDiagram();
-        float wRadius = center.x + shapeDiagram.getTop();
-        float hRadius = center.y + shapeDiagram.getLeft();
+        float wRadius = center.y + shapeDiagram.getTop();
+        float hRadius = center.x + shapeDiagram.getLeft();
 
-        return (point.x - center.x) * (point.x - center.x) /
-                (wRadius * wRadius) + (point.y - center.y) *
-                (point.y - center.y) / (hRadius * hRadius) <= 1;
+        return Math.pow(point.x - center.x, 2) / wRadius//Math.pow(wRadius, 2)
+                + Math.pow(point.y - center.y, 2) / hRadius <=1;//Math.pow(hRadius, 2) <= 1;
     }
 
     private float sign(Vector2f p1, Vector2f p2, Vector2f p3) {

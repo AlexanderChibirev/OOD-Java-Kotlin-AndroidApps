@@ -33,8 +33,8 @@ public class ShapeFactory implements IShapeFactory {
     private Ellipse getEllipse(Vector2f center, float width, float height) {
         return new Ellipse(
                 center,
-                width / 2,
-                height / 2);
+                width / 2f,
+                height / 2f);
     }
 
     private Triangle getTriangle(Vector2f center, float width, float height) {
