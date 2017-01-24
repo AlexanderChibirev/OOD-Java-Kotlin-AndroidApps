@@ -1,7 +1,6 @@
 package com.example.alexander.shapespainter;
 
 
-
 import com.example.alexander.shapespainter.model.Shape;
 
 import java.util.ArrayList;
@@ -14,7 +13,7 @@ public class PictureDraft {
         shapeArrayList.add(shape);
     }
 
-    public int getShapeCount(){
+    public int getShapeCount() {
         return shapeArrayList.size();
     }
 
@@ -23,11 +22,11 @@ public class PictureDraft {
     }
 
 
-    public  ArrayList<Shape> getShapes() {
+    public ArrayList<Shape> getShapes() {
         return shapeArrayList;
     }
 
-    public void removeAllShapes() {
+    public void deleteAllShapes() {
         shapeArrayList.clear();
     }
 

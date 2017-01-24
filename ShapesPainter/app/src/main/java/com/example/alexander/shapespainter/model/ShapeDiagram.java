@@ -5,25 +5,27 @@ public class ShapeDiagram {
     private float mRight;
     private float mLeft;
     private float mBottom;
-    public ShapeDiagram(float top, float left, float right, float bottom){
+
+    public ShapeDiagram(float top, float left, float right, float bottom) {
         mTop = top;
         this.mLeft = left;
         this.mRight = right;
         this.mBottom = bottom;
     }
-    public float getTop(){
+
+    public float getTop() {
         return mTop;
     }
 
-    public float getRight(){
+    public float getRight() {
         return mRight;
     }
 
-    public float getLeft(){
+    public float getLeft() {
         return mLeft;
     }
 
-    public float getBottom(){
+    public float getBottom() {
         return mBottom;
     }
 }

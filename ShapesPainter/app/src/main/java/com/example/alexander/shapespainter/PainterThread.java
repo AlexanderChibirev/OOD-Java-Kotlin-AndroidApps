@@ -11,53 +11,45 @@ class PainterThread extends Thread {
     private PainterCanvas mCanvas = null;
     private SurfaceHolder mSurfaceHolder = null;
 
-    public PainterThread(PainterCanvas canvas)
-    {
+    PainterThread(PainterCanvas canvas) {
         super();
         this.mCanvas = canvas;
         this.mSurfaceHolder = canvas.getHolder();
     }
 
-    public void startThread()
-    {
+    void startThread() {
         running = true;
         super.start();
     }
 
-    public void stopThread()
-    {
+    void stopThread() {
         running = false;
     }
 
-    public void run()
-    {
+    public void run() {
         Canvas canvas = null;
-        while (running)
-        {
+        while (running) {
             canvas = null;
-            try
-            {
+            try {
                 canvas = mSurfaceHolder.lockCanvas();
-                synchronized (mSurfaceHolder)
-                {
-                    if (canvas != null)
-                    {
+                synchronized (mSurfaceHolder) {
+                    if (canvas != null) {
                         canvas.drawColor(Color.WHITE);
                         mCanvas.updateModels();
-                        mCanvas.drawTools(canvas);
                         mCanvas.drawModels(canvas);
+                        mCanvas.drawTools(canvas);
                     }
                 }
                 sleep(SLEEP_TIME);
-            }
-            catch(InterruptedException ie)
-            {
-            }
-            finally {
+            } catch (InterruptedException ie) {
+                ie.printStackTrace();
+            } finally {
                 if (canvas != null) {
                     mSurfaceHolder.unlockCanvasAndPost(canvas);
                 }
             }
         }
     }
+
+
 }

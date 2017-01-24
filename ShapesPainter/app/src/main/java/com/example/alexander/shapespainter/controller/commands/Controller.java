@@ -8,28 +8,20 @@ import com.example.alexander.shapespainter.model.ShapeType;
 import javax.vecmath.Vector2f;
 
 
-public class Designer implements IDesigner {
-
-/*  TODO:: перенести в отдельный класс констант, сделать статическими, но не публичными
-    private static final Vector2f SHAPE_MAX_SIZE = new Vector2f(200f, 200f);
-    private static final Vector2f SHAPE_MIN_SIZE = new Vector2f(25f, 25f);
-    private static final float SHAPE_DEFAULT_WIDTH =  100f;
-    private static final float SHAPE_DEFAULT_HEIGHT = 25f;
-    private static final float SHAPE_DEFAULT_POSITION = 400f;*/
-
+public class Controller {
 
     private PictureDraft mPictureDraft = new PictureDraft();
 
     private ShapeFactory mShapeFactory = new ShapeFactory();
     private Vector2f mMousePos = new Vector2f(0, 0);
+    private PointInsideShapeManager mPointInsideShape = new PointInsideShapeManager();
 
-    @Override
-    public PictureDraft createDraft() {
-        createBaseIcon();
+    public PictureDraft getPictureDraft() {
+        createBaseTools();
         return mPictureDraft;
     }
 
-    private void createBaseIcon() {
+    private void createBaseTools() {
         Shape shape = mShapeFactory.createShape(new Vector2f(150, 45), 26, 26, ShapeType.Ellipse);
         mPictureDraft.addShape(shape);
         shape = mShapeFactory.createShape(new Vector2f(220, 20), 80, 50, ShapeType.Rectangle);
@@ -43,9 +35,12 @@ public class Designer implements IDesigner {
         final int baseShapeQuantity = 2;
         for (Shape shape : mPictureDraft.getShapes()) {
             if (count < baseShapeQuantity) {
-                if (shape.isPointInside(mMousePos)) {
-                    shape.setCenter(mMousePos);
+                if (mPointInsideShape.isPointInside(shape, mMousePos)) {
+
                 }
+              /*  if (shape.isPointInside(mMousePos)) {
+                    shape.setCenter(mMousePos);
+                }*/
 
             }
             /*TODO ::реализовать блок, когда shape != основным иконкам

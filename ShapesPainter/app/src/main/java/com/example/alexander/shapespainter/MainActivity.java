@@ -13,7 +13,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(new PainterCanvas(this, width));
     }
 
-    private void rotateScreen(){
+    private void rotateScreen() {
         if (getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         } else {

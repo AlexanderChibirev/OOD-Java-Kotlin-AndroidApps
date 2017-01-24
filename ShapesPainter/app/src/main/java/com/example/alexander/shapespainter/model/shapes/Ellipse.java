@@ -1,6 +1,6 @@
 package com.example.alexander.shapespainter.model.shapes;
 
-import com.example.alexander.shapespainter.ICanvas;
+
 import com.example.alexander.shapespainter.model.Shape;
 import com.example.alexander.shapespainter.model.ShapeDiagram;
 import com.example.alexander.shapespainter.model.ShapeType;
@@ -50,16 +50,9 @@ public class Ellipse extends Shape {
 
     @Override
     public Vector<Vector2f> getVertices() {
-        Vector<Vector2f>  v = new Vector<>();
+        Vector<Vector2f> v = new Vector<>();
         v.add(mCenter);
         return v;
-    }
-
-    @Override
-    public boolean isPointInside(Vector2f point) {
-        return (point.x	- mCenter.x) * (point.x - mCenter.x) /
-                (mWRadius * mWRadius) + (point.y - mCenter.y) *
-                (point.y - mCenter.y) / (mHRadius * mHRadius) <= 1;
     }
 
     @Override
@@ -70,15 +63,8 @@ public class Ellipse extends Shape {
     @Override
     public Vector2f getSize() {
         ShapeDiagram diagram = getDiagram();
-        return new  Vector2f(
+        return new Vector2f(
                 diagram.getRight() - diagram.getLeft(),
                 diagram.getBottom() - diagram.getTop());
     }
-
-    @Override
-    public void draw(ICanvas canvas) {
-        canvas.drawEllipse(
-                mCenter,
-                this.getDiagram().getRight() - this.getDiagram().getLeft(),
-                this.getDiagram().getBottom() - this.getDiagram().getTop()); }
 }

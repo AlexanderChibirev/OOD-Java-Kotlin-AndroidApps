@@ -4,8 +4,8 @@ import javax.vecmath.Vector2f;
 
 
 interface IShapeFactory {
-    Shape createShape(final Vector2f center,
-                      float width,
-                      float height,
-                      final ShapeType shapeType);
+    IShape createShape(final Vector2f center,
+                       float width,
+                       float height,
+                       final ShapeType shapeType);
 }
