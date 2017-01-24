@@ -74,7 +74,7 @@ public class PainterCanvas extends SurfaceView implements SurfaceHolder.Callback
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         // TODO Auto-generated method stub
-        switch(event.getAction()){
+        switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 mController.setMousePosition(event.getX(), event.getY());
                 break;

@@ -71,7 +71,7 @@ public class Tools {
         return mBitmaps;
     }
 
-    public ShapesList getTools() {
+    public ShapesList getToolsList() {
         return mToolsList;
     }
 }

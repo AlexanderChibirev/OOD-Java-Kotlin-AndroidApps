@@ -44,8 +44,8 @@ public class Ellipse extends Shape {
 
     @Override
     public void setSize(float width, float height) {
-        mWRadius = width;
-        mHRadius = height;
+        mWRadius = width / 2f;
+        mHRadius = height / 2f;
     }
 
     @Override

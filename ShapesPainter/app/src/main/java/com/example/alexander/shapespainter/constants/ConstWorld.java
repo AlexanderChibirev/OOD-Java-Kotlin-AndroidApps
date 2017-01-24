@@ -15,9 +15,9 @@ public class ConstWorld {
 
     public static final Vector2f SHAPE_MAX_SIZE = new Vector2f(200f, 200f);
     public static final Vector2f SHAPE_MIN_SIZE = new Vector2f(25f, 25f);
-    public static final float SHAPE_DEFAULT_WIDTH = 100f;
-    public static final float SHAPE_DEFAULT_HEIGHT = 25f;
-    public static final float SHAPE_DEFAULT_POSITION = 400f;
+    public static final float SHAPE_DEFAULT_WIDTH = 50;
+    public static final float SHAPE_DEFAULT_HEIGHT = 50f;
+    public static final float SHAPE_DEFAULT_POSITION = 20f;
     public static final Vector2f DRAG_POINT_SIZE = new Vector2f(5, 5);
     public static final int DEFAULT_BUTTON_RESIZE = 80;
     public static final int DEFAULT_SHIFT_POSITION_X_FOR_UNDO_TOOLBAR = 300;

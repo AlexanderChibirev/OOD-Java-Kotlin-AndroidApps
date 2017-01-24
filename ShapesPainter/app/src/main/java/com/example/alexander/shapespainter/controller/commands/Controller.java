@@ -3,13 +3,15 @@ package com.example.alexander.shapespainter.controller.commands;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.RectF;
-import android.widget.Toast;
 
 import com.example.alexander.shapespainter.ShapesList;
+import com.example.alexander.shapespainter.controller.commands.commands.AddShapeCommand;
 import com.example.alexander.shapespainter.model.Shape;
+import com.example.alexander.shapespainter.model.ShapeType;
 import com.example.alexander.shapespainter.model.Tools;
 
 import java.util.Map;
+import java.util.Vector;
 
 import javax.vecmath.Vector2f;
 
@@ -24,8 +26,8 @@ public class Controller {
     private PointInsideShapeManager mPointInsideShapeManager = new PointInsideShapeManager();
     private Context mContext;
     private int mScreenWidth;
-    private Vector2f mClickPosition = new Vector2f(0, 0);
     private RectF mBitmapRect = new RectF();
+    private Vector<ICommand> mHistoryCommand = new  Vector<>();
 
     public Controller(Context context, int screenWidth) {
         mTools = new Tools(context, screenWidth);
@@ -38,7 +40,7 @@ public class Controller {
     }
 
     public ShapesList getToolsDraft() {
-        return mTools.getTools();
+        return mTools.getToolsList();
     }
 
     public Map<Bitmap, Vector2f> getBitmapTools() {
@@ -56,10 +58,22 @@ public class Controller {
     }
 
     private void updateShapesTools() {
-        for (Shape shape : mTools.getTools().getShapes()) {
+        for (Shape shape : mTools.getToolsList().getShapes()) {
             if (mPointInsideShapeManager.isPointInside(shape, mMousePos)) {
-                //TODO:: рабоает корректно
-                shape.setCenter(new Vector2f(0, 0));
+                switch (shape.getType()) {
+                    case Ellipse:
+                        mHistoryCommand.add(new AddShapeCommand(mShapesList, ShapeType.Ellipse));
+                        mHistoryCommand.get(mHistoryCommand.size() - 1).execute();
+                        break;
+                    case  Triangle:
+                        mHistoryCommand.add(new AddShapeCommand(mShapesList, ShapeType.Triangle));
+                        mHistoryCommand.get(mHistoryCommand.size() - 1).execute();
+                        break;
+                    case Rectangle:
+                        mHistoryCommand.add(new AddShapeCommand(mShapesList, ShapeType.Rectangle));
+                        mHistoryCommand.get(mHistoryCommand.size() - 1).execute();
+                        break;
+                }
             }
         }
     }
@@ -78,17 +92,17 @@ public class Controller {
             if (bitmapPos.x == mScreenWidth - DEFAULT_SHIFT_POSITION_X_FOR_UNDO_TOOLBAR) {
                 //bitmap = undo
                 if (mPointInsideShapeManager.isPointInside(mBitmapRect, mMousePos, bitmap)) {
-                    entry.setValue(new Vector2f(0,0));
+                    entry.setValue(new Vector2f(0, 0));
                 }
             } else if (bitmapPos.x == mScreenWidth - DEFAULT_SHIFT_POSITION_X_FOR_REDO_TOOLBAR) {
                 //bitmap = redo
                 if (mPointInsideShapeManager.isPointInside(mBitmapRect, mMousePos, bitmap)) {
-                    entry.setValue(new Vector2f(0,0));
+                    entry.setValue(new Vector2f(0, 0));
                 }
             } else {
                 //bitmap = trash
                 if (mPointInsideShapeManager.isPointInside(mBitmapRect, mMousePos, bitmap)) {
-                    entry.setValue(new Vector2f(0,0));
+                    entry.setValue(new Vector2f(0, 0));
                 }
             }
         }
@@ -97,16 +111,13 @@ public class Controller {
     private void updateShapes() {
         for (Shape shape : mShapesList.getShapes()) {
             if (mPointInsideShapeManager.isPointInside(shape, mMousePos)) {
-
+                shape.setCenter(mMousePos);
             }
         }
     }
 
 
     public void setMousePosition(float x, float y) {
-        Toast toast = Toast.makeText(mContext.getApplicationContext(),
-                mMousePos.toString(), Toast.LENGTH_SHORT);
-        toast.show();
         mMousePos.x = x;
         mMousePos.y = y;
     }

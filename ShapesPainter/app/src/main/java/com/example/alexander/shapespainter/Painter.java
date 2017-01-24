@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.graphics.RectF;
 
 import com.example.alexander.shapespainter.model.Shape;
@@ -19,31 +18,34 @@ import javax.vecmath.Vector2f;
 
 class Painter implements ICanvas {
     private Paint mPaint = new Paint();
+    ShapeDiagram mDiagram;
+    Vector<Vector2f> mVertices;
+    RectF mRectangleEllipse = new RectF(0,0,0,0);
 
     void drawPicture(ShapesList draft, Canvas canvas) {
         for (Shape shape : draft.getShapes()) {
-            ShapeDiagram diagram = shape.getDiagram();
-            Vector<Vector2f> vertices = shape.getVertices();
+            mDiagram = shape.getDiagram();
+            mVertices = shape.getVertices();
             switch (shape.getType()) {
+                case Rectangle:
+                    drawRectangle(
+                            mVertices.get(0),
+                            mVertices.get(2),
+                            canvas);
+                    break;
                 case Ellipse:
                     drawEllipse(
                             shape.getCenter(),
-                            ((diagram.getRight() - diagram.getLeft()) / 2f),
-                            ((diagram.getBottom() - diagram.getTop()) / 2f),
-                            canvas);
-                    break;
-                case Rectangle:
-                    drawRectangle(
-                            vertices.get(0),
-                            vertices.get(2),
+                            ((mDiagram.getRight() - mDiagram.getLeft()) / 2f),
+                            ((mDiagram.getBottom() - mDiagram.getTop()) / 2f),
                             canvas);
                     break;
                 case Triangle:
-                    vertices = shape.getVertices();
+                    mVertices = shape.getVertices();
                     drawTriangle(
-                            vertices.get(0),
-                            vertices.get(1),
-                            vertices.get(2),
+                            mVertices.get(0),
+                            mVertices.get(1),
+                            mVertices.get(2),
                             canvas);
                     break;
             }
@@ -55,24 +57,23 @@ class Painter implements ICanvas {
     public void drawRectangle(Vector2f leftTop, Vector2f topBottom, Canvas canvas) {
         mPaint.setColor(Color.BLUE);
         mPaint.setStyle(Paint.Style.FILL);
-        Rect rect = new Rect((int) leftTop.x, (int) leftTop.y, (int) topBottom.x, (int) topBottom.y);
-        canvas.drawRect(rect, mPaint);
+        canvas.drawRect(leftTop.x, leftTop.y, topBottom.x, topBottom.y, mPaint);
 
         mPaint.setColor(Color.BLACK);
         mPaint.setStyle(Paint.Style.STROKE);
-        canvas.drawRect(rect, mPaint);
+        canvas.drawRect(leftTop.x, leftTop.y, topBottom.x, topBottom.y, mPaint);
     }
 
     @Override
     public void drawEllipse(Vector2f center, float hRadius, float wRadius, Canvas canvas) {
-        RectF rectangle = new RectF(center.x - hRadius, center.y - wRadius, center.x + hRadius, center.y + wRadius);
+        mRectangleEllipse.set(center.x - hRadius, center.y - wRadius, center.x + hRadius, center.y + wRadius);
         mPaint.setColor(Color.BLUE);
         mPaint.setStyle(Paint.Style.FILL);
-        canvas.drawOval(rectangle, mPaint);
+        canvas.drawOval(mRectangleEllipse, mPaint);
 
         mPaint.setColor(Color.BLACK);
         mPaint.setStyle(Paint.Style.STROKE);
-        canvas.drawOval(rectangle, mPaint);
+        canvas.drawOval(mRectangleEllipse, mPaint);
     }
 
     @Override

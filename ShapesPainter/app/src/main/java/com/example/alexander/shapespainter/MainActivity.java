@@ -8,7 +8,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        rotateScreen();
+        //rotateScreen();
         int width = this.getWindowManager().getDefaultDisplay().getWidth();
         setContentView(new PainterCanvas(this, width));
     }

@@ -5,7 +5,7 @@ import android.graphics.Color;
 import android.view.SurfaceHolder;
 
 class PainterThread extends Thread {
-    private final static int SLEEP_TIME = 1;
+    private final static int SLEEP_TIME = 0;
 
     private boolean running = false;
     private PainterCanvas mCanvas = null;

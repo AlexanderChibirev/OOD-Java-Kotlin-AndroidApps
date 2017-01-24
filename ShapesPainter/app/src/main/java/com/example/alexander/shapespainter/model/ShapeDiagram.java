@@ -8,9 +8,9 @@ public class ShapeDiagram {
 
     public ShapeDiagram(float top, float left, float right, float bottom) {
         mTop = top;
-        this.mLeft = left;
-        this.mRight = right;
-        this.mBottom = bottom;
+        mLeft = left;
+        mRight = right;
+        mBottom = bottom;
     }
 
     public float getTop() {
@@ -27,5 +27,12 @@ public class ShapeDiagram {
 
     public float getBottom() {
         return mBottom;
+    }
+
+    public void setDiagram(float top, float left, float right, float bottom) {
+        mTop = top;
+        mLeft = left;
+        mRight = right;
+        mBottom = bottom;
     }
 }
