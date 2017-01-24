@@ -5,16 +5,23 @@ import com.example.alexander.shapespainter.controller.commands.ICommand;
 import com.example.alexander.shapespainter.model.Shape;
 
 public class RemoveShapeCommand implements ICommand {
-
-    private ShapesList mPictureDraft;
+    private ShapesList mShapesList;
     private Shape mShape;
+    private int mIndex;
 
-    RemoveShapeCommand(ShapesList pictureDraft, Shape shape) {
-        mPictureDraft = pictureDraft;
+    RemoveShapeCommand(ShapesList shapeList, Shape shape) {
+        mShapesList = shapeList;
         mShape = shape;
+        mIndex = shapeList.getIndexShape(shape);
     }
+
     @Override
     public void execute() {
-        mPictureDraft.removeShape(mShape);
+        mShapesList.removeShape(mShape);
+    }
+
+    @Override
+    public void unExecute() {
+        mShapesList.insertShape(mIndex, mShape);
     }
 }

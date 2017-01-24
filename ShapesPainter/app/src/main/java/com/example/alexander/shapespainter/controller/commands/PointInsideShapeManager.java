@@ -1,5 +1,8 @@
 package com.example.alexander.shapespainter.controller.commands;
 
+import android.graphics.Bitmap;
+import android.graphics.Rect;
+
 import com.example.alexander.shapespainter.model.Shape;
 import com.example.alexander.shapespainter.model.ShapeDiagram;
 
@@ -19,6 +22,11 @@ public class PointInsideShapeManager {
                 return isPointInsideTriangle(shape, point);
         }
         return false;
+    }
+
+    public boolean isPointInside(Rect rect, Vector2f point, Bitmap bitmap) {
+        return (rect.contains((int) point.getX(), (int) point.getY())); /*&&
+                bitmap.getPixel((int) point.getX() - rect.left, (int) point.getY() - rect.top) != Color.TRANSPARENT);*/
     }
 
     private boolean isPointInsideTriangle(Shape shape, Vector2f point) {

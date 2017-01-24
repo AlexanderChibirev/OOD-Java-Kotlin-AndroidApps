@@ -13,7 +13,17 @@ import java.util.Map;
 
 import javax.vecmath.Vector2f;
 
-import static com.example.alexander.shapespainter.constants.ConstWorld.*;
+import static com.example.alexander.shapespainter.constants.ConstWorld.DEFAULT_BUTTON_RESIZE;
+import static com.example.alexander.shapespainter.constants.ConstWorld.DEFAULT_CENTER_POSITION_ELLIPSE_TOOLBAR;
+import static com.example.alexander.shapespainter.constants.ConstWorld.DEFAULT_CENTER_POSITION_RECTANGLE_TOOLBAR;
+import static com.example.alexander.shapespainter.constants.ConstWorld.DEFAULT_CENTER_POSITION_TRIANGLE_TOOLBAR;
+import static com.example.alexander.shapespainter.constants.ConstWorld.DEFAULT_SHIFT_FOR_START_TOOLBAR_Y;
+import static com.example.alexander.shapespainter.constants.ConstWorld.DEFAULT_SHIFT_POSITION_X_FOR_REDO_TOOLBAR;
+import static com.example.alexander.shapespainter.constants.ConstWorld.DEFAULT_SHIFT_POSITION_X_FOR_TRASH_TOOLBAR;
+import static com.example.alexander.shapespainter.constants.ConstWorld.DEFAULT_SHIFT_POSITION_X_FOR_UNDO_TOOLBAR;
+import static com.example.alexander.shapespainter.constants.ConstWorld.DEFAULT_SIZE_ELLIPSE_TOOLBAR;
+import static com.example.alexander.shapespainter.constants.ConstWorld.DEFAULT_SIZE_RECTANGLE_TOOLBAR;
+import static com.example.alexander.shapespainter.constants.ConstWorld.DEFAULT_SIZE_TRIANGLE_TOOLBAR;
 
 public class Tools {
 
@@ -47,28 +57,29 @@ public class Tools {
     private void initTools(Context context, int screenWidth) {
         int resizeValue = DEFAULT_BUTTON_RESIZE;
         Bitmap mBitmapTools;
-
-        int x = screenWidth - DEFAULT_SHIFT_FOR_START_TOOLBAR_X;
-        int y = DEFAULT_SHIFT_FOR_START_TOOLBAR_Y;
-        Vector2f undoPosition = new Vector2f(x, y);
+        Vector2f undoPosition = new Vector2f(
+                screenWidth - DEFAULT_SHIFT_POSITION_X_FOR_UNDO_TOOLBAR,
+                DEFAULT_SHIFT_FOR_START_TOOLBAR_Y);
         mBitmapTools = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_menu_undo);
         mBitmapTools = PainterUtils.getResizedBitmap(mBitmapTools, resizeValue, resizeValue);
         mBitmaps.put(mBitmapTools, undoPosition);
 
-        x += DEFAULT_SHIFT_FOR_TOOLBAR;
-        Vector2f positionRedo = new Vector2f(x, y);
+        Vector2f positionRedo = new Vector2f(
+                screenWidth - DEFAULT_SHIFT_POSITION_X_FOR_REDO_TOOLBAR,
+                DEFAULT_SHIFT_FOR_START_TOOLBAR_Y);
         mBitmapTools = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_menu_redo);
         mBitmapTools = PainterUtils.getResizedBitmap(mBitmapTools, resizeValue, resizeValue);
         mBitmaps.put(mBitmapTools, positionRedo);
 
-        x += DEFAULT_SHIFT_FOR_TOOLBAR;
-        Vector2f trashPosition = new Vector2f(x, y);
+        Vector2f trashPosition = new Vector2f(
+                screenWidth - DEFAULT_SHIFT_POSITION_X_FOR_TRASH_TOOLBAR,
+                DEFAULT_SHIFT_FOR_START_TOOLBAR_Y);
         mBitmapTools = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_menu_trash);
         mBitmapTools = PainterUtils.getResizedBitmap(mBitmapTools, resizeValue, resizeValue);
         mBitmaps.put(mBitmapTools, trashPosition);
     }
 
-    public Map<Bitmap, Vector2f> getBitmaps() {
+    public Map<Bitmap, Vector2f> getBitmapTools() {
         return mBitmaps;
     }
 

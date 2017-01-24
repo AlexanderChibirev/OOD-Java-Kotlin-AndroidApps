@@ -50,6 +50,7 @@ class Painter implements ICanvas {
         }
     }
 
+
     @Override
     public void drawRectangle(Vector2f leftTop, Vector2f topBottom, Canvas canvas) {
         mPaint.setColor(Color.BLUE);

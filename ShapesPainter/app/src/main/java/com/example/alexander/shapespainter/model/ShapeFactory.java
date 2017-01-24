@@ -23,7 +23,9 @@ public class ShapeFactory implements IShapeFactory {
 
     private Rectangle getRectangle(Vector2f center, float width, float height) {
         return new Rectangle(
-                center,
+                new Vector2f(
+                        center.x - width / 2f,
+                        center.y - height / 2f),
                 width,
                 height);
     }
@@ -37,8 +39,8 @@ public class ShapeFactory implements IShapeFactory {
 
     private Triangle getTriangle(Vector2f center, float width, float height) {
         return new Triangle(
-                new Vector2f(center.getX() - width / 2.f, center.getY() + height / 2.f),
-                new Vector2f(center.getX() + width / 2.f, center.getY() + height / 2.f),
-                new Vector2f(center.getX(), center.getY() - height / 2.f));
+                new Vector2f(center.getX() - width / 2f, center.getY() + height / 2f),
+                new Vector2f(center.getX() + width / 2f, center.getY() + height / 2f),
+                new Vector2f(center.getX(), center.getY() - height / 2f));
     }
 }

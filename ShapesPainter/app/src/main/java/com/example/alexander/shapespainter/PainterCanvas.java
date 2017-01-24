@@ -2,6 +2,7 @@ package com.example.alexander.shapespainter;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -56,7 +57,7 @@ public class PainterCanvas extends SurfaceView implements SurfaceHolder.Callback
     }
 
     public void drawTools(Canvas canvas) {
-        mPainter.drawTools(canvas, mController.getToolsDraft(), mController.getBitmaps());
+        mPainter.drawTools(canvas, mController.getToolsDraft(), mController.getBitmapTools());
     }
 
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
@@ -71,5 +72,18 @@ public class PainterCanvas extends SurfaceView implements SurfaceHolder.Callback
         stopApp();
     }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        // TODO Auto-generated method stub
+        switch(event.getAction()){
+            case MotionEvent.ACTION_DOWN:
+                mController.setMousePosition(event.getX(), event.getY());
+                break;
+            case MotionEvent.ACTION_MOVE:
+                mController.setMousePosition(event.getX(), event.getY());
+                break;
+        }
+        return true;
+    }
 
 }

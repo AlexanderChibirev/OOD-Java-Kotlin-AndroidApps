@@ -7,31 +7,34 @@ import java.util.ArrayList;
 
 
 public class ShapesList {
-    private ArrayList<Shape> shapeArrayList = new ArrayList<>();
+    private ArrayList<Shape> mShapeList = new ArrayList<>();
 
     public void addShape(Shape shape) {
-        shapeArrayList.add(shape);
+        mShapeList.add(shape);
     }
 
     public int getShapeCount() {
-        return shapeArrayList.size();
+        return mShapeList.size();
     }
 
-    public Shape getShape(int idx) {
-        return shapeArrayList.get(idx);
+    public int getIndexShape(Shape shape) {
+        return mShapeList.indexOf(shape);
     }
 
+    public void insertShape(int index, Shape shape) {
+        mShapeList.add(index, shape);
+    }
 
     public ArrayList<Shape> getShapes() {
-        return shapeArrayList;
+        return mShapeList;
     }
 
     public void deleteAllShapes() {
-        shapeArrayList.clear();
+        mShapeList.clear();
     }
 
     public void removeShape(Shape shape) {
-        shapeArrayList.remove(shape);
+        mShapeList.remove(shape);
     }
 
 }
