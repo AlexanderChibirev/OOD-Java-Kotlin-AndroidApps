@@ -1,7 +1,6 @@
 package com.example.alexander.shapespainter;
 
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -49,10 +48,6 @@ class Painter implements ICanvas {
                     break;
             }
         }
-    }
-
-    Painter(Context context) {
-
     }
 
     @Override

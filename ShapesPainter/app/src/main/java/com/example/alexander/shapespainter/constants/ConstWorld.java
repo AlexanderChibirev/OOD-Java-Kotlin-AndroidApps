@@ -23,4 +23,12 @@ public class ConstWorld {
     public static final int DEFAULT_SHIFT_FOR_START_TOOLBAR_X = 300;
     public static final int DEFAULT_SHIFT_FOR_TOOLBAR = 100;
     public static final int DEFAULT_SHIFT_FOR_START_TOOLBAR_Y = 9;
+
+    public static final Vector2f DEFAULT_CENTER_POSITION_TRIANGLE_TOOLBAR = new Vector2f(60, 45);
+    public static final Vector2f DEFAULT_CENTER_POSITION_RECTANGLE_TOOLBAR = new Vector2f(220, 20);
+    public static final Vector2f DEFAULT_CENTER_POSITION_ELLIPSE_TOOLBAR = new Vector2f(150, 45);
+
+    public static final Vector2f DEFAULT_SIZE_TRIANGLE_TOOLBAR = new Vector2f(80, 50);
+    public static final Vector2f DEFAULT_SIZE_RECTANGLE_TOOLBAR = new Vector2f(80, 50);
+    public static final Vector2f DEFAULT_SIZE_ELLIPSE_TOOLBAR = new Vector2f(26, 26);
 }
