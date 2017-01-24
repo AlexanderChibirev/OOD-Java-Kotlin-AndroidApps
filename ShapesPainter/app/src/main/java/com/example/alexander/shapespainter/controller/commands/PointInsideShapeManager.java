@@ -1,7 +1,7 @@
 package com.example.alexander.shapespainter.controller.commands;
 
 import android.graphics.Bitmap;
-import android.graphics.Rect;
+import android.graphics.RectF;
 
 import com.example.alexander.shapespainter.model.Shape;
 import com.example.alexander.shapespainter.model.ShapeDiagram;
@@ -24,8 +24,8 @@ public class PointInsideShapeManager {
         return false;
     }
 
-    public boolean isPointInside(Rect rect, Vector2f point, Bitmap bitmap) {
-        return (rect.contains((int) point.getX(), (int) point.getY())); /*&&
+    public boolean isPointInside(RectF rect, Vector2f point, Bitmap bitmap) {
+        return (rect.contains(point.getX(), point.getY())); /*&&
                 bitmap.getPixel((int) point.getX() - rect.left, (int) point.getY() - rect.top) != Color.TRANSPARENT);*/
     }
 
@@ -54,11 +54,10 @@ public class PointInsideShapeManager {
     private boolean isPointInsideEllipse(Shape shape, Vector2f point) {
         Vector2f center = shape.getCenter();
         ShapeDiagram shapeDiagram = shape.getDiagram();
-        float wRadius = center.y + shapeDiagram.getTop();
-        float hRadius = center.x + shapeDiagram.getLeft();
-
-        return Math.pow(point.x - center.x, 2) / wRadius//Math.pow(wRadius, 2)
-                + Math.pow(point.y - center.y, 2) / hRadius <=1;//Math.pow(hRadius, 2) <= 1;
+        float wRadius = center.y - shapeDiagram.getTop();
+        float hRadius = center.x - shapeDiagram.getLeft();
+        return Math.pow(point.x - center.x, 2) / Math.pow(wRadius, 2)
+                + Math.pow(point.y - center.y, 2) / Math.pow(hRadius, 2) <= 1;
     }
 
     private float sign(Vector2f p1, Vector2f p2, Vector2f p3) {

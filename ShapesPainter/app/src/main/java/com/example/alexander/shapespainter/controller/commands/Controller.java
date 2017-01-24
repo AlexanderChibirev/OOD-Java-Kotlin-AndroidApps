@@ -2,7 +2,7 @@ package com.example.alexander.shapespainter.controller.commands;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Rect;
+import android.graphics.RectF;
 
 import com.example.alexander.shapespainter.ShapesList;
 import com.example.alexander.shapespainter.model.Shape;
@@ -24,7 +24,7 @@ public class Controller {
     private Context mContext;
     private int mScreenWidth;
     private Vector2f mClickPosition = new Vector2f(0, 0);
-    private Rect mBitmapRect = new Rect();
+    private RectF mBitmapRect = new RectF();
 
     public Controller(Context context, int screenWidth) {
         mTools = new Tools(context, screenWidth);
@@ -57,10 +57,8 @@ public class Controller {
     private void updateShapesTools() {
         for (Shape shape : mTools.getTools().getShapes()) {
             if (mPointInsideShapeManager.isPointInside(shape, mMousePos)) {
-                /*Toast toast = Toast.makeText(mContext.getApplicationContext(),
-                       "sadas", Toast.LENGTH_SHORT);
-                toast.show();*/
-                shape.setCenter(new Vector2f(0,0));
+                //TODO:: рабоает корректно
+                shape.setCenter(new Vector2f(0, 0));
             }
         }
     }
@@ -72,11 +70,12 @@ public class Controller {
             bitmap = (Bitmap) entry.getKey();
             pos = (Vector2f) entry.getValue();
             mBitmapRect.set(
-                    (int) pos.x,
-                    (int) pos.y,
+                    pos.x,
+                    pos.y,
                     bitmap.getWidth(),
                     bitmap.getHeight());
 
+            //TODO:: не работает поиск битмапа
             if (pos.x == mScreenWidth - DEFAULT_SHIFT_POSITION_X_FOR_UNDO_TOOLBAR) {
                 //bitmap = undo
                 if (mPointInsideShapeManager.isPointInside(mBitmapRect, mMousePos, bitmap)) {

@@ -33,5 +33,5 @@ public class ConstWorld {
 
     public static final Vector2f DEFAULT_SIZE_TRIANGLE_TOOLBAR = new Vector2f(80, 50);
     public static final Vector2f DEFAULT_SIZE_RECTANGLE_TOOLBAR = new Vector2f(80, 50);
-    public static final Vector2f DEFAULT_SIZE_ELLIPSE_TOOLBAR = new Vector2f(26, 26);
+    public static final Vector2f DEFAULT_SIZE_ELLIPSE_TOOLBAR = new Vector2f(50, 50);
 }

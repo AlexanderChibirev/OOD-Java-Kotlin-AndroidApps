@@ -28,8 +28,8 @@ class Painter implements ICanvas {
                 case Ellipse:
                     drawEllipse(
                             shape.getCenter(),
-                            ((diagram.getRight() - diagram.getLeft())),
-                            ((diagram.getBottom() - diagram.getTop())),
+                            ((diagram.getRight() - diagram.getLeft()) / 2f),
+                            ((diagram.getBottom() - diagram.getTop()) / 2f),
                             canvas);
                     break;
                 case Rectangle:
@@ -66,7 +66,6 @@ class Painter implements ICanvas {
     @Override
     public void drawEllipse(Vector2f center, float hRadius, float wRadius, Canvas canvas) {
         RectF rectangle = new RectF(center.x - hRadius, center.y - wRadius, center.x + hRadius, center.y + wRadius);
-        System.out.print(rectangle);
         mPaint.setColor(Color.BLUE);
         mPaint.setStyle(Paint.Style.FILL);
         canvas.drawOval(rectangle, mPaint);
