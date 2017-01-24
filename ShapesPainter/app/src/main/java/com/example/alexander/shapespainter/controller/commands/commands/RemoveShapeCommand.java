@@ -1,15 +1,15 @@
 package com.example.alexander.shapespainter.controller.commands.commands;
 
-import com.example.alexander.shapespainter.PictureDraft;
+import com.example.alexander.shapespainter.ShapesList;
 import com.example.alexander.shapespainter.controller.commands.ICommand;
 import com.example.alexander.shapespainter.model.Shape;
 
 public class RemoveShapeCommand implements ICommand {
 
-    private PictureDraft mPictureDraft;
+    private ShapesList mPictureDraft;
     private Shape mShape;
 
-    RemoveShapeCommand(PictureDraft pictureDraft, Shape shape) {
+    RemoveShapeCommand(ShapesList pictureDraft, Shape shape) {
         mPictureDraft = pictureDraft;
         mShape = shape;
     }

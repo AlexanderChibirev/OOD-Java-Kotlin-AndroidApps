@@ -3,7 +3,6 @@ package com.example.alexander.shapespainter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -11,37 +10,49 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 
 import com.example.alexander.shapespainter.model.Shape;
+import com.example.alexander.shapespainter.model.ShapeDiagram;
 import com.example.alexander.shapespainter.utils.PainterUtils;
 
-import javax.vecmath.Vector2f;
+import java.util.Map;
+import java.util.Vector;
 
-import static com.example.alexander.shapespainter.ConstWorld.DEFAULT_BUTTON_RESIZE;
-import static com.example.alexander.shapespainter.ConstWorld.DEFAULT_SHIFT_FOR_MOVING_TOOLBAR;
-import static com.example.alexander.shapespainter.ConstWorld.DEFAULT_SHIFT_FOR_START_TOOLBAR_X;
-import static com.example.alexander.shapespainter.ConstWorld.DEFAULT_SHIFT_FOR_START_TOOLBAR_Y;
+import javax.vecmath.Vector2f;
 
 class Painter implements ICanvas {
     private Paint mPaint = new Paint();
 
-    private Bitmap mBitmapIconRedo;
-    private Bitmap mBitmapIconUndo;
-    private Bitmap mBitmapIconTrash;
-
-    void drawPicture(PictureDraft draft, Canvas canvas) {
+    void drawPicture(ShapesList draft, Canvas canvas) {
         for (Shape shape : draft.getShapes()) {
+            ShapeDiagram diagram = shape.getDiagram();
+            Vector<Vector2f> vertices = shape.getVertices();
             switch (shape.getType()) {
                 case Ellipse:
+                    drawEllipse(
+                            shape.getCenter(),
+                            (diagram.getRight() - diagram.getLeft()),
+                            (diagram.getBottom() - diagram.getTop()),
+                            canvas);
                     break;
                 case Rectangle:
+                    drawRectangle(
+                            vertices.get(0),
+                            vertices.get(2),
+                            canvas);
                     break;
                 case Triangle:
+                    vertices = shape.getVertices();
+                    drawTriangle(
+                            vertices.get(0),
+                            vertices.get(1),
+                            vertices.get(2),
+                            canvas);
                     break;
             }
         }
     }
 
     Painter(Context context) {
-        initTools(context);
+
     }
 
     @Override
@@ -87,23 +98,14 @@ class Painter implements ICanvas {
                 });
     }
 
-    private void initTools(Context context) {
-        int resizeValue = DEFAULT_BUTTON_RESIZE;
-        mBitmapIconRedo = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_menu_redo);
-        mBitmapIconRedo = PainterUtils.getResizedBitmap(mBitmapIconRedo, resizeValue, resizeValue);
-        mBitmapIconUndo = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_menu_undo);
-        mBitmapIconUndo = PainterUtils.getResizedBitmap(mBitmapIconUndo, resizeValue, resizeValue);
-        mBitmapIconTrash = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_menu_trash);
-        mBitmapIconTrash = PainterUtils.getResizedBitmap(mBitmapIconTrash, resizeValue, resizeValue);
-    }
-
-    void drawTools(Canvas canvas, int screenWidth) {
-        int x = screenWidth - DEFAULT_SHIFT_FOR_START_TOOLBAR_X;
-        int y = DEFAULT_SHIFT_FOR_START_TOOLBAR_Y;
-        canvas.drawBitmap(mBitmapIconUndo, x, y, mPaint);
-        x += DEFAULT_SHIFT_FOR_MOVING_TOOLBAR;
-        canvas.drawBitmap(mBitmapIconRedo, x, y, mPaint);
-        x += DEFAULT_SHIFT_FOR_MOVING_TOOLBAR;
-        canvas.drawBitmap(mBitmapIconTrash, x, y, mPaint);
+    void drawTools(Canvas canvas, ShapesList draft, Map<Bitmap, Vector2f> bitmaps) {
+        Bitmap bitmap;
+        Vector2f pos;
+        for (Map.Entry entry : bitmaps.entrySet()) {
+            bitmap = (Bitmap) entry.getKey();
+            pos = (Vector2f) entry.getValue();
+            canvas.drawBitmap(bitmap, pos.x, pos.y, mPaint);
+        }
+        drawPicture(draft, canvas);
     }
 }

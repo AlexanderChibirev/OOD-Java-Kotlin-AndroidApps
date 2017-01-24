@@ -1,39 +1,45 @@
 package com.example.alexander.shapespainter.controller.commands;
 
-import com.example.alexander.shapespainter.PictureDraft;
+import android.content.Context;
+import android.graphics.Bitmap;
+
+import com.example.alexander.shapespainter.ShapesList;
 import com.example.alexander.shapespainter.model.Shape;
-import com.example.alexander.shapespainter.model.ShapeFactory;
-import com.example.alexander.shapespainter.model.ShapeType;
+import com.example.alexander.shapespainter.model.Tools;
+
+import java.util.Map;
 
 import javax.vecmath.Vector2f;
 
 
 public class Controller {
 
-    private PictureDraft mPictureDraft = new PictureDraft();
-
-    private ShapeFactory mShapeFactory = new ShapeFactory();
+    private ShapesList mShapesList = new ShapesList();
+    private Tools mTools;
     private Vector2f mMousePos = new Vector2f(0, 0);
     private PointInsideShapeManager mPointInsideShape = new PointInsideShapeManager();
 
-    public PictureDraft getPictureDraft() {
-        createBaseTools();
-        return mPictureDraft;
+
+    public Controller(Context context, int screenWidth) {
+        mTools = new Tools(context, screenWidth);
     }
 
-    private void createBaseTools() {
-        Shape shape = mShapeFactory.createShape(new Vector2f(150, 45), 26, 26, ShapeType.Ellipse);
-        mPictureDraft.addShape(shape);
-        shape = mShapeFactory.createShape(new Vector2f(220, 20), 80, 50, ShapeType.Rectangle);
-        mPictureDraft.addShape(shape);
-        shape = mShapeFactory.createShape(new Vector2f(60, 45), 80, 50, ShapeType.Triangle);
-        mPictureDraft.addShape(shape);
+    public ShapesList getShapesDraft() {
+        return mShapesList;
+    }
+
+    public ShapesList getToolsDraft() {
+        return mTools.getTools();
+    }
+
+    public Map<Bitmap, Vector2f> getBitmaps() {
+        return mTools.getBitmaps();
     }
 
     public void update() {
         int count = 0;
         final int baseShapeQuantity = 2;
-        for (Shape shape : mPictureDraft.getShapes()) {
+        for (Shape shape : mShapesList.getShapes()) {
             if (count < baseShapeQuantity) {
                 if (mPointInsideShape.isPointInside(shape, mMousePos)) {
 
@@ -69,4 +75,5 @@ public class Controller {
     public void setMousePos(float x, float y) {
         mMousePos.set(x, y);
     }
+
 }

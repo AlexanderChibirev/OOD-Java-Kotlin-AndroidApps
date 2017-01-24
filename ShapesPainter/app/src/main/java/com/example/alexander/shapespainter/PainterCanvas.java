@@ -7,6 +7,8 @@ import android.graphics.Paint;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.example.alexander.shapespainter.controller.commands.Controller;
+
 
 public class PainterCanvas extends SurfaceView implements SurfaceHolder.Callback {
 
@@ -16,11 +18,13 @@ public class PainterCanvas extends SurfaceView implements SurfaceHolder.Callback
     private int x = 0;
     private int mScreenWidth;
     private Painter mPainter;
-    private PictureDraft mPictureDraft = new PictureDraft();
+    private ShapesList mShapesList = new ShapesList();
+    private Controller mController;
 
     public PainterCanvas(Context context, int screenWidth) {
         super(context);
         getHolder().addCallback(this);
+        mController = new Controller(context, screenWidth);
         mPainter = new Painter(context);
         mScreenWidth = screenWidth;
     }
@@ -58,8 +62,7 @@ public class PainterCanvas extends SurfaceView implements SurfaceHolder.Callback
     }
 
     public void drawModels(Canvas canvas) {
-        mPainter.drawPicture(mPictureDraft, canvas);
-
+        mPainter.drawPicture(mController.getShapesDraft(), canvas);
         mPaint.setColor(Color.BLUE);
         canvas.drawRect(x, 1, 100, 100, mPaint);
         x++;
@@ -69,7 +72,7 @@ public class PainterCanvas extends SurfaceView implements SurfaceHolder.Callback
     }
 
     public void drawTools(Canvas canvas) {
-        mPainter.drawTools(canvas, mScreenWidth);
+        mPainter.drawTools(canvas, mController.getToolsDraft(), mController.getBitmaps());
     }
 
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {

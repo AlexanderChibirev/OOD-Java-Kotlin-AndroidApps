@@ -6,7 +6,7 @@ import com.example.alexander.shapespainter.model.Shape;
 import java.util.ArrayList;
 
 
-public class PictureDraft {
+public class ShapesList {
     private ArrayList<Shape> shapeArrayList = new ArrayList<>();
 
     public void addShape(Shape shape) {
