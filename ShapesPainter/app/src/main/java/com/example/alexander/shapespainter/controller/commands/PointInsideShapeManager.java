@@ -57,6 +57,7 @@ class PointInsideShapeManager {
         ShapeDiagram shapeDiagram = shape.getDiagram();
         float wRadius = center.y - shapeDiagram.getTop();
         float hRadius = center.x - shapeDiagram.getLeft();
+
         return Math.pow(point.x - center.x, 2) / Math.pow(wRadius, 2)
                 + Math.pow(point.y - center.y, 2) / Math.pow(hRadius, 2) <= 1;
     }

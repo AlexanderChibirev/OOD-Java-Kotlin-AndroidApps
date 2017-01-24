@@ -9,7 +9,7 @@ import android.view.SurfaceView;
 import com.example.alexander.shapespainter.controller.commands.Controller;
 
 
-public class PainterCanvas extends SurfaceView implements SurfaceHolder.Callback {
+public class PainterCanvas extends SurfaceView implements SurfaceHolder.Callback   {
 
     private PainterThread mPainterThread = null;
     private Painter mPainter;
@@ -82,7 +82,13 @@ public class PainterCanvas extends SurfaceView implements SurfaceHolder.Callback
                 mController.setMousePosition(event.getX(), event.getY());
                 break;
         }
+        invalidate();
         return true;
     }
 
+
+
+
+
 }
+

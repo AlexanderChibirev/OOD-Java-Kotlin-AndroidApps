@@ -27,7 +27,7 @@ public class Controller {
     private Context mContext;
     private int mScreenWidth;
     private RectF mBitmapRect = new RectF();
-    private Vector<ICommand> mHistoryCommand = new  Vector<>();
+    private Vector<ICommand> mHistoryCommand = new Vector<>();
 
     public Controller(Context context, int screenWidth) {
         mTools = new Tools(context, screenWidth);
@@ -62,20 +62,40 @@ public class Controller {
             if (mPointInsideShapeManager.isPointInside(shape, mMousePos)) {
                 switch (shape.getType()) {
                     case Ellipse:
-                        mHistoryCommand.add(new AddShapeCommand(mShapesList, ShapeType.Ellipse));
-                        mHistoryCommand.get(mHistoryCommand.size() - 1).execute();
+                        addCommand(new AddShapeCommand(mShapesList, ShapeType.Ellipse));
                         break;
-                    case  Triangle:
-                        mHistoryCommand.add(new AddShapeCommand(mShapesList, ShapeType.Triangle));
-                        mHistoryCommand.get(mHistoryCommand.size() - 1).execute();
+                    case Triangle:
+                        addCommand(new AddShapeCommand(mShapesList, ShapeType.Triangle));
                         break;
                     case Rectangle:
-                        mHistoryCommand.add(new AddShapeCommand(mShapesList, ShapeType.Rectangle));
-                        mHistoryCommand.get(mHistoryCommand.size() - 1).execute();
+                        addCommand(new AddShapeCommand(mShapesList, ShapeType.Rectangle));
                         break;
                 }
             }
         }
+    }
+
+    private void addCommand(ICommand command) {
+        if (!mHistoryCommand.isEmpty()) {
+
+        }
+        command.execute();
+        mHistoryCommand.add(command);
+    }
+
+    private void undoCommand() {
+
+    }
+
+    private void redoCommand() {
+
+    }
+
+    private void clearHistory() {
+        for (int i = 0; i < mHistoryCommand.size(); i++) {
+            mHistoryCommand.get(i).unExecute();
+        }
+        mHistoryCommand.clear();
     }
 
     private void updateBitmaps() {
@@ -92,7 +112,7 @@ public class Controller {
             if (bitmapPos.x == mScreenWidth - DEFAULT_SHIFT_POSITION_X_FOR_UNDO_TOOLBAR) {
                 //bitmap = undo
                 if (mPointInsideShapeManager.isPointInside(mBitmapRect, mMousePos, bitmap)) {
-                    entry.setValue(new Vector2f(0, 0));
+                    mHistoryCommand.get(0).unExecute();
                 }
             } else if (bitmapPos.x == mScreenWidth - DEFAULT_SHIFT_POSITION_X_FOR_REDO_TOOLBAR) {
                 //bitmap = redo
@@ -102,7 +122,7 @@ public class Controller {
             } else {
                 //bitmap = trash
                 if (mPointInsideShapeManager.isPointInside(mBitmapRect, mMousePos, bitmap)) {
-                    entry.setValue(new Vector2f(0, 0));
+                    clearHistory();
                 }
             }
         }
@@ -111,6 +131,7 @@ public class Controller {
     private void updateShapes() {
         for (Shape shape : mShapesList.getShapes()) {
             if (mPointInsideShapeManager.isPointInside(shape, mMousePos)) {
+                //TODO:: сделать проверку на выборку фигуры, если она выбрана, то устанавливается позиция фигуры
                 shape.setCenter(mMousePos);
             }
         }

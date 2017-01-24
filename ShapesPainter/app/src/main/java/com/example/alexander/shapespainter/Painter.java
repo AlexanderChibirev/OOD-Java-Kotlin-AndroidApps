@@ -20,7 +20,7 @@ class Painter implements ICanvas {
     private Paint mPaint = new Paint();
     ShapeDiagram mDiagram;
     Vector<Vector2f> mVertices;
-    RectF mRectangleEllipse = new RectF(0,0,0,0);
+    RectF mRectangleEllipse = new RectF();
 
     void drawPicture(ShapesList draft, Canvas canvas) {
         for (Shape shape : draft.getShapes()) {
