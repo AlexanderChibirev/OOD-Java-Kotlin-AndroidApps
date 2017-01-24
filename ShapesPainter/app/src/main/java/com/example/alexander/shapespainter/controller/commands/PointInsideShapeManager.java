@@ -1,6 +1,7 @@
 package com.example.alexander.shapespainter.controller.commands;
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.RectF;
 
 import com.example.alexander.shapespainter.model.Shape;
@@ -10,9 +11,9 @@ import java.util.Vector;
 
 import javax.vecmath.Vector2f;
 
-public class PointInsideShapeManager {
+class PointInsideShapeManager {
 
-    public boolean isPointInside(Shape shape, Vector2f point) {
+    boolean isPointInside(Shape shape, Vector2f point) {
         switch (shape.getType()) {
             case Ellipse:
                 return isPointInsideEllipse(shape, point);
@@ -24,9 +25,9 @@ public class PointInsideShapeManager {
         return false;
     }
 
-    public boolean isPointInside(RectF rect, Vector2f point, Bitmap bitmap) {
-        return (rect.contains(point.getX(), point.getY())); /*&&
-                bitmap.getPixel((int) point.getX() - rect.left, (int) point.getY() - rect.top) != Color.TRANSPARENT);*/
+    boolean isPointInside(RectF rect, Vector2f point, Bitmap bitmap) {
+        return (rect.contains(point.x, point.y)) &&
+                bitmap.getPixel((int) (point.getX() - rect.left), (int) (point.getY() - rect.top)) != Color.TRANSPARENT;
     }
 
     private boolean isPointInsideTriangle(Shape shape, Vector2f point) {

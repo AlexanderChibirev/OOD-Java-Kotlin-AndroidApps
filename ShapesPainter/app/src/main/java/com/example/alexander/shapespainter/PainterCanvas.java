@@ -32,7 +32,6 @@ public class PainterCanvas extends SurfaceView implements SurfaceHolder.Callback
     public void stopApp() {
         if (mPainterThread != null) {
             mPainterThread.stopThread();
-
             // Waiting for the mPainterThread to die by calling mPainterThread.join,
             // repeatedly if necessary
             boolean retry = true;

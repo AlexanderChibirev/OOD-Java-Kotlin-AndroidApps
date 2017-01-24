@@ -3,6 +3,7 @@ package com.example.alexander.shapespainter.controller.commands;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.RectF;
+import android.widget.Toast;
 
 import com.example.alexander.shapespainter.ShapesList;
 import com.example.alexander.shapespainter.model.Shape;
@@ -65,31 +66,29 @@ public class Controller {
 
     private void updateBitmaps() {
         Bitmap bitmap;
-        Vector2f pos;
+        Vector2f bitmapPos;
         for (Map.Entry entry : mTools.getBitmapTools().entrySet()) {
             bitmap = (Bitmap) entry.getKey();
-            pos = (Vector2f) entry.getValue();
-            mBitmapRect.set(
-                    pos.x,
-                    pos.y,
-                    bitmap.getWidth(),
-                    bitmap.getHeight());
-
-            //TODO:: не работает поиск битмапа
-            if (pos.x == mScreenWidth - DEFAULT_SHIFT_POSITION_X_FOR_UNDO_TOOLBAR) {
+            bitmapPos = (Vector2f) entry.getValue();
+            mBitmapRect = new RectF(
+                    bitmapPos.x,
+                    bitmapPos.y,
+                    bitmapPos.x + bitmap.getWidth(),
+                    bitmapPos.y + bitmap.getHeight());
+            if (bitmapPos.x == mScreenWidth - DEFAULT_SHIFT_POSITION_X_FOR_UNDO_TOOLBAR) {
                 //bitmap = undo
                 if (mPointInsideShapeManager.isPointInside(mBitmapRect, mMousePos, bitmap)) {
-
+                    entry.setValue(new Vector2f(0,0));
                 }
-            } else if (pos.x == mScreenWidth - DEFAULT_SHIFT_POSITION_X_FOR_REDO_TOOLBAR) {
+            } else if (bitmapPos.x == mScreenWidth - DEFAULT_SHIFT_POSITION_X_FOR_REDO_TOOLBAR) {
                 //bitmap = redo
                 if (mPointInsideShapeManager.isPointInside(mBitmapRect, mMousePos, bitmap)) {
-
+                    entry.setValue(new Vector2f(0,0));
                 }
             } else {
                 //bitmap = trash
                 if (mPointInsideShapeManager.isPointInside(mBitmapRect, mMousePos, bitmap)) {
-
+                    entry.setValue(new Vector2f(0,0));
                 }
             }
         }
@@ -105,8 +104,10 @@ public class Controller {
 
 
     public void setMousePosition(float x, float y) {
+        Toast toast = Toast.makeText(mContext.getApplicationContext(),
+                mMousePos.toString(), Toast.LENGTH_SHORT);
+        toast.show();
         mMousePos.x = x;
         mMousePos.y = y;
-
     }
 }
