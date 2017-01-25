@@ -1,6 +1,6 @@
 package com.example.alexander.shapespainter.controller.commands.commands;
 
-import com.example.alexander.shapespainter.ShapesList;
+import com.example.alexander.shapespainter.model.ShapesList;
 import com.example.alexander.shapespainter.controller.commands.ICommand;
 import com.example.alexander.shapespainter.model.Shape;
 
@@ -9,7 +9,7 @@ public class RemoveShapeCommand implements ICommand {
     private Shape mShape;
     private int mIndex;
 
-    RemoveShapeCommand(ShapesList shapeList, Shape shape) {
+    public RemoveShapeCommand(ShapesList shapeList, Shape shape) {
         mShapesList = shapeList;
         mShape = shape;
         mIndex = shapeList.getIndexShape(shape);

@@ -1,11 +1,11 @@
-package com.example.alexander.shapespainter;
+package com.example.alexander.shapespainter.view;
 
 import android.graphics.Canvas;
 
 import javax.vecmath.Vector2f;
 
 
-public interface ICanvas {
+interface ICanvas {
     void drawRectangle(Vector2f leftTop,
                        Vector2f topBottom,
                        Canvas canvas);

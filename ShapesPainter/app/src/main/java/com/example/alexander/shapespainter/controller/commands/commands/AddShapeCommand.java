@@ -1,6 +1,6 @@
 package com.example.alexander.shapespainter.controller.commands.commands;
 
-import com.example.alexander.shapespainter.ShapesList;
+import com.example.alexander.shapespainter.model.ShapesList;
 import com.example.alexander.shapespainter.controller.commands.ICommand;
 import com.example.alexander.shapespainter.model.Shape;
 import com.example.alexander.shapespainter.model.ShapeFactory;
@@ -15,11 +15,11 @@ import static com.example.alexander.shapespainter.constants.ConstWorld.SHAPE_DEF
 public class AddShapeCommand implements ICommand {
     private ShapesList mShapesList;
     private Shape mShape;
-    private ShapeFactory mShapeFactory = new ShapeFactory();
 
     public AddShapeCommand(ShapesList shapesList, ShapeType shapeType) {
         mShapesList = shapesList;
-        mShape = mShapeFactory.createShape(
+        ShapeFactory shapeFactory = new ShapeFactory();
+        mShape = shapeFactory.createShape(
                 new Vector2f(SHAPE_DEFAULT_POSITION, SHAPE_DEFAULT_POSITION),
                 SHAPE_DEFAULT_WIDTH,
                 SHAPE_DEFAULT_HEIGHT,

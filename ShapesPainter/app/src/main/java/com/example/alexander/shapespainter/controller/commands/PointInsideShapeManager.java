@@ -13,7 +13,7 @@ import javax.vecmath.Vector2f;
 
 class PointInsideShapeManager {
 
-    boolean isPointInside(Shape shape, Vector2f point) {
+    static boolean isPointInside(Shape shape, Vector2f point) {
         switch (shape.getType()) {
             case Ellipse:
                 return isPointInsideEllipse(shape, point);
@@ -25,12 +25,12 @@ class PointInsideShapeManager {
         return false;
     }
 
-    boolean isPointInside(RectF rect, Vector2f point, Bitmap bitmap) {
+    static boolean isPointInside(RectF rect, Vector2f point, Bitmap bitmap) {
         return (rect.contains(point.x, point.y)) &&
                 bitmap.getPixel((int) (point.getX() - rect.left), (int) (point.getY() - rect.top)) != Color.TRANSPARENT;
     }
 
-    private boolean isPointInsideTriangle(Shape shape, Vector2f point) {
+    private static boolean isPointInsideTriangle(Shape shape, Vector2f point) {
         Vector<Vector2f> vertices = shape.getVertices();
         Vector2f vertex1 = vertices.get(0);
         Vector2f vertex2 = vertices.get(1);
@@ -44,7 +44,7 @@ class PointInsideShapeManager {
         return ((b1 == b2) && (b2 == b3));
     }
 
-    private boolean isPointInsideRectangle(Shape shape, Vector2f point) {
+    private static boolean isPointInsideRectangle(Shape shape, Vector2f point) {
         ShapeDiagram shapeDiagram = shape.getDiagram();
         return point.x <= shapeDiagram.getRight()
                 && point.x >= shapeDiagram.getLeft()
@@ -52,7 +52,7 @@ class PointInsideShapeManager {
                 && point.y <= shapeDiagram.getBottom();
     }
 
-    private boolean isPointInsideEllipse(Shape shape, Vector2f point) {
+    private static boolean isPointInsideEllipse(Shape shape, Vector2f point) {
         Vector2f center = shape.getCenter();
         ShapeDiagram shapeDiagram = shape.getDiagram();
         float wRadius = center.y - shapeDiagram.getTop();
@@ -62,7 +62,7 @@ class PointInsideShapeManager {
                 + Math.pow(point.y - center.y, 2) / Math.pow(hRadius, 2) <= 1;
     }
 
-    private float sign(Vector2f p1, Vector2f p2, Vector2f p3) {
+    private static float sign(Vector2f p1, Vector2f p2, Vector2f p3) {
         return (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y);
     }
 }

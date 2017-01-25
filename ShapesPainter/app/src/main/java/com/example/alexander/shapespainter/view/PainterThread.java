@@ -1,4 +1,4 @@
-package com.example.alexander.shapespainter;
+package com.example.alexander.shapespainter.view;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -27,7 +27,7 @@ class PainterThread extends Thread {
     }
 
     public void run() {
-        Canvas canvas = null;
+        Canvas canvas;
         while (running) {
             canvas = null;
             try {

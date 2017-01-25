@@ -9,7 +9,7 @@ import android.graphics.Path;
 import javax.vecmath.Vector2f;
 
 public class PainterUtils {
-    public static void drawPoly(Canvas canvas, int color, Vector2f[] points) {
+    public static void drawPolygon(Canvas canvas, int color, Vector2f[] points) {
         // line at minimum...
         if (points.length < 2) {
             return;

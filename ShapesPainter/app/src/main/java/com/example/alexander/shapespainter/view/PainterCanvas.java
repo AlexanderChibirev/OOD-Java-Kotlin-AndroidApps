@@ -1,4 +1,4 @@
-package com.example.alexander.shapespainter;
+package com.example.alexander.shapespainter.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -7,13 +7,15 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import com.example.alexander.shapespainter.controller.commands.Controller;
+import com.example.alexander.shapespainter.controller.commands.MouseActionType;
 
 
-public class PainterCanvas extends SurfaceView implements SurfaceHolder.Callback   {
+public class PainterCanvas extends SurfaceView implements SurfaceHolder.Callback {
 
     private PainterThread mPainterThread = null;
     private Painter mPainter;
     private Controller mController;
+    private Context mContext;
 
     public PainterCanvas(Context context, int screenWidth) {
         super(context);
@@ -53,6 +55,9 @@ public class PainterCanvas extends SurfaceView implements SurfaceHolder.Callback
 
     public void drawModels(Canvas canvas) {
         mPainter.drawPicture(mController.getShapesDraft(), canvas);
+        if (mController.getSelectDiagramShape().getShape() != null) {
+            mPainter.drawSelectDiagramShape(mController.getSelectDiagramShape(), canvas);
+        }
     }
 
     public void drawTools(Canvas canvas) {
@@ -74,20 +79,23 @@ public class PainterCanvas extends SurfaceView implements SurfaceHolder.Callback
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         // TODO Auto-generated method stub
+        mController.setClickMousePosition(event.getX(), event.getY());
         switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                mController.setMousePosition(event.getX(), event.getY());
+            case MotionEvent.ACTION_DOWN://нажатие
+                mController.setMouseMotionType(MouseActionType.Down);
                 break;
-            case MotionEvent.ACTION_MOVE:
-                mController.setMousePosition(event.getX(), event.getY());
+            case MotionEvent.ACTION_MOVE://движение
+                mController.setMouseMotionType(MouseActionType.Move);
+                break;
+
+            case MotionEvent.ACTION_UP: // отпускание
+            case MotionEvent.ACTION_CANCEL:
+                mController.setMouseMotionType(MouseActionType.Up);
                 break;
         }
         invalidate();
         return true;
     }
-
-
-
 
 
 }

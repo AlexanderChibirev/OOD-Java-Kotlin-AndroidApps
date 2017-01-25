@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import com.example.alexander.shapespainter.R;
-import com.example.alexander.shapespainter.ShapesList;
 import com.example.alexander.shapespainter.utils.PainterUtils;
 
 import java.util.HashMap;
@@ -18,7 +17,7 @@ import static com.example.alexander.shapespainter.constants.ConstWorld.*;
 public class Tools {
 
     private ShapesList mToolsList = new ShapesList();
-    private Map<Bitmap, Vector2f> mBitmaps = new HashMap<>();
+    private Map<Bitmap, Vector2f> mBitmapsList = new HashMap<>();
 
     public Tools(Context context, int screenWidth) {
         initTools(context, screenWidth);
@@ -52,23 +51,23 @@ public class Tools {
                 DEFAULT_SHIFT_FOR_START_TOOLBAR_Y);
         mBitmapTools = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_menu_undo);
         mBitmapTools = PainterUtils.getResizedBitmap(mBitmapTools, resizeValue, resizeValue);
-        mBitmaps.put(mBitmapTools, undoPosition);
+        mBitmapsList.put(mBitmapTools, undoPosition);
 
         Vector2f positionRedo = new Vector2f(
                 screenWidth - DEFAULT_SHIFT_POSITION_X_FOR_REDO_TOOLBAR,
                 DEFAULT_SHIFT_FOR_START_TOOLBAR_Y);
         mBitmapTools = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_menu_redo);
         mBitmapTools = PainterUtils.getResizedBitmap(mBitmapTools, resizeValue, resizeValue);
-        mBitmaps.put(mBitmapTools, positionRedo);
+        mBitmapsList.put(mBitmapTools, positionRedo);
 
         Vector2f trashPosition = new Vector2f(screenWidth - DEFAULT_SHIFT_POSITION_X_FOR_TRASH_TOOLBAR, DEFAULT_SHIFT_FOR_START_TOOLBAR_Y);
         mBitmapTools = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_menu_trash);
         mBitmapTools = PainterUtils.getResizedBitmap(mBitmapTools, resizeValue, resizeValue);
-        mBitmaps.put(mBitmapTools, trashPosition);
+        mBitmapsList.put(mBitmapTools, trashPosition);
     }
 
-    public Map<Bitmap, Vector2f> getBitmapTools() {
-        return mBitmaps;
+    public Map<Bitmap, Vector2f> getBitmapToolsList() {
+        return mBitmapsList;
     }
 
     public ShapesList getToolsList() {
