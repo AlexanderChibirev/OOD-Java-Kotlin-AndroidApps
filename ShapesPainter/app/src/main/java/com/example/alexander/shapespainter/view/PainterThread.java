@@ -35,7 +35,6 @@ class PainterThread extends Thread {
                 synchronized (mSurfaceHolder) {
                     if (canvas != null) {
                         canvas.drawColor(Color.WHITE);
-                        mCanvas.updateModels();
                         mCanvas.drawModels(canvas);
                         mCanvas.drawTools(canvas);
                     }

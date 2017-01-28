@@ -1,4 +1,4 @@
-package com.example.alexander.shapespainter.controller.commands;
+package com.example.alexander.shapespainter.controller;
 
 public interface ICommand {
     void execute();

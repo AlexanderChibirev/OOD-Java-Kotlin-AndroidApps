@@ -1,4 +1,4 @@
-package com.example.alexander.shapespainter.controller.commands;
+package com.example.alexander.shapespainter.controller;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;

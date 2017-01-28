@@ -6,8 +6,10 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import com.example.alexander.shapespainter.controller.commands.Controller;
-import com.example.alexander.shapespainter.controller.commands.MouseActionType;
+import com.example.alexander.shapespainter.controller.Controller;
+import com.example.alexander.shapespainter.controller.MouseActionType;
+
+import javax.vecmath.Vector2f;
 
 
 public class PainterCanvas extends SurfaceView implements SurfaceHolder.Callback {
@@ -49,10 +51,6 @@ public class PainterCanvas extends SurfaceView implements SurfaceHolder.Callback
         }
     }
 
-    public void updateModels() {
-        mController.update();
-    }
-
     public void drawModels(Canvas canvas) {
         mPainter.drawPicture(mController.getShapesDraft(), canvas);
         if (mController.getSelectDiagramShape().getShape() != null) {
@@ -78,16 +76,17 @@ public class PainterCanvas extends SurfaceView implements SurfaceHolder.Callback
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        // TODO Auto-generated method stub
-        mController.setClickMousePosition(event.getX(), event.getY());
+        Vector2f mousePos = new Vector2f(event.getX(), event.getY());
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN://нажатие
                 mController.setMouseMotionType(MouseActionType.Down);
+                mController.updateToolbars(mousePos);
+                mController.updateShapes(mousePos);
                 break;
             case MotionEvent.ACTION_MOVE://движение
                 mController.setMouseMotionType(MouseActionType.Move);
+                mController.updateShapes(mousePos);
                 break;
-
             case MotionEvent.ACTION_UP: // отпускание
             case MotionEvent.ACTION_CANCEL:
                 mController.setMouseMotionType(MouseActionType.Up);

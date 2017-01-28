@@ -59,7 +59,7 @@ class Painter implements ICanvas {
 
     @Override
     public void drawRectangle(Vector2f leftTop, Vector2f topBottom, Canvas canvas) {
-        mPaint.setColor(Color.BLUE);
+        mPaint.setColor(Color.YELLOW);
         mPaint.setStyle(Paint.Style.FILL);
         canvas.drawRect(leftTop.x, leftTop.y, topBottom.x, topBottom.y, mPaint);
 
@@ -71,7 +71,7 @@ class Painter implements ICanvas {
     @Override
     public void drawEllipse(Vector2f center, float hRadius, float wRadius, Canvas canvas) {
         RectF rectangleEllipse = new RectF(center.x - hRadius, center.y - wRadius, center.x + hRadius, center.y + wRadius);
-        mPaint.setColor(Color.BLUE);
+        mPaint.setColor(Color.GRAY);
         mPaint.setStyle(Paint.Style.FILL);
         canvas.drawOval(rectangleEllipse, mPaint);
 
@@ -90,7 +90,7 @@ class Painter implements ICanvas {
                 });
 
         int shiftForOutlineColor = 2;
-        PainterUtils.drawPolygon(canvas, Color.BLUE,
+        PainterUtils.drawPolygon(canvas, Color.MAGENTA,
                 new Vector2f[]{
                         new Vector2f(vertex1.x + shiftForOutlineColor, vertex1.y - shiftForOutlineColor),
                         new Vector2f(vertex2.x - shiftForOutlineColor, vertex2.y - shiftForOutlineColor),
@@ -113,7 +113,7 @@ class Painter implements ICanvas {
         Shape shape = selectDiagramShape.getShape();
         ShapeDiagram shapeDiagram = shape.getDiagram();
         mPaint.setStyle(Paint.Style.STROKE);
-        mPaint.setColor(Color.YELLOW);
+        mPaint.setColor(Color.BLACK);
         canvas.drawRect(
                 shapeDiagram.getLeft(),
                 shapeDiagram.getTop(),
@@ -122,7 +122,7 @@ class Painter implements ICanvas {
                 mPaint);
 
         mPaint.setStyle(Paint.Style.FILL);
-        mPaint.setColor(Color.BLACK);
+        mPaint.setColor(Color.BLUE);
         canvas.drawCircle(shapeDiagram.getLeft(), shapeDiagram.getBottom(), DEFAULT_RADIUS_DRAG_POINT, mPaint);
         canvas.drawCircle(shapeDiagram.getRight(), shapeDiagram.getBottom(), DEFAULT_RADIUS_DRAG_POINT, mPaint);
         canvas.drawCircle(shapeDiagram.getRight(), shapeDiagram.getTop(), DEFAULT_RADIUS_DRAG_POINT, mPaint);

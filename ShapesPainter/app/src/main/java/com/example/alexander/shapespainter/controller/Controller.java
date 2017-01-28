@@ -1,18 +1,17 @@
-package com.example.alexander.shapespainter.controller.commands;
+package com.example.alexander.shapespainter.controller;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.RectF;
 import android.widget.Toast;
 
-import com.example.alexander.shapespainter.controller.commands.commands.AddShapeCommand;
-import com.example.alexander.shapespainter.controller.commands.commands.RemoveShapeCommand;
 import com.example.alexander.shapespainter.model.SelectShapeDiagram;
 import com.example.alexander.shapespainter.model.Shape;
 import com.example.alexander.shapespainter.model.ShapeDiagram;
 import com.example.alexander.shapespainter.model.ShapeType;
 import com.example.alexander.shapespainter.model.ShapesList;
 import com.example.alexander.shapespainter.model.Tools;
+import com.example.alexander.shapespainter.controller.commands.*;
 
 import java.util.Map;
 import java.util.Vector;
@@ -56,18 +55,15 @@ public class Controller {
         return mTools.getBitmapToolsList();
     }
 
-    public void update() {
-        updateToolbars();
-        updateShapes();
-    }
 
-    private void updateToolbars() {
+    public void updateToolbars(Vector2f pos) {
+        mMousePos = pos;
         updateShapesTools();
         updateBitmaps();
     }
 
     private void updateShapesTools() {
-        for (Shape shape : mTools.getToolsList().getShapes()) {//TODO:: добовлять фигуры при отпускании клавиши 1раз!!!!!
+        for (Shape shape : mTools.getToolsList().getShapes()) {
             if (PointInsideShapeManager.isPointInside(shape, mMousePos)) {
                 switch (shape.getType()) {
                     case Ellipse:
@@ -107,6 +103,7 @@ public class Controller {
 
     private void selectShapeClear() {
         addCommand(new RemoveShapeCommand(mShapesList, mSelectDiagramShape.getShape()));
+        mSelectDiagramShape.setShape(null);
     }
 
     private void updateBitmaps() {
@@ -132,47 +129,56 @@ public class Controller {
                 }
             } else {
                 //bitmap = trash
-                if (PointInsideShapeManager.isPointInside(bitmapRect, mMousePos, bitmap)) {
+                if (PointInsideShapeManager.isPointInside(bitmapRect, mMousePos, bitmap) && mSelectDiagramShape.getShape() != null) {
                     selectShapeClear();
                 }
             }
         }
     }
 
-    private void updateShapes() {
+    public void updateShapes(Vector2f pos) {
         for (Shape shape : mShapesList.getShapes()) {
-            if (PointInsideShapeManager.isPointInside(shape, mMousePos)) {
-                switch (mMouseActionType) {
-                    case Down:
+            switch (mMouseActionType) {
+                case Down:
+                    if (PointInsideShapeManager.isPointInside(shape, pos)) {
                         mSelectDiagramShape.setShape(shape);
-                        break;
-                    case Move:
-                        shape.setCenter(mMousePos);
-                        break;
-                    case Up:
-                        break;
-                }
-            } /*else if (mSelectDiagramShape.getShape() != null) {//TODO::блок для выполнения ресайза
-                getDragType();
-                switch (mDragType) {
-                    case LeftBottom:
-
-                        break;
-                    case LeftTop:
-                        toast();
-                        break;
-                    case RightBottom:
-
-                        break;
-                    case RightTop:
-
-                        break;
-                    default:
-                        break;
-                }
-            }*/
-            if (!PointInsideShapeManager.isPointInside(shape, mMousePos) && mMouseActionType == MouseActionType.Down) {
+                    }
+                    break;
+                case Move:
+                    if (shape == mSelectDiagramShape.getShape()) {
+                        shape.setCenter(pos);
+                    }
+                    break;
+                case Up:
+                    break;
+            }
+            if (mSelectDiagramShape.getShape() != null
+                    && !PointInsideShapeManager.isPointInside(mSelectDiagramShape.getShape(), pos)
+                    && mMouseActionType == MouseActionType.Down) {
                 mSelectDiagramShape.setShape(null);
+            }
+            //updateResizeShape();
+        }
+    }
+
+    private void updateResizeShape() {
+        if (mSelectDiagramShape.getShape() != null) {//TODO::блок для выполнения ресайза
+            getDragType();
+            switch (mDragType) {
+                case LeftBottom:
+
+                    break;
+                case LeftTop:
+                    toast();
+                    break;
+                case RightBottom:
+
+                    break;
+                case RightTop:
+
+                    break;
+                default:
+                    break;
             }
         }
     }

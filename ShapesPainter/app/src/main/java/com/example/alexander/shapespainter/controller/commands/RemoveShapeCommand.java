@@ -1,7 +1,7 @@
-package com.example.alexander.shapespainter.controller.commands.commands;
+package com.example.alexander.shapespainter.controller.commands;
 
 import com.example.alexander.shapespainter.model.ShapesList;
-import com.example.alexander.shapespainter.controller.commands.ICommand;
+import com.example.alexander.shapespainter.controller.ICommand;
 import com.example.alexander.shapespainter.model.Shape;
 
 public class RemoveShapeCommand implements ICommand {

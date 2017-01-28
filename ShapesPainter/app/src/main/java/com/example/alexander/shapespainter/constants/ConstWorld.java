@@ -8,6 +8,7 @@ public class ConstWorld {
     public static final float DEFAULT_RADIUS_DRAG_POINT = 5;
     public static final float SHAPE_DEFAULT_WIDTH = 80;
     public static final float SHAPE_DEFAULT_HEIGHT = 50;
+    public static final float SHAPE_DEFAULT_FOR_ELLIPSE_WIDTH = 50;
     public static final float SHAPE_DEFAULT_POSITION = 250f;
     public static final int DEFAULT_BUTTON_RESIZE = 80;
     public static final int DEFAULT_SHIFT_POSITION_X_FOR_UNDO_TOOLBAR = 300;
