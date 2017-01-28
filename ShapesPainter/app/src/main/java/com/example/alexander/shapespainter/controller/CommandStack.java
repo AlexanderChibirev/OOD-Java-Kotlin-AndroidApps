@@ -1,15 +1,11 @@
 package com.example.alexander.shapespainter.controller;
 
-import com.example.alexander.shapespainter.controller.commands.ICommand;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommandStack {
+class CommandStack {
     private List<ICommand> mCommands = new ArrayList();
     private int mCurrentLocation = -1;
-    private int mSaveLocation = mCurrentLocation;
-
 
     public void add(ICommand command) {
         clearInFrontOfCurrent();
@@ -18,26 +14,22 @@ public class CommandStack {
         mCurrentLocation++;
     }
 
-    public void undo() {
+    void undo() {
         mCommands.get(mCurrentLocation).unExecute();
         mCurrentLocation--;
     }
 
-    public boolean undoEnabled() {
+    boolean undoEnabled() {
         return mCurrentLocation >= 0;
     }
 
-    public void redo() {
+    void redo() {
         mCurrentLocation++;
         mCommands.get(mCurrentLocation).execute();
     }
 
-    public boolean redoEnabled() {
+    boolean redoEnabled() {
         return mCurrentLocation < mCommands.size() - 1;
-    }
-
-    public boolean dirty() {
-        return mCurrentLocation != mSaveLocation;
     }
 
     private void clearInFrontOfCurrent() {
@@ -45,14 +37,4 @@ public class CommandStack {
             mCommands.remove(mCurrentLocation + 1);
         }
     }
-
-    public void markSaveLocation() {
-        mSaveLocation = mCurrentLocation;
-    }
-
-    @Override
-    public String toString() {
-        return mCommands.toString();
-    }
-
 }

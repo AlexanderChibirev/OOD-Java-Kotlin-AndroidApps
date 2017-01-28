@@ -1,7 +1,7 @@
 package com.example.alexander.shapespainter.controller.commands;
 
-import com.example.alexander.shapespainter.model.ShapesList;
 import com.example.alexander.shapespainter.controller.ICommand;
+import com.example.alexander.shapespainter.model.ShapesList;
 import com.example.alexander.shapespainter.model.Shape;
 import com.example.alexander.shapespainter.model.ShapeFactory;
 import com.example.alexander.shapespainter.model.ShapeType;

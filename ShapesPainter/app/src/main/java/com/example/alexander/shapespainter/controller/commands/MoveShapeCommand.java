@@ -10,9 +10,9 @@ public class MoveShapeCommand implements ICommand {
     private Vector2f mToPoint;
     private Vector2f mFromPoint;
 
-    public MoveShapeCommand(Shape shape, Vector2f toPoint) {
+    public MoveShapeCommand(Shape shape, Vector2f toPoint, Vector2f fromPoint) {
         mShape = shape;
-        mFromPoint = shape.getCenter();
+        mFromPoint = fromPoint;
         mToPoint = toPoint;
     }
 
