@@ -1,5 +1,7 @@
 package com.example.alexander.shapespainter.controller;
 
+import com.example.alexander.shapespainter.controller.commands.ICommand;
+
 import java.util.ArrayList;
 import java.util.List;
 
