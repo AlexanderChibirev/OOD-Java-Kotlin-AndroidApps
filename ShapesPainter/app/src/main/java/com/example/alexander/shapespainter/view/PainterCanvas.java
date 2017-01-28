@@ -88,8 +88,8 @@ public class PainterCanvas extends SurfaceView implements SurfaceHolder.Callback
                 mController.updateShapes(mousePos);
                 break;
             case MotionEvent.ACTION_UP: // отпускание
-            case MotionEvent.ACTION_CANCEL:
                 mController.setMouseMotionType(MouseActionType.Up);
+            case MotionEvent.ACTION_CANCEL:
                 break;
         }
         invalidate();
