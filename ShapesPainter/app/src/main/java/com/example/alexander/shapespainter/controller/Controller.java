@@ -8,6 +8,7 @@ import android.widget.Toast;
 import com.example.alexander.shapespainter.controller.commands.AddShapeCommand;
 import com.example.alexander.shapespainter.controller.commands.MoveShapeCommand;
 import com.example.alexander.shapespainter.controller.commands.RemoveShapeCommand;
+import com.example.alexander.shapespainter.controller.commands.ResizeShapeCommand;
 import com.example.alexander.shapespainter.model.SelectShapeDiagram;
 import com.example.alexander.shapespainter.model.Shape;
 import com.example.alexander.shapespainter.model.ShapeDiagram;
@@ -24,7 +25,7 @@ import static com.example.alexander.shapespainter.constants.ConstWorld.DEFAULT_S
 import static com.example.alexander.shapespainter.constants.ConstWorld.DEFAULT_SHIFT_POSITION_X_FOR_UNDO_TOOLBAR;
 
 public class Controller {
-    private ShapesList mShapesList = new ShapesList();
+    private ShapesList mShapesList;
     private Tools mTools;
     private Context mContext;
     private int mScreenWidth;
@@ -32,15 +33,25 @@ public class Controller {
     private DragType mDragType = DragType.None;
     private MouseActionType mMouseActionType = MouseActionType.None;
     private CommandStack mCommandStack = new CommandStack();
-    private Vector2f startPositionClickMouse = new Vector2f();
-
+    private Vector2f mStartPositionClickMouse = new Vector2f();
+    private Vector2f mStartSizeShapeThenClickMouse = new Vector2f();
+    private Vector2f mStartCenterShapeThenClickMouse = new Vector2f();
+    private ICommand mCommandResize;
 
     public Controller(Context context, int screenWidth) {
         mTools = new Tools(context, screenWidth);
         mScreenWidth = screenWidth;
         mContext = context;
-
+        mShapesList = new ShapesList();
     }
+
+    public Controller(Context context, int screenWidth, ShapesList shapesList) {
+        mTools = new Tools(context, screenWidth);
+        mScreenWidth = screenWidth;
+        mContext = context;
+        mShapesList = shapesList;
+    }
+
 
     public SelectShapeDiagram getSelectDiagramShape() {
         return mSelectDiagramShape;
@@ -59,14 +70,14 @@ public class Controller {
     }
 
 
-    public void updateToolbars(Vector2f pos) {
-        updateShapesTools(pos);
-        updateBitmaps(pos);
+    public void updateToolbars(Vector2f mousePos) {
+        updateShapesTools(mousePos);
+        updateBitmaps(mousePos);
     }
 
-    private void updateShapesTools(Vector2f pos) {
+    private void updateShapesTools(Vector2f mousePos) {
         for (Shape shape : mTools.getToolsList().getShapes()) {
-            if (PointInsideShapeManager.isPointInside(shape, pos)) {
+            if (PointInsideShapeManager.isPointInside(shape, mousePos)) {
                 switch (shape.getType()) {
                     case Ellipse:
                         mCommandStack.add(new AddShapeCommand(mShapesList, ShapeType.Ellipse));
@@ -103,9 +114,10 @@ public class Controller {
     private void selectShapeClear() {
         mCommandStack.add(new RemoveShapeCommand(mShapesList, mSelectDiagramShape.getShape()));
         mSelectDiagramShape.setShape(null);
+        mCommandResize = null;
     }
 
-    private void updateBitmaps(Vector2f pos) {
+    private void updateBitmaps(Vector2f mousePos) {
         Bitmap bitmap;
         Vector2f bitmapPos;
         for (Map.Entry entry : mTools.getBitmapToolsList().entrySet()) {
@@ -118,17 +130,17 @@ public class Controller {
                     bitmapPos.y + bitmap.getHeight());
             if (bitmapPos.x == mScreenWidth - DEFAULT_SHIFT_POSITION_X_FOR_UNDO_TOOLBAR) {
                 //bitmap = undo
-                if (PointInsideShapeManager.isPointInside(bitmapRect, pos, bitmap)) {
+                if (PointInsideShapeManager.isPointInside(bitmapRect, mousePos, bitmap)) {
                     undoCommand();
                 }
             } else if (bitmapPos.x == mScreenWidth - DEFAULT_SHIFT_POSITION_X_FOR_REDO_TOOLBAR) {
                 //bitmap = redo
-                if (PointInsideShapeManager.isPointInside(bitmapRect, pos, bitmap)) {
+                if (PointInsideShapeManager.isPointInside(bitmapRect, mousePos, bitmap)) {
                     redoCommand();
                 }
             } else {
                 //bitmap = trash
-                boolean isInside = PointInsideShapeManager.isPointInside(bitmapRect, pos, bitmap);
+                boolean isInside = PointInsideShapeManager.isPointInside(bitmapRect, mousePos, bitmap);
                 if (isInside && mSelectDiagramShape.getShape() != null) {
                     selectShapeClear();
                 } else if (isInside) {
@@ -139,57 +151,63 @@ public class Controller {
     }
 
 
-    public void updateShapes(Vector2f pos) {
-        Vector2f endPositionShape = new Vector2f();
+    public void updateShapes(Vector2f mousePos) {
         for (Shape shape : mShapesList.getShapes()) {
             switch (mMouseActionType) {
                 case Down:
-                    startPositionClickMouse = pos;
-                    if (PointInsideShapeManager.isPointInside(shape, pos)) {
+                    if (PointInsideShapeManager.isPointInside(shape, mousePos)) {
+                        mCommandResize = null;
+                        mDragType = DragType.None;
                         mSelectDiagramShape.setShape(shape);
                     }
                     if (mSelectDiagramShape.getShape() != null
-                            && !PointInsideShapeManager.isPointInside(mSelectDiagramShape.getShape(), pos)
-                            && mMouseActionType == MouseActionType.Down) {
+                            && !PointInsideShapeManager.isPointInside(mSelectDiagramShape.getShape(), mousePos)
+                            && mMouseActionType == MouseActionType.Down && !calculateDragType(mousePos)) {
+                        mDragType = DragType.None;
                         mSelectDiagramShape.setShape(null);
+                    }
+                    if (mSelectDiagramShape.getShape() != null) {
+                        mStartCenterShapeThenClickMouse = mSelectDiagramShape.getShape().getCenter();
+                        mStartSizeShapeThenClickMouse = mSelectDiagramShape.getShape().getSize();
+                        mStartPositionClickMouse = mousePos;
+                        //setMessage("клик");
                     }
                     break;
                 case Move:
-                    if (shape == mSelectDiagramShape.getShape()) {
-                        shape.setCenter(pos);
-                        endPositionShape = pos;
+                    if (shape == mSelectDiagramShape.getShape() && mDragType == DragType.None) {
+                        //new MoveShapeCommand(mSelectDiagramShape.getShape(), mousePos, mStartPositionClickMouse).execute();
+                        shape.setCenter(mousePos);
+                        //mSelectDiagramShape.getShape().setCenter(mousePos);
                     }
                     break;
                 case Up:
                     if (mSelectDiagramShape.getShape() != null) {
-                        if (endPositionShape != pos) {
-                            mCommandStack.add(new MoveShapeCommand(mSelectDiagramShape.getShape(), pos, startPositionClickMouse));
+                        if (mCommandResize != null) {
+                            mCommandStack.add(mCommandResize);
+                        }
+                        if (mDragType == DragType.None) {
+                            mCommandStack.add(new MoveShapeCommand(mSelectDiagramShape.getShape(), mousePos, mStartPositionClickMouse));
                         }
                     }
+                    mDragType = DragType.None;
                     break;
             }
-
-            //updateResizeShape();
+            updateResizeShape(mousePos);
         }
     }
 
-    private void updateResizeShape(Vector2f pos) {
-        if (mSelectDiagramShape.getShape() != null) {//TODO::блок для выполнения ресайза
-            getDragType(pos);
-            switch (mDragType) {
-                case LeftBottom:
-                    break;
-                case LeftTop:
-                    break;
-                case RightBottom:
-
-                    break;
-                case RightTop:
-
-                    break;
-                default:
-                    break;
-            }
+    private void updateResizeShape(Vector2f mousePos) {
+        Shape selectShape = mSelectDiagramShape.getShape();
+        if (selectShape != null) {
+            calculateDragType(mousePos);
+        }
+        if (mDragType != DragType.None) {
+            mCommandResize = new ResizeShapeCommand(selectShape,
+                    mStartSizeShapeThenClickMouse,
+                    mStartCenterShapeThenClickMouse,
+                    mousePos,
+                    mDragType);
+            mCommandResize.execute();
         }
     }
 
@@ -199,30 +217,29 @@ public class Controller {
         toast.show();
     }
 
-    private void getDragType(Vector2f pos) {
+    private boolean calculateDragType(Vector2f mousePos) {
         ShapeDiagram shapeDiagram = mSelectDiagramShape.getShape().getDiagram();
-        if (Math.pow((pos.x - shapeDiagram.getLeft()), 2) / Math.pow(DEFAULT_RADIUS_DRAG_POINT, 2)
-                + Math.pow((pos.y - shapeDiagram.getTop()), 2) / Math.pow(DEFAULT_RADIUS_DRAG_POINT, 2) <= 1) {
+        if (Math.pow((mousePos.x - shapeDiagram.getLeft()), 2) / Math.pow(DEFAULT_RADIUS_DRAG_POINT, 2)
+                + Math.pow((mousePos.y - shapeDiagram.getTop()), 2) / Math.pow(DEFAULT_RADIUS_DRAG_POINT, 2) <= 1) {
             mDragType = DragType.LeftTop;
+            return true;
         }
-        if (Math.pow((pos.x - shapeDiagram.getRight()), 2) / Math.pow(DEFAULT_RADIUS_DRAG_POINT, 2)
-                + Math.pow((pos.y - shapeDiagram.getTop()), 2) / Math.pow(DEFAULT_RADIUS_DRAG_POINT, 2) <= 1) {
+        if (Math.pow((mousePos.x - shapeDiagram.getRight()), 2) / Math.pow(DEFAULT_RADIUS_DRAG_POINT, 2)
+                + Math.pow((mousePos.y - shapeDiagram.getTop()), 2) / Math.pow(DEFAULT_RADIUS_DRAG_POINT, 2) <= 1) {
             mDragType = DragType.RightTop;
+            return true;
         }
-        if (Math.pow((pos.x - shapeDiagram.getLeft()), 2) / Math.pow(DEFAULT_RADIUS_DRAG_POINT, 2)
-                + Math.pow((pos.y - shapeDiagram.getBottom()), 2) / Math.pow(DEFAULT_RADIUS_DRAG_POINT, 2) <= 1) {
+        if (Math.pow((mousePos.x - shapeDiagram.getLeft()), 2) / Math.pow(DEFAULT_RADIUS_DRAG_POINT, 2)
+                + Math.pow((mousePos.y - shapeDiagram.getBottom()), 2) / Math.pow(DEFAULT_RADIUS_DRAG_POINT, 2) <= 1) {
             mDragType = DragType.LeftBottom;
+            return true;
         }
-        if (Math.pow((pos.x - shapeDiagram.getRight()), 2) / Math.pow(DEFAULT_RADIUS_DRAG_POINT, 2)
-                + Math.pow((pos.y - shapeDiagram.getBottom()), 2) / Math.pow(DEFAULT_RADIUS_DRAG_POINT, 2) <= 1) {
+        if (Math.pow((mousePos.x - shapeDiagram.getRight()), 2) / Math.pow(DEFAULT_RADIUS_DRAG_POINT, 2)
+                + Math.pow((mousePos.y - shapeDiagram.getBottom()), 2) / Math.pow(DEFAULT_RADIUS_DRAG_POINT, 2) <= 1) {
             mDragType = DragType.RightBottom;
+            return true;
         }
-    }
-
-    private void resizeShape() {
-        ShapeDiagram frame = mSelectDiagramShape.getShape().getDiagram();
-        Vector2f newSize = new Vector2f();
-        Vector2f newCenter = new Vector2f();
+        return false;
     }
 
     public void setMouseMotionType(MouseActionType mouseActionType) {

@@ -19,6 +19,11 @@ import java.util.Vector;
 import javax.vecmath.Vector2f;
 
 import static com.example.alexander.shapespainter.constants.ConstWorld.DEFAULT_RADIUS_DRAG_POINT;
+import static com.example.alexander.shapespainter.constants.ConstWorld.LEFT_TOP;
+import static com.example.alexander.shapespainter.constants.ConstWorld.RIGHT_BOTTOM;
+import static com.example.alexander.shapespainter.constants.ConstWorld.VERTEX1;
+import static com.example.alexander.shapespainter.constants.ConstWorld.VERTEX2;
+import static com.example.alexander.shapespainter.constants.ConstWorld.VERTEX3;
 
 //TODO :: перенести данные о цвете в класс фигур, убрать из рисования повторы и перенести их в switch, чтобы он вызывал несколько раз
 class Painter implements ICanvas {
@@ -33,8 +38,8 @@ class Painter implements ICanvas {
             switch (shape.getType()) {
                 case Rectangle:
                     drawRectangle(
-                            mVertices.get(0),
-                            mVertices.get(2),
+                            mVertices.get(LEFT_TOP),
+                            mVertices.get(RIGHT_BOTTOM),
                             canvas);
                     break;
                 case Ellipse:
@@ -47,9 +52,9 @@ class Painter implements ICanvas {
                 case Triangle:
                     mVertices = shape.getVertices();
                     drawTriangle(
-                            mVertices.get(0),
-                            mVertices.get(1),
-                            mVertices.get(2),
+                            mVertices.get(VERTEX1),
+                            mVertices.get(VERTEX2),
+                            mVertices.get(VERTEX3),
                             canvas);
                     break;
             }

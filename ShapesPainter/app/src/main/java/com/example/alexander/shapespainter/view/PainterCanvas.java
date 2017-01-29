@@ -17,7 +17,6 @@ public class PainterCanvas extends SurfaceView implements SurfaceHolder.Callback
     private PainterThread mPainterThread = null;
     private Painter mPainter;
     private Controller mController;
-    private Context mContext;
 
     public PainterCanvas(Context context, int screenWidth) {
         super(context);
