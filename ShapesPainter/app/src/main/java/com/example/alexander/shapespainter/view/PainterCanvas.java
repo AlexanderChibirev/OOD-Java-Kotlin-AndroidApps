@@ -2,6 +2,8 @@ package com.example.alexander.shapespainter.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -17,12 +19,24 @@ public class PainterCanvas extends SurfaceView implements SurfaceHolder.Callback
     private PainterThread mPainterThread = null;
     private Painter mPainter;
     private Controller mController;
-
-    public PainterCanvas(Context context, int screenWidth) {
+    public PainterCanvas(Context context) {
         super(context);
+    }
+
+    public PainterCanvas(Context context,
+                         AttributeSet attrs) {
+        super(context, attrs);
         getHolder().addCallback(this);
+        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+        int screenWidth = metrics.widthPixels;
+        int screenHeight = metrics.heightPixels;
         mController = new Controller(context, screenWidth);
         mPainter = new Painter();
+    }
+
+    public PainterCanvas(Context context,
+                         AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
     }
 
     public void startApp() {
@@ -95,7 +109,6 @@ public class PainterCanvas extends SurfaceView implements SurfaceHolder.Callback
         invalidate();
         return true;
     }
-
 
 }
 

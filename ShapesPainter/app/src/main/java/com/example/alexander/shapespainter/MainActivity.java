@@ -10,13 +10,14 @@ import android.support.v7.app.AppCompatActivity;
 import com.example.alexander.shapespainter.view.PainterCanvas;
 
 public class MainActivity extends AppCompatActivity {
+    PainterCanvas mySurfaceView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //rotateScreen();//TODO::разобраться с поморотом телефона
-        int width = this.getWindowManager().getDefaultDisplay().getWidth();
-        setContentView (new PainterCanvas(this, width));
-
+        setContentView(R.layout.activity_main);
+        mySurfaceView  = (PainterCanvas)findViewById(R.id.myview);
     }
 
     private void rotateScreen() {
