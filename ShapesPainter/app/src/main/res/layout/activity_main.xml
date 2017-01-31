@@ -1,16 +1,34 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="1">
 
-    <Button
-        android:text="Button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/button" />
+    <GridView
+        android:id="@+id/redo_undo_trash_tools"
+        android:layout_width="179dp"
+        android:layout_height="71dp"
+        android:columnWidth="50dp"
+        android:numColumns="auto_fit"
+        android:verticalSpacing="10dp"
+        android:horizontalSpacing="10dp"
+        android:stretchMode="columnWidth"
+        android:gravity="center"
+        />
+
+    <GridView
+        android:id="@+id/rect_triangle_circle_tools"
+        android:layout_width="179dp"
+        android:layout_height="71dp"
+        android:columnWidth="50dp"
+        android:numColumns="auto_fit"
+        android:verticalSpacing="10dp"
+        android:horizontalSpacing="10dp"
+        android:stretchMode="columnWidth"
+        android:gravity="center"
+        />
+
 
     <com.example.alexander.shapespainter.view.PainterCanvas
         android:id="@+id/myview"
