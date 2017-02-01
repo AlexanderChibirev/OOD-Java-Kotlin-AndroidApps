@@ -38,6 +38,8 @@ public class Controller {
     private Vector2f mStartCenterShapeThenClickMouse = new Vector2f();
     private ICommand mCommandResize;
 
+    private Vector2f mDistanceFromShapeCenterToMousePos = new Vector2f();
+
     public Controller(Context context, int screenWidth) {
         mTools = new Tools(context, screenWidth);
         mScreenWidth = screenWidth;
@@ -155,45 +157,61 @@ public class Controller {
         for (Shape shape : mShapesList.getShapes()) {
             switch (mMouseActionType) {
                 case Down:
-                    if (PointInsideShapeManager.isPointInside(shape, mousePos)) {
-                        mCommandResize = null;
-                        mDragType = DragType.None;
-                        mSelectDiagramShape.setShape(shape);
-                    }
-                    if (mSelectDiagramShape.getShape() != null
-                            && !PointInsideShapeManager.isPointInside(mSelectDiagramShape.getShape(), mousePos)
-                            && mMouseActionType == MouseActionType.Down && !calculateDragType(mousePos)) {
-                        mDragType = DragType.None;
-                        mSelectDiagramShape.setShape(null);
-                    }
-                    if (mSelectDiagramShape.getShape() != null) {
-                        mStartCenterShapeThenClickMouse = mSelectDiagramShape.getShape().getCenter();
-                        mStartSizeShapeThenClickMouse = mSelectDiagramShape.getShape().getSize();
-                        mStartPositionClickMouse = mousePos;
-                        //setMessage("клик");
-                    }
+                    mouseDown(shape, mousePos);
                     break;
                 case Move:
-                    if (shape == mSelectDiagramShape.getShape() && mDragType == DragType.None) {
-                        //new MoveShapeCommand(mSelectDiagramShape.getShape(), mousePos, mStartPositionClickMouse).execute();
-                        shape.setCenter(mousePos);
-                        //mSelectDiagramShape.getShape().setCenter(mousePos);
-                    }
+                    mouseMoved(shape,mousePos);
                     break;
                 case Up:
-                    if (mSelectDiagramShape.getShape() != null) {
-                        if (mCommandResize != null) {
-                            mCommandStack.add(mCommandResize);
-                        }
-                        if (mDragType == DragType.None) {
-                            mCommandStack.add(new MoveShapeCommand(mSelectDiagramShape.getShape(), mousePos, mStartPositionClickMouse));
-                        }
-                    }
-                    mDragType = DragType.None;
+                    mouseUp(mousePos);
                     break;
             }
             updateResizeShape(mousePos);
         }
+    }
+
+    private void mouseDown(Shape shape, Vector2f mousePos) {
+        if (PointInsideShapeManager.isPointInside(shape, mousePos)) {
+            mCommandResize = null;
+            mDragType = DragType.None;
+            mSelectDiagramShape.setShape(shape);
+            mStartPositionClickMouse = mousePos;
+            mDistanceFromShapeCenterToMousePos.set(
+                    Math.abs(mousePos.x - shape.getCenter().x),
+                    Math.abs(mousePos.y - shape.getCenter().y));
+        }
+        if (mSelectDiagramShape.getShape() != null
+                && !PointInsideShapeManager.isPointInside(mSelectDiagramShape.getShape(), mousePos)
+                && mMouseActionType == MouseActionType.Down && !calculateDragType(mousePos)) {
+            mDragType = DragType.None;
+            mSelectDiagramShape.setShape(null);
+        }
+        if (mSelectDiagramShape.getShape() != null) {
+            mStartCenterShapeThenClickMouse = mSelectDiagramShape.getShape().getCenter();
+            mStartSizeShapeThenClickMouse = mSelectDiagramShape.getShape().getSize();
+        }
+    }
+
+    private void mouseMoved(Shape shape, Vector2f mousePos) {
+        if (shape == mSelectDiagramShape.getShape() && mDragType == DragType.None) {
+            new MoveShapeCommand(
+                    mSelectDiagramShape.getShape(),
+                    mousePos,
+                    mStartPositionClickMouse,
+                    mDistanceFromShapeCenterToMousePos).execute();
+        }
+    }
+
+    private void mouseUp(Vector2f mousePos) {
+        if (mSelectDiagramShape.getShape() != null) {
+            if (mCommandResize != null) {
+                mCommandStack.add(mCommandResize);
+            }
+            if (mDragType == DragType.None) {
+                mCommandStack.add(new MoveShapeCommand(mSelectDiagramShape.getShape(), mousePos, mStartPositionClickMouse, mDistanceFromShapeCenterToMousePos));
+            }
+        }
+        mDragType = DragType.None;
     }
 
     private void updateResizeShape(Vector2f mousePos) {

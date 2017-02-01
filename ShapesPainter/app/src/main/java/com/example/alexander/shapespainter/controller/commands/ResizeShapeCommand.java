@@ -22,36 +22,55 @@ public class ResizeShapeCommand implements ICommand {
         mShape = shape;
         mStartSize = startSize;
         mStartCenter = startCenter;
-        ShapeDiagram diagram = shape.getDiagram();
+        checkAnglesShape(pos, dragType);
+    }
+
+    private void checkAnglesShape(Vector2f pos, DragType dragType) {
+        ShapeDiagram diagram = mShape.getDiagram();
         switch (dragType) {
             case LeftBottom:
-                mEndSize.set(diagram.getRight() - pos.x, pos.y - diagram.getTop());
-                mEndCenter.set(
-                        startCenter.x + (mEndSize.x - startSize.x) / -2f,
-                        startCenter.y + (mEndSize.y - startSize.y) / 2f);
+                calculateDataForLeftBottomAngle(pos, diagram);
                 break;
             case LeftTop:
-                mEndSize.set(diagram.getRight() - pos.x, diagram.getBottom() - pos.y);
-                mEndCenter.set(
-                        startCenter.x + (mEndSize.x - startSize.x) / -2f,
-                        startCenter.y + (mEndSize.y - startSize.y) / -2f);
-
+                calculateDataForLeftTopAngle(pos, diagram);
                 break;
             case RightBottom:
-                mEndSize.set(pos.x - diagram.getLeft(), pos.y - diagram.getTop());
-                mEndCenter.set(
-                        startCenter.x + (mEndSize.x - startSize.x) / 2f,
-                        startCenter.y + (mEndSize.y - startSize.y) / 2f);
+                calculateDataForRightBottomAngle(pos, diagram);
                 break;
             case RightTop:
-                mEndSize.set(pos.x - diagram.getLeft(), diagram.getBottom() - pos.y);
-                mEndCenter.set(
-                        startCenter.x + (mEndSize.x - startSize.x) / 2f,
-                        startCenter.y + (mEndSize.y - startSize.y) / -2f);
+                calculateDataForRightTopAngle(pos, diagram);
                 break;
             default:
                 break;
         }
+    }
+
+    private void calculateDataForRightTopAngle(Vector2f pos, ShapeDiagram diagram) {
+        mEndSize.set(pos.x - diagram.getLeft(), diagram.getBottom() - pos.y);
+        mEndCenter.set(
+                mStartCenter.x + (mEndSize.x - mStartSize.x) / 2f,
+                mStartCenter.y + (mEndSize.y - mStartSize.y) / -2f);
+    }
+
+    private void calculateDataForRightBottomAngle(Vector2f pos, ShapeDiagram diagram) {
+        mEndSize.set(pos.x - diagram.getLeft(), pos.y - diagram.getTop());
+        mEndCenter.set(
+                mStartCenter.x + (mEndSize.x - mStartSize.x) / 2f,
+                mStartCenter.y + (mEndSize.y - mStartSize.y) / 2f);
+    }
+
+    private void calculateDataForLeftTopAngle(Vector2f pos, ShapeDiagram diagram) {
+        mEndSize.set(diagram.getRight() - pos.x, diagram.getBottom() - pos.y);
+        mEndCenter.set(
+                mStartCenter.x + (mEndSize.x - mStartSize.x) / -2f,
+                mStartCenter.y + (mEndSize.y - mStartSize.y) / -2f);
+    }
+
+    private void calculateDataForLeftBottomAngle(Vector2f pos, ShapeDiagram diagram) {
+        mEndSize.set(diagram.getRight() - pos.x, pos.y - diagram.getTop());
+        mEndCenter.set(
+                mStartCenter.x + (mEndSize.x - mStartSize.x) / -2f,
+                mStartCenter.y + (mEndSize.y - mStartSize.y) / 2f);
     }
 
     @Override
