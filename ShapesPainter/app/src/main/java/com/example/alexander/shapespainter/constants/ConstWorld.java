@@ -5,7 +5,7 @@ import javax.vecmath.Vector2f;
 public class ConstWorld {
 
 
-    public static final float DEFAULT_RADIUS_DRAG_POINT = 6;
+    public static final float DEFAULT_RADIUS_DRAG_POINT = 9;
     public static final float SHAPE_DEFAULT_WIDTH = 80;
     public static final float SHAPE_DEFAULT_HEIGHT = 50;
     public static final float SHAPE_DEFAULT_FOR_ELLIPSE_WIDTH = 50;
