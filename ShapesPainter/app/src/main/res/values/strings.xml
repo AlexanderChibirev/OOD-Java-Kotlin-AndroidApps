@@ -9,4 +9,12 @@
     <string name="aply_wallpaper">Установка обоев. Пожалуйста подождите...</string>
     <string name="exit_app_prompt_title">Выход</string>
     <string name="exit_app_prompt">Сохранить изображение перед выходом?</string>
+
+    <!--  imageButton toolbars -->
+    <string name="create_triangle">создание треугольника</string>
+    <string name="create_circle">создание круга</string>
+    <string name="create_rectangle">создание прямоугольника</string>
+    <string name="undo">для возвращения старого состояния холста</string>
+    <string name="redo">для возвращения старого состояния холста</string>
+    <string name="trash">удаление выделенной фигуры</string>
 </resources>
