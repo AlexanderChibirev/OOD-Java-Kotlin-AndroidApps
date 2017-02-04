@@ -236,24 +236,33 @@ public class Controller {
     }
 
     private boolean calculateDragType(Vector2f mousePos) {
+        int sizeInvisibleRadiusForUsability = 5;
         ShapeDiagram shapeDiagram = mSelectDiagramShape.getShape().getDiagram();
-        if (Math.pow((mousePos.x - shapeDiagram.getLeft()), 2) / Math.pow(DEFAULT_RADIUS_DRAG_POINT, 2)
-                + Math.pow((mousePos.y - shapeDiagram.getTop()), 2) / Math.pow(DEFAULT_RADIUS_DRAG_POINT, 2) <= 1) {
+        if (Math.pow((mousePos.x - shapeDiagram.getLeft()), 2)
+                / Math.pow(DEFAULT_RADIUS_DRAG_POINT + sizeInvisibleRadiusForUsability , 2)
+                + Math.pow((mousePos.y - shapeDiagram.getTop()), 2)
+                / Math.pow(DEFAULT_RADIUS_DRAG_POINT + sizeInvisibleRadiusForUsability, 2) <= 1) {
             mDragType = DragType.LeftTop;
             return true;
         }
-        if (Math.pow((mousePos.x - shapeDiagram.getRight()), 2) / Math.pow(DEFAULT_RADIUS_DRAG_POINT, 2)
-                + Math.pow((mousePos.y - shapeDiagram.getTop()), 2) / Math.pow(DEFAULT_RADIUS_DRAG_POINT, 2) <= 1) {
+        if (Math.pow((mousePos.x - shapeDiagram.getRight()), 2)
+                / Math.pow(DEFAULT_RADIUS_DRAG_POINT + sizeInvisibleRadiusForUsability, 2)
+                + Math.pow((mousePos.y - shapeDiagram.getTop()), 2)
+                / Math.pow(DEFAULT_RADIUS_DRAG_POINT + sizeInvisibleRadiusForUsability, 2) <= 1) {
             mDragType = DragType.RightTop;
             return true;
         }
-        if (Math.pow((mousePos.x - shapeDiagram.getLeft()), 2) / Math.pow(DEFAULT_RADIUS_DRAG_POINT, 2)
-                + Math.pow((mousePos.y - shapeDiagram.getBottom()), 2) / Math.pow(DEFAULT_RADIUS_DRAG_POINT, 2) <= 1) {
+        if (Math.pow((mousePos.x - shapeDiagram.getLeft()), 2)
+                / Math.pow(DEFAULT_RADIUS_DRAG_POINT + sizeInvisibleRadiusForUsability, 2)
+                + Math.pow((mousePos.y - shapeDiagram.getBottom()), 2)
+                / Math.pow(DEFAULT_RADIUS_DRAG_POINT + sizeInvisibleRadiusForUsability, 2) <= 1) {
             mDragType = DragType.LeftBottom;
             return true;
         }
-        if (Math.pow((mousePos.x - shapeDiagram.getRight()), 2) / Math.pow(DEFAULT_RADIUS_DRAG_POINT, 2)
-                + Math.pow((mousePos.y - shapeDiagram.getBottom()), 2) / Math.pow(DEFAULT_RADIUS_DRAG_POINT, 2) <= 1) {
+        if (Math.pow((mousePos.x - shapeDiagram.getRight()), 2)
+                / Math.pow(DEFAULT_RADIUS_DRAG_POINT + sizeInvisibleRadiusForUsability, 2)
+                + Math.pow((mousePos.y - shapeDiagram.getBottom()), 2)
+                / Math.pow(DEFAULT_RADIUS_DRAG_POINT + sizeInvisibleRadiusForUsability, 2) <= 1) {
             mDragType = DragType.RightBottom;
             return true;
         }

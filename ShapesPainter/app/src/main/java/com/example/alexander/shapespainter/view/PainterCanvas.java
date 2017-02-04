@@ -109,6 +109,5 @@ public class PainterCanvas extends SurfaceView implements SurfaceHolder.Callback
         invalidate();
         return true;
     }
-
 }
 
