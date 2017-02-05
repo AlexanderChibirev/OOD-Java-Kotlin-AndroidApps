@@ -31,12 +31,7 @@ public class Controller {
     private Vector2f mStartCenterShapeThenClickMouse = new Vector2f();
     private Vector2f mDistanceFromShapeCenterToMousePos = new Vector2f();
 
-    public Controller(Context context) {//constructor for new canvas
-        mContext = context;
-        mShapesList = new ShapesList();
-    }
-
-    public Controller(Context context, ShapesList shapesList) {//constructor for older canvas
+    public Controller(Context context, ShapesList shapesList) {
         mContext = context;
         mShapesList = shapesList;
     }

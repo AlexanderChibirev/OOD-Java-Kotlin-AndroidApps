@@ -4,11 +4,7 @@
     <!--  dialog -->
     <string name="yes">Да</string>
     <string name="no">Нет</string>
-    <string name="saving_title">Сохранение</string>
-    <string name="saving_to_sd">Изображение сохраняется. Пожалуйста, подождите...</string>
-    <string name="apLy_wallpaper">Установка обоев. Пожалуйста подождите...</string>
-    <string name="exit_app_prompt_title">Выход</string>
-    <string name="exit_app_prompt">Сохранить изображение перед выходом?</string>
+    <string name="exit_app_prompt">Сохранить программу перед выходом?</string>
 
     <!--  imageButton toolbars -->
     <string name="create_triangle">создание треугольника</string>
