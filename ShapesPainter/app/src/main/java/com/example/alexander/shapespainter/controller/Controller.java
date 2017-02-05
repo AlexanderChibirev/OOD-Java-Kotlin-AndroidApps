@@ -21,7 +21,7 @@ public class Controller {
     private ShapesList mShapesList;
     private Context mContext;
     private SelectShapeDiagram mSelectDiagramShape = new SelectShapeDiagram();
-    private DragType mDragType = DragType.None;
+    private DragType mDragType = null;
     private MouseActionType mMouseActionType = MouseActionType.None;
     private CommandStack mCommandStack = new CommandStack();
     private ICommand mCommandResize;
@@ -99,23 +99,25 @@ public class Controller {
             switch (mMouseActionType) {
                 case Down:
                     mouseDown(shape, mousePos);
+                    updateResizeShape(mousePos);
                     break;
                 case Move:
                     mouseMoved(shape, mousePos);
+                    updateResizeShape(mousePos);
                     break;
                 case Up:
                     mouseUp(mousePos);
                     break;
             }
-            updateResizeShape(mousePos);
+
         }
     }
 
     private void mouseDown(Shape shape, Vector2f mousePos) {
-        if (PointInsideShapeManager.isPointInside(shape, mousePos)) {
+        if (PointInsideShapeManager.isPointInside(shape, mousePos) && !calculateDragType(mousePos)) {
             mCommandResize = null;
-            mDragType = DragType.None;
             mSelectDiagramShape.setShape(shape);
+            mDragType = null;
             mStartPositionClickMouse = mousePos;
             mDistanceFromShapeCenterToMousePos.set(
                     Math.abs(mousePos.x - shape.getCenter().x),
@@ -124,7 +126,7 @@ public class Controller {
         if (mSelectDiagramShape.getShape() != null
                 && !PointInsideShapeManager.isPointInside(mSelectDiagramShape.getShape(), mousePos)
                 && mMouseActionType == MouseActionType.Down && !calculateDragType(mousePos)) {
-            mDragType = DragType.None;
+            mDragType = null;
             mSelectDiagramShape.setShape(null);
         }
         if (mSelectDiagramShape.getShape() != null) {
@@ -134,7 +136,7 @@ public class Controller {
     }
 
     private void mouseMoved(Shape shape, Vector2f mousePos) {
-        if (shape == mSelectDiagramShape.getShape() && mDragType == DragType.None) {
+        if (shape == mSelectDiagramShape.getShape() && mDragType == null) {
             new MoveShapeCommand(
                     mSelectDiagramShape.getShape(),
                     mousePos,
@@ -148,11 +150,8 @@ public class Controller {
             if (mCommandResize != null) {
                 mCommandStack.add(mCommandResize);
             }
-            if (mDragType == DragType.None) {
-                mCommandStack.add(new MoveShapeCommand(mSelectDiagramShape.getShape(), mousePos, mStartPositionClickMouse, mDistanceFromShapeCenterToMousePos));
-            }
         }
-        mDragType = DragType.None;
+        mDragType = null;
     }
 
     private void updateResizeShape(Vector2f mousePos) {
@@ -160,13 +159,16 @@ public class Controller {
         if (selectShape != null && mMouseActionType != MouseActionType.Move) {
             calculateDragType(mousePos);
         }
-        if (mDragType != DragType.None) {
+        if (mDragType != null) {
             mCommandResize = new ResizeShapeCommand(selectShape,
                     mStartSizeShapeThenClickMouse,
                     mStartCenterShapeThenClickMouse,
                     mousePos,
                     mDragType);
             mCommandResize.execute();
+        }
+        if (mDragType == null && mMouseActionType == MouseActionType.Up) {
+            mCommandStack.add(new MoveShapeCommand(mSelectDiagramShape.getShape(), mousePos, mStartPositionClickMouse, mDistanceFromShapeCenterToMousePos));
         }
     }
 
@@ -178,34 +180,36 @@ public class Controller {
 
     private boolean calculateDragType(Vector2f mousePos) {
         int sizeInvisibleRadiusForUsability = 15;
-        ShapeDiagram shapeDiagram = mSelectDiagramShape.getShape().getDiagram();
-        if (Math.pow((mousePos.x - shapeDiagram.getLeft()), 2)
-                / Math.pow(DEFAULT_RADIUS_DRAG_POINT + sizeInvisibleRadiusForUsability, 2)
-                + Math.pow((mousePos.y - shapeDiagram.getTop()), 2)
-                / Math.pow(DEFAULT_RADIUS_DRAG_POINT + sizeInvisibleRadiusForUsability, 2) <= 1) {
-            mDragType = DragType.LeftTop;
-            return true;
-        }
-        if (Math.pow((mousePos.x - shapeDiagram.getRight()), 2)
-                / Math.pow(DEFAULT_RADIUS_DRAG_POINT + sizeInvisibleRadiusForUsability, 2)
-                + Math.pow((mousePos.y - shapeDiagram.getTop()), 2)
-                / Math.pow(DEFAULT_RADIUS_DRAG_POINT + sizeInvisibleRadiusForUsability, 2) <= 1) {
-            mDragType = DragType.RightTop;
-            return true;
-        }
-        if (Math.pow((mousePos.x - shapeDiagram.getLeft()), 2)
-                / Math.pow(DEFAULT_RADIUS_DRAG_POINT + sizeInvisibleRadiusForUsability, 2)
-                + Math.pow((mousePos.y - shapeDiagram.getBottom()), 2)
-                / Math.pow(DEFAULT_RADIUS_DRAG_POINT + sizeInvisibleRadiusForUsability, 2) <= 1) {
-            mDragType = DragType.LeftBottom;
-            return true;
-        }
-        if (Math.pow((mousePos.x - shapeDiagram.getRight()), 2)
-                / Math.pow(DEFAULT_RADIUS_DRAG_POINT + sizeInvisibleRadiusForUsability, 2)
-                + Math.pow((mousePos.y - shapeDiagram.getBottom()), 2)
-                / Math.pow(DEFAULT_RADIUS_DRAG_POINT + sizeInvisibleRadiusForUsability, 2) <= 1) {
-            mDragType = DragType.RightBottom;
-            return true;
+        if (mSelectDiagramShape.getShape() != null) {
+            ShapeDiagram shapeDiagram = mSelectDiagramShape.getShape().getDiagram();
+            if (Math.pow((mousePos.x - shapeDiagram.getLeft()), 2)
+                    / Math.pow(DEFAULT_RADIUS_DRAG_POINT + sizeInvisibleRadiusForUsability, 2)
+                    + Math.pow((mousePos.y - shapeDiagram.getTop()), 2)
+                    / Math.pow(DEFAULT_RADIUS_DRAG_POINT + sizeInvisibleRadiusForUsability, 2) <= 1) {
+                mDragType = DragType.LeftTop;
+                return true;
+            }
+            if (Math.pow((mousePos.x - shapeDiagram.getRight()), 2)
+                    / Math.pow(DEFAULT_RADIUS_DRAG_POINT + sizeInvisibleRadiusForUsability, 2)
+                    + Math.pow((mousePos.y - shapeDiagram.getTop()), 2)
+                    / Math.pow(DEFAULT_RADIUS_DRAG_POINT + sizeInvisibleRadiusForUsability, 2) <= 1) {
+                mDragType = DragType.RightTop;
+                return true;
+            }
+            if (Math.pow((mousePos.x - shapeDiagram.getLeft()), 2)
+                    / Math.pow(DEFAULT_RADIUS_DRAG_POINT + sizeInvisibleRadiusForUsability, 2)
+                    + Math.pow((mousePos.y - shapeDiagram.getBottom()), 2)
+                    / Math.pow(DEFAULT_RADIUS_DRAG_POINT + sizeInvisibleRadiusForUsability, 2) <= 1) {
+                mDragType = DragType.LeftBottom;
+                return true;
+            }
+            if (Math.pow((mousePos.x - shapeDiagram.getRight()), 2)
+                    / Math.pow(DEFAULT_RADIUS_DRAG_POINT + sizeInvisibleRadiusForUsability, 2)
+                    + Math.pow((mousePos.y - shapeDiagram.getBottom()), 2)
+                    / Math.pow(DEFAULT_RADIUS_DRAG_POINT + sizeInvisibleRadiusForUsability, 2) <= 1) {
+                mDragType = DragType.RightBottom;
+                return true;
+            }
         }
         return false;
     }
