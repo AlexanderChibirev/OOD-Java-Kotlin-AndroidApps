@@ -3,7 +3,6 @@ package com.example.alexander.shapespainter.view;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -19,6 +18,8 @@ public class PainterCanvas extends SurfaceView implements SurfaceHolder.Callback
     private PainterThread mPainterThread = null;
     private Painter mPainter;
     private Controller mController;
+    private Context mContext;
+
     public PainterCanvas(Context context) {
         super(context);
     }
@@ -27,12 +28,10 @@ public class PainterCanvas extends SurfaceView implements SurfaceHolder.Callback
                          AttributeSet attrs) {
         super(context, attrs);
         getHolder().addCallback(this);
-        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
-        int screenWidth = metrics.widthPixels;
-        int screenHeight = metrics.heightPixels;
-        mController = new Controller(context, screenWidth);
         mPainter = new Painter();
+        mContext = context;
     }
+
 
     public PainterCanvas(Context context,
                          AttributeSet attrs, int defStyle) {
@@ -71,10 +70,6 @@ public class PainterCanvas extends SurfaceView implements SurfaceHolder.Callback
         }
     }
 
-    public void drawTools(Canvas canvas) {
-        mPainter.drawTools(canvas, mController.getToolsDraft(), mController.getBitmapTools());
-    }
-
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
 
     }
@@ -93,7 +88,6 @@ public class PainterCanvas extends SurfaceView implements SurfaceHolder.Callback
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN://нажатие
                 mController.setMouseMotionType(MouseActionType.Down);
-                mController.updateToolbars(mousePos);
                 mController.updateShapes(mousePos);
                 break;
             case MotionEvent.ACTION_MOVE://движение
@@ -108,6 +102,10 @@ public class PainterCanvas extends SurfaceView implements SurfaceHolder.Callback
         }
         invalidate();
         return true;
+    }
+
+    public void setController(Controller controller) {
+        mController = controller;
     }
 }
 

@@ -4,22 +4,23 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
+import com.example.alexander.shapespainter.controller.Controller;
 import com.example.alexander.shapespainter.view.PainterCanvas;
 
 import java.util.Vector;
 
 public class MainActivity extends AppCompatActivity {
-    PainterCanvas mySurfaceView;
-    Vector<ImageButton> mImageButtons = new Vector<>();
-
+    private Vector<ImageButton> mImageButtons = new Vector<>();
+    private Controller mController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mySurfaceView = (PainterCanvas) findViewById(R.id.myView);
+        mController = new Controller(getApplicationContext());
+        PainterCanvas mPainterCanvas = (PainterCanvas) findViewById(R.id.myView);
+        mPainterCanvas.setController(mController);
         initButtonToolbars();
         onClick();
     }
@@ -31,29 +32,17 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     int imageButtonId = imageButton.getId();
                     if (imageButtonId == R.id.imageButtonTriangle) {
-                        Toast.makeText(getApplicationContext(),
-                                "triangle",
-                                Toast.LENGTH_SHORT).show();
+                        mController.addTriangleOnCanvas();
                     } else if (imageButtonId == R.id.imageButtonCircle) {
-                        Toast.makeText(getApplicationContext(),
-                                "circle",
-                                Toast.LENGTH_SHORT).show();
+                       mController.addEllipseOnCanvas();
                     } else if (imageButtonId == R.id.imageButtonRectangle) {
-                        Toast.makeText(getApplicationContext(),
-                                "rectangle",
-                                Toast.LENGTH_SHORT).show();
+                        mController.addRectangleOnCanvas();
                     } else if (imageButtonId == R.id.imageButtonUndo) {
-                        Toast.makeText(getApplicationContext(),
-                                "undo",
-                                Toast.LENGTH_SHORT).show();
+                        mController.undoCommand();
                     } else if (imageButtonId == R.id.imageButtonRedo) {
-                        Toast.makeText(getApplicationContext(),
-                                "redo",
-                                Toast.LENGTH_SHORT).show();
+                        mController.redoCommand();
                     } else if (imageButtonId == R.id.imageButtonTrash) {
-                        Toast.makeText(getApplicationContext(),
-                                "trash",
-                                Toast.LENGTH_SHORT).show();
+                        mController.deleteSelectedShape();
                     }
                 }
             });

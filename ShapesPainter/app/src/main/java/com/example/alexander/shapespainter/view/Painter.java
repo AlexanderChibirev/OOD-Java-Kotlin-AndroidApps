@@ -1,7 +1,6 @@
 package com.example.alexander.shapespainter.view;
 
 
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -13,19 +12,12 @@ import com.example.alexander.shapespainter.model.ShapeDiagram;
 import com.example.alexander.shapespainter.model.ShapesList;
 import com.example.alexander.shapespainter.utils.PainterUtils;
 
-import java.util.Map;
 import java.util.Vector;
 
 import javax.vecmath.Vector2f;
 
-import static com.example.alexander.shapespainter.constants.ConstWorld.DEFAULT_RADIUS_DRAG_POINT;
-import static com.example.alexander.shapespainter.constants.ConstWorld.LEFT_TOP;
-import static com.example.alexander.shapespainter.constants.ConstWorld.RIGHT_BOTTOM;
-import static com.example.alexander.shapespainter.constants.ConstWorld.VERTEX1;
-import static com.example.alexander.shapespainter.constants.ConstWorld.VERTEX2;
-import static com.example.alexander.shapespainter.constants.ConstWorld.VERTEX3;
+import static com.example.alexander.shapespainter.constants.Constant.DEFAULT_RADIUS_DRAG_POINT;
 
-//TODO :: перенести данные о цвете в класс фигур, убрать из рисования повторы и перенести их в switch, чтобы он вызывал несколько раз
 class Painter implements ICanvas {
     private Paint mPaint = new Paint();
 
@@ -38,8 +30,8 @@ class Painter implements ICanvas {
             switch (shape.getType()) {
                 case Rectangle:
                     drawRectangle(
-                            mVertices.get(LEFT_TOP),
-                            mVertices.get(RIGHT_BOTTOM),
+                            mVertices.get(0),// 0 = левый верхний угол прямоугольника
+                            mVertices.get(2),//2 = правый нижний угол прямоугольника
                             canvas);
                     break;
                 case Ellipse:
@@ -52,9 +44,9 @@ class Painter implements ICanvas {
                 case Triangle:
                     mVertices = shape.getVertices();
                     drawTriangle(
-                            mVertices.get(VERTEX1),
-                            mVertices.get(VERTEX2),
-                            mVertices.get(VERTEX3),
+                            mVertices.get(0),// 0 = левая вершина треугольника
+                            mVertices.get(1),// 1 = правая вершина треугольника
+                            mVertices.get(2),// 2 = верхняя вершина треугольника
                             canvas);
                     break;
             }
@@ -101,17 +93,6 @@ class Painter implements ICanvas {
                         new Vector2f(vertex2.x - shiftForOutlineColor, vertex2.y - shiftForOutlineColor),
                         new Vector2f(vertex3.x, vertex3.y + shiftForOutlineColor)
                 });
-    }
-
-    void drawTools(Canvas canvas, ShapesList draft, Map<Bitmap, Vector2f> bitmaps) {
-        Bitmap bitmap;
-        Vector2f pos;
-        for (Map.Entry entry : bitmaps.entrySet()) {
-            bitmap = (Bitmap) entry.getKey();
-            pos = (Vector2f) entry.getValue();
-            canvas.drawBitmap(bitmap, pos.x, pos.y, mPaint);
-        }
-        drawPicture(draft, canvas);
     }
 
     void drawSelectDiagramShape(SelectShapeDiagram selectDiagramShape, Canvas canvas) {

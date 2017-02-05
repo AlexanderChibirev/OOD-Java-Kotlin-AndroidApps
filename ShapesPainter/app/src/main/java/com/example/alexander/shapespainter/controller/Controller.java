@@ -1,8 +1,6 @@
 package com.example.alexander.shapespainter.controller;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.RectF;
 import android.widget.Toast;
 
 import com.example.alexander.shapespainter.controller.commands.AddShapeCommand;
@@ -14,42 +12,31 @@ import com.example.alexander.shapespainter.model.Shape;
 import com.example.alexander.shapespainter.model.ShapeDiagram;
 import com.example.alexander.shapespainter.model.ShapeType;
 import com.example.alexander.shapespainter.model.ShapesList;
-import com.example.alexander.shapespainter.model.Tools;
-
-import java.util.Map;
 
 import javax.vecmath.Vector2f;
 
-import static com.example.alexander.shapespainter.constants.ConstWorld.DEFAULT_RADIUS_DRAG_POINT;
-import static com.example.alexander.shapespainter.constants.ConstWorld.DEFAULT_SHIFT_POSITION_X_FOR_REDO_TOOLBAR;
-import static com.example.alexander.shapespainter.constants.ConstWorld.DEFAULT_SHIFT_POSITION_X_FOR_UNDO_TOOLBAR;
+import static com.example.alexander.shapespainter.constants.Constant.DEFAULT_RADIUS_DRAG_POINT;
 
 public class Controller {
     private ShapesList mShapesList;
-    private Tools mTools;
     private Context mContext;
-    private int mScreenWidth;
     private SelectShapeDiagram mSelectDiagramShape = new SelectShapeDiagram();
     private DragType mDragType = DragType.None;
     private MouseActionType mMouseActionType = MouseActionType.None;
     private CommandStack mCommandStack = new CommandStack();
+    private ICommand mCommandResize;
+
     private Vector2f mStartPositionClickMouse = new Vector2f();
     private Vector2f mStartSizeShapeThenClickMouse = new Vector2f();
     private Vector2f mStartCenterShapeThenClickMouse = new Vector2f();
-    private ICommand mCommandResize;
-
     private Vector2f mDistanceFromShapeCenterToMousePos = new Vector2f();
 
-    public Controller(Context context, int screenWidth) {
-        mTools = new Tools(context, screenWidth);
-        mScreenWidth = screenWidth;
+    public Controller(Context context) {//constructor for new canvas
         mContext = context;
         mShapesList = new ShapesList();
     }
 
-    public Controller(Context context, int screenWidth, ShapesList shapesList) {
-        mTools = new Tools(context, screenWidth);
-        mScreenWidth = screenWidth;
+    public Controller(Context context, ShapesList shapesList) {//constructor for older canvas
         mContext = context;
         mShapesList = shapesList;
     }
@@ -63,39 +50,19 @@ public class Controller {
         return mShapesList;
     }
 
-    public ShapesList getToolsDraft() {
-        return mTools.getToolsList();
+    public void addEllipseOnCanvas() {
+        mCommandStack.add(new AddShapeCommand(mShapesList, ShapeType.Ellipse));
     }
 
-    public Map<Bitmap, Vector2f> getBitmapTools() {
-        return mTools.getBitmapToolsList();
+    public void addTriangleOnCanvas() {
+        mCommandStack.add(new AddShapeCommand(mShapesList, ShapeType.Triangle));
     }
 
-
-    public void updateToolbars(Vector2f mousePos) {
-        updateShapesTools(mousePos);
-        updateBitmaps(mousePos);
+    public void addRectangleOnCanvas() {
+        mCommandStack.add(new AddShapeCommand(mShapesList, ShapeType.Rectangle));
     }
 
-    private void updateShapesTools(Vector2f mousePos) {
-        for (Shape shape : mTools.getToolsList().getShapes()) {
-            if (PointInsideShapeManager.isPointInside(shape, mousePos)) {
-                switch (shape.getType()) {
-                    case Ellipse:
-                        mCommandStack.add(new AddShapeCommand(mShapesList, ShapeType.Ellipse));
-                        break;
-                    case Triangle:
-                        mCommandStack.add(new AddShapeCommand(mShapesList, ShapeType.Triangle));
-                        break;
-                    case Rectangle:
-                        mCommandStack.add(new AddShapeCommand(mShapesList, ShapeType.Rectangle));
-                        break;
-                }
-            }
-        }
-    }
-
-    private void undoCommand() {//назад
+    public void undoCommand() {//назад
         if (mCommandStack.undoEnabled()) {
             mCommandStack.undo();
         } else {
@@ -104,7 +71,7 @@ public class Controller {
         mSelectDiagramShape.setShape(null);
     }
 
-    private void redoCommand() {//вперед
+    public void redoCommand() {//вперед
         if (mCommandStack.redoEnabled()) {
             mCommandStack.redo();
         } else {
@@ -113,45 +80,19 @@ public class Controller {
         mSelectDiagramShape.setShape(null);
     }
 
+    public void deleteSelectedShape() {
+        if (mSelectDiagramShape.getShape() != null) {
+            selectShapeClear();
+        } else {
+            setMessage("чтобы удалить фигуру, нужно ее сначала выделить");
+        }
+    }
+
     private void selectShapeClear() {
         mCommandStack.add(new RemoveShapeCommand(mShapesList, mSelectDiagramShape.getShape()));
         mSelectDiagramShape.setShape(null);
         mCommandResize = null;
     }
-
-    private void updateBitmaps(Vector2f mousePos) {
-        Bitmap bitmap;
-        Vector2f bitmapPos;
-        for (Map.Entry entry : mTools.getBitmapToolsList().entrySet()) {
-            bitmap = (Bitmap) entry.getKey();
-            bitmapPos = (Vector2f) entry.getValue();
-            RectF bitmapRect = new RectF(
-                    bitmapPos.x,
-                    bitmapPos.y,
-                    bitmapPos.x + bitmap.getWidth(),
-                    bitmapPos.y + bitmap.getHeight());
-            if (bitmapPos.x == mScreenWidth - DEFAULT_SHIFT_POSITION_X_FOR_UNDO_TOOLBAR) {
-                //bitmap = undo
-                if (PointInsideShapeManager.isPointInside(bitmapRect, mousePos, bitmap)) {
-                    undoCommand();
-                }
-            } else if (bitmapPos.x == mScreenWidth - DEFAULT_SHIFT_POSITION_X_FOR_REDO_TOOLBAR) {
-                //bitmap = redo
-                if (PointInsideShapeManager.isPointInside(bitmapRect, mousePos, bitmap)) {
-                    redoCommand();
-                }
-            } else {
-                //bitmap = trash
-                boolean isInside = PointInsideShapeManager.isPointInside(bitmapRect, mousePos, bitmap);
-                if (isInside && mSelectDiagramShape.getShape() != null) {
-                    selectShapeClear();
-                } else if (isInside) {
-                    setMessage("чтобы удалить фигуру, нужно ее сначала выделить");
-                }
-            }
-        }
-    }
-
 
     public void updateShapes(Vector2f mousePos) {
         for (Shape shape : mShapesList.getShapes()) {
@@ -160,7 +101,7 @@ public class Controller {
                     mouseDown(shape, mousePos);
                     break;
                 case Move:
-                    mouseMoved(shape,mousePos);
+                    mouseMoved(shape, mousePos);
                     break;
                 case Up:
                     mouseUp(mousePos);
@@ -216,7 +157,7 @@ public class Controller {
 
     private void updateResizeShape(Vector2f mousePos) {
         Shape selectShape = mSelectDiagramShape.getShape();
-        if (selectShape != null) {
+        if (selectShape != null && mMouseActionType != MouseActionType.Move) {
             calculateDragType(mousePos);
         }
         if (mDragType != DragType.None) {
@@ -236,10 +177,10 @@ public class Controller {
     }
 
     private boolean calculateDragType(Vector2f mousePos) {
-        int sizeInvisibleRadiusForUsability = 5;
+        int sizeInvisibleRadiusForUsability = 15;
         ShapeDiagram shapeDiagram = mSelectDiagramShape.getShape().getDiagram();
         if (Math.pow((mousePos.x - shapeDiagram.getLeft()), 2)
-                / Math.pow(DEFAULT_RADIUS_DRAG_POINT + sizeInvisibleRadiusForUsability , 2)
+                / Math.pow(DEFAULT_RADIUS_DRAG_POINT + sizeInvisibleRadiusForUsability, 2)
                 + Math.pow((mousePos.y - shapeDiagram.getTop()), 2)
                 / Math.pow(DEFAULT_RADIUS_DRAG_POINT + sizeInvisibleRadiusForUsability, 2) <= 1) {
             mDragType = DragType.LeftTop;

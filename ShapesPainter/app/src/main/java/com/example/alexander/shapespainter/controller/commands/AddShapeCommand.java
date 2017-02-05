@@ -1,19 +1,18 @@
 package com.example.alexander.shapespainter.controller.commands;
 
 import com.example.alexander.shapespainter.controller.ICommand;
-import com.example.alexander.shapespainter.model.ShapesList;
 import com.example.alexander.shapespainter.model.Shape;
 import com.example.alexander.shapespainter.model.ShapeFactory;
 import com.example.alexander.shapespainter.model.ShapeType;
+import com.example.alexander.shapespainter.model.ShapesList;
 
 import javax.vecmath.Vector2f;
 
-import static com.example.alexander.shapespainter.constants.ConstWorld.SHAPE_DEFAULT_FOR_ELLIPSE_WIDTH;
-import static com.example.alexander.shapespainter.constants.ConstWorld.SHAPE_DEFAULT_HEIGHT;
-import static com.example.alexander.shapespainter.constants.ConstWorld.SHAPE_DEFAULT_POSITION;
-import static com.example.alexander.shapespainter.constants.ConstWorld.SHAPE_DEFAULT_WIDTH;
-
 public class AddShapeCommand implements ICommand {
+    private final static float SHAPE_DEFAULT_WIDTH = 80;
+    private final static float SHAPE_DEFAULT_HEIGHT = 50;
+    private final static float SHAPE_DEFAULT_FOR_ELLIPSE_WIDTH = 50;
+    private final static float SHAPE_DEFAULT_POSITION = 250f;
     private ShapesList mShapesList;
     private Shape mShape;
 

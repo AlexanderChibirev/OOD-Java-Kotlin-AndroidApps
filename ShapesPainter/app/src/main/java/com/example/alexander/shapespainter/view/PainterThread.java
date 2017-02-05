@@ -36,7 +36,6 @@ class PainterThread extends Thread {
                     if (canvas != null) {
                         canvas.drawColor(Color.WHITE);
                         mCanvas.drawModels(canvas);
-                        mCanvas.drawTools(canvas);
                     }
                 }
                 sleep(SLEEP_TIME);
