@@ -69,14 +69,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 FileSystem.saveFileWithShapes(mController.getShapesDraft());
-                finish();
+                System.exit(0);
             }
         });
 
         quitDialog.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                finish();
+                System.exit(0);
             }
         });
         quitDialog.show();

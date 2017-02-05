@@ -101,6 +101,7 @@ public class Controller {
                     updateResizeShape(mousePos);
                     break;
                 case Up:
+                    updateResizeShape(mousePos);
                     mouseUp(mousePos);
                     break;
             }
