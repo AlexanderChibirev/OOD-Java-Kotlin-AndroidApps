@@ -12,28 +12,38 @@ import com.example.alexander.shapespainter.model.Shape;
 import com.example.alexander.shapespainter.model.ShapeDiagram;
 import com.example.alexander.shapespainter.model.ShapeType;
 import com.example.alexander.shapespainter.model.ShapesList;
+import com.example.alexander.shapespainter.utils.FileSystem;
+
+import java.io.IOException;
 
 import javax.vecmath.Vector2f;
 
 import static com.example.alexander.shapespainter.constants.Constant.DEFAULT_RADIUS_DRAG_POINT;
 
 public class Controller {
-    private ShapesList mShapesList;
+    private ShapesList mShapesList = new ShapesList();
     private Context mContext;
     private SelectShapeDiagram mSelectDiagramShape = new SelectShapeDiagram();
     private DragType mDragType = null;
     private MouseActionType mMouseActionType = MouseActionType.None;
     private CommandStack mCommandStack = new CommandStack();
-    private ICommand mCommandResize;
+    private ResizeShapeCommand mCommandEnderResize;
 
     private Vector2f mStartPositionClickMouse = new Vector2f();
     private Vector2f mStartSizeShapeThenClickMouse = new Vector2f();
     private Vector2f mStartCenterShapeThenClickMouse = new Vector2f();
     private Vector2f mDistanceFromShapeCenterToMousePos = new Vector2f();
 
-    public Controller(Context context, ShapesList shapesList) {
+    public Controller(Context context) {
         mContext = context;
-        mShapesList = shapesList;
+    }
+
+    public void readFileWithStateShape() {
+        try {
+            FileSystem.readFileWithStateShapes(mShapesList, mContext);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -45,16 +55,19 @@ public class Controller {
         return mShapesList;
     }
 
-    public void addEllipseOnCanvas() {
+    public void addEllipse() {
         mCommandStack.add(new AddShapeCommand(mShapesList, ShapeType.Ellipse));
+        mSelectDiagramShape.setShape(mShapesList.getShapes().get(mShapesList.getShapes().size() - 1));
     }
 
-    public void addTriangleOnCanvas() {
+    public void addTriangle() {
         mCommandStack.add(new AddShapeCommand(mShapesList, ShapeType.Triangle));
+        mSelectDiagramShape.setShape(mShapesList.getShapes().get(mShapesList.getShapes().size() - 1));
     }
 
-    public void addRectangleOnCanvas() {
+    public void addRectangle() {
         mCommandStack.add(new AddShapeCommand(mShapesList, ShapeType.Rectangle));
+        mSelectDiagramShape.setShape(mShapesList.getShapes().get(mShapesList.getShapes().size() - 1));
     }
 
     public void undoCommand() {//назад
@@ -83,12 +96,6 @@ public class Controller {
         }
     }
 
-    private void selectShapeClear() {
-        mCommandStack.add(new RemoveShapeCommand(mShapesList, mSelectDiagramShape.getShape()));
-        mSelectDiagramShape.setShape(null);
-        mCommandResize = null;
-    }
-
     public void updateShapes(Vector2f mousePos) {
         for (Shape shape : mShapesList.getShapes()) {
             switch (mMouseActionType) {
@@ -109,9 +116,19 @@ public class Controller {
         }
     }
 
+    public void setMouseMotionType(MouseActionType mouseActionType) {
+        mMouseActionType = mouseActionType;
+    }
+
+    private void selectShapeClear() {
+        mCommandStack.add(new RemoveShapeCommand(mShapesList, mSelectDiagramShape.getShape()));
+        mSelectDiagramShape.setShape(null);
+        mCommandEnderResize = null;
+    }
+
     private void mouseDown(Shape shape, Vector2f mousePos) {
         if (PointInsideShapeManager.isPointInside(shape, mousePos) && !calculateDragType(mousePos)) {
-            mCommandResize = null;
+            mCommandEnderResize = null;
             mSelectDiagramShape.setShape(shape);
             mDragType = null;
             mStartPositionClickMouse = mousePos;
@@ -133,18 +150,19 @@ public class Controller {
 
     private void mouseMoved(Shape shape, Vector2f mousePos) {
         if (shape == mSelectDiagramShape.getShape() && mDragType == null) {
-            new MoveShapeCommand(
+            MoveShapeCommand moveShapeCommand = new MoveShapeCommand(
                     mSelectDiagramShape.getShape(),
                     mousePos,
                     mStartPositionClickMouse,
-                    mDistanceFromShapeCenterToMousePos).execute();
+                    mDistanceFromShapeCenterToMousePos);
+            moveShapeCommand.execute();
         }
     }
 
     private void mouseUp(Vector2f mousePos) {
         if (mSelectDiagramShape.getShape() != null) {
-            if (mCommandResize != null) {
-                mCommandStack.add(mCommandResize);
+            if (mCommandEnderResize != null) {
+                mCommandStack.add(mCommandEnderResize);
             }
         }
         mDragType = null;
@@ -156,14 +174,14 @@ public class Controller {
             calculateDragType(mousePos);
         }
         if (mDragType != null) {
-            mCommandResize = new ResizeShapeCommand(selectShape,
+            mCommandEnderResize = new ResizeShapeCommand(selectShape,
                     mStartSizeShapeThenClickMouse,
                     mStartCenterShapeThenClickMouse,
                     mousePos,
                     mDragType);
-            mCommandResize.execute();
+            mCommandEnderResize.execute();
         }
-        if (mDragType == null && mMouseActionType == MouseActionType.Up) {
+        if (mDragType == null && mMouseActionType == MouseActionType.Up && mSelectDiagramShape.getShape() != null) {
             mCommandStack.add(new MoveShapeCommand(mSelectDiagramShape.getShape(), mousePos, mStartPositionClickMouse, mDistanceFromShapeCenterToMousePos));
         }
     }
@@ -210,7 +228,7 @@ public class Controller {
         return false;
     }
 
-    public void setMouseMotionType(MouseActionType mouseActionType) {
-        mMouseActionType = mouseActionType;
+    public void saveStateShape() {
+        FileSystem.saveFileWithStateShapes(getShapesDraft(), mContext);
     }
 }

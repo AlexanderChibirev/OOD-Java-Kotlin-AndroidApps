@@ -22,31 +22,31 @@ class Painter implements ICanvas {
     private Paint mPaint = new Paint();
 
     void drawPicture(ShapesList draft, Canvas canvas) {
-        ShapeDiagram mDiagram;
-        Vector<Vector2f> mVertices;
+        ShapeDiagram diagram;
+        Vector<Vector2f> vertices;
         for (Shape shape : draft.getShapes()) {
-            mDiagram = shape.getDiagram();
-            mVertices = shape.getVertices();
+            diagram = shape.getDiagram();
+            vertices = shape.getVertices();
             switch (shape.getType()) {
                 case Rectangle:
                     drawRectangle(
-                            mVertices.get(0),// 0 = левый верхний угол прямоугольника
-                            mVertices.get(2),//2 = правый нижний угол прямоугольника
+                            vertices.get(0),// 0 = левый верхний угол прямоугольника
+                            vertices.get(2),//2 = правый нижний угол прямоугольника
                             canvas);
                     break;
                 case Ellipse:
                     drawEllipse(
                             shape.getCenter(),
-                            ((mDiagram.getRight() - mDiagram.getLeft()) / 2f),
-                            ((mDiagram.getBottom() - mDiagram.getTop()) / 2f),
+                            ((diagram.getRight() - diagram.getLeft()) / 2f),
+                            ((diagram.getBottom() - diagram.getTop()) / 2f),
                             canvas);
                     break;
                 case Triangle:
-                    mVertices = shape.getVertices();
+                    vertices = shape.getVertices();
                     drawTriangle(
-                            mVertices.get(0),// 0 = левая вершина треугольника
-                            mVertices.get(1),// 1 = правая вершина треугольника
-                            mVertices.get(2),// 2 = верхняя вершина треугольника
+                            vertices.get(0),// 0 = левая вершина треугольника
+                            vertices.get(1),// 1 = правая вершина треугольника
+                            vertices.get(2),// 2 = верхняя вершина треугольника
                             canvas);
                     break;
             }

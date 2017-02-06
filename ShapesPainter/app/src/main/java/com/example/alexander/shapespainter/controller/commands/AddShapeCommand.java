@@ -9,9 +9,9 @@ import com.example.alexander.shapespainter.model.ShapesList;
 import javax.vecmath.Vector2f;
 
 public class AddShapeCommand implements ICommand {
-    private final static float SHAPE_DEFAULT_WIDTH = 80;
-    private final static float SHAPE_DEFAULT_HEIGHT = 50;
-    private final static float SHAPE_DEFAULT_FOR_ELLIPSE_WIDTH = 50;
+    private final static float SHAPE_DEFAULT_WIDTH = 110;
+    private final static float SHAPE_DEFAULT_HEIGHT = 80;
+    private final static float SHAPE_DEFAULT_SIZE_FOR_CIRCLE = 80;
     private final static float SHAPE_DEFAULT_POSITION = 250f;
     private ShapesList mShapesList;
     private Shape mShape;
@@ -22,8 +22,8 @@ public class AddShapeCommand implements ICommand {
         if (shapeType == ShapeType.Ellipse) {
             mShape = shapeFactory.createShape(
                     new Vector2f(SHAPE_DEFAULT_POSITION, SHAPE_DEFAULT_POSITION),
-                    SHAPE_DEFAULT_FOR_ELLIPSE_WIDTH,
-                    SHAPE_DEFAULT_HEIGHT,
+                    SHAPE_DEFAULT_SIZE_FOR_CIRCLE,
+                    SHAPE_DEFAULT_SIZE_FOR_CIRCLE,
                     shapeType);
         } else {
             mShape = shapeFactory.createShape(

@@ -8,11 +8,8 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import com.example.alexander.shapespainter.controller.Controller;
-import com.example.alexander.shapespainter.model.ShapesList;
-import com.example.alexander.shapespainter.utils.FileSystem;
 import com.example.alexander.shapespainter.view.PainterCanvas;
 
-import java.io.IOException;
 import java.util.Vector;
 
 public class MainActivity extends AppCompatActivity {
@@ -23,17 +20,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ShapesList shapesList = new ShapesList();
-        try {
-            FileSystem.readFileSD(shapesList);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        mController = new Controller(getApplicationContext(), shapesList);
+        mController = new Controller(getApplicationContext());
+        mController.readFileWithStateShape();
         PainterCanvas mPainterCanvas = (PainterCanvas) findViewById(R.id.myView);
         mPainterCanvas.setController(mController);
         initButtonToolbars();
         onClick();
+    }
+
+    @Override
+    public void onBackPressed() {
+        createDialogExit();
     }
 
     private void onClick() {
@@ -43,11 +40,11 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     int imageButtonId = imageButton.getId();
                     if (imageButtonId == R.id.imageButtonTriangle) {
-                        mController.addTriangleOnCanvas();
+                        mController.addTriangle();
                     } else if (imageButtonId == R.id.imageButtonCircle) {
-                        mController.addEllipseOnCanvas();
+                        mController.addEllipse();
                     } else if (imageButtonId == R.id.imageButtonRectangle) {
-                        mController.addRectangleOnCanvas();
+                        mController.addRectangle();
                     } else if (imageButtonId == R.id.imageButtonUndo) {
                         mController.undoCommand();
                     } else if (imageButtonId == R.id.imageButtonRedo) {
@@ -68,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         quitDialog.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                FileSystem.saveFileWithShapes(mController.getShapesDraft());
+                mController.saveStateShape();
                 System.exit(0);
             }
         });
@@ -89,10 +86,5 @@ public class MainActivity extends AppCompatActivity {
         mImageButtons.add((ImageButton) findViewById(R.id.imageButtonUndo));
         mImageButtons.add((ImageButton) findViewById(R.id.imageButtonRedo));
         mImageButtons.add((ImageButton) findViewById(R.id.imageButtonTrash));
-    }
-
-    @Override
-    public void onBackPressed() {
-        createDialogExit();
     }
 }

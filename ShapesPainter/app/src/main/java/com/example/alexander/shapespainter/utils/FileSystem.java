@@ -1,7 +1,6 @@
 package com.example.alexander.shapespainter.utils;
 
-import android.os.Environment;
-import android.util.Log;
+import android.content.Context;
 
 import com.example.alexander.shapespainter.model.Shape;
 import com.example.alexander.shapespainter.model.ShapeFactory;
@@ -14,55 +13,40 @@ import org.json.simple.parser.ParseException;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 
 import javax.vecmath.Vector2f;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class FileSystem {
-    private final static String LOG_TAG = "Error: ";
-    private final static String DIR_SD = "ShapePainter";
-    private final static String FILENAME_SD = "DateShapes.json";
+    private final static String FILENAME = "DateShapes.json";
 
-    public static boolean saveFileWithShapes(ShapesList shapesList) {
-        // проверяем доступность SD
-        if (!Environment.getExternalStorageState().equals(
-                Environment.MEDIA_MOUNTED)) {
-            Log.d(LOG_TAG, "SD-карта не доступна: " + Environment.getExternalStorageState());
-            return false;
-        }
-        // получаем путь к SD
-        File sdPath = Environment.getExternalStorageDirectory();
-        // добавляем свой каталог к пути
-        sdPath = new File(sdPath.getAbsolutePath() + "/" + DIR_SD);
-        // создаем каталог
-
-        boolean isDirectoryCreated = sdPath.exists();
-        if (!isDirectoryCreated) {
-            isDirectoryCreated = sdPath.mkdir();
-        }
-        if (isDirectoryCreated) {
-            File sdFile = new File(sdPath, FILENAME_SD);
-            try {
-                // открываем поток для записи
-                BufferedWriter bw = new BufferedWriter(new FileWriter(sdFile));
-                // пишем данные
-                writeDataShapeInFile(shapesList, bw);
-                // закрываем поток
-                bw.close();
-                Log.d(LOG_TAG, "Файл записан на SD: " + sdFile.getAbsolutePath());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    public static boolean saveFileWithStateShapes(ShapesList shapesList, Context context) {
+        try {
+            BufferedWriter bw = new BufferedWriter((new OutputStreamWriter(context.openFileOutput(FILENAME, MODE_PRIVATE))));
+            writeDataShapeInFile(shapesList, bw);
+            bw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return false;
     }
 
+    public static boolean readFileWithStateShapes(ShapesList shapesList, Context context) throws IOException {
+        try {
+            BufferedReader br = new BufferedReader(new InputStreamReader(context.openFileInput(FILENAME)));
+            parseJson(shapesList, br);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
     @SuppressWarnings("unchecked")
     private static void writeDataShapeInFile(ShapesList shapesList, BufferedWriter bw) throws IOException {
-
         JSONObject shapeData = new JSONObject();
         for (Shape shape : shapesList.getShapes()) {
 
@@ -79,30 +63,6 @@ public class FileSystem {
             bw.write(shapeData.toString());
             bw.newLine();
         }
-    }
-
-
-    public static boolean readFileSD(ShapesList shapesList) throws IOException {
-        // проверяем доступность SD
-        if (!Environment.getExternalStorageState().equals(
-                Environment.MEDIA_MOUNTED)) {
-            Log.d(LOG_TAG, "SD-карта не доступна: " + Environment.getExternalStorageState());
-            return false;
-        }
-        // получаем путь к SD
-        File sdPath = Environment.getExternalStorageDirectory();
-        // добавляем свой каталог к пути
-        sdPath = new File(sdPath.getAbsolutePath() + "/" + DIR_SD);
-        // формируем объект File, который содержит путь к файлу
-        File sdFile = new File(sdPath, FILENAME_SD);
-        try {
-            // открываем поток для чтения
-            BufferedReader br = new BufferedReader(new FileReader(sdFile));
-            parseJson(shapesList, br);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return true;
     }
 
     private static void parseJson(ShapesList shapesList, BufferedReader br) throws IOException, ParseException {
