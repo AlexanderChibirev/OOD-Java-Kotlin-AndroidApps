@@ -1,7 +1,6 @@
 package com.example.alexander.shapespainter.model.shapes;
 
 import com.example.alexander.shapespainter.model.Shape;
-import com.example.alexander.shapespainter.model.ShapeDiagram;
 import com.example.alexander.shapespainter.model.ShapeType;
 
 import java.util.Vector;
@@ -28,11 +27,6 @@ public class Rectangle extends Shape {
     }
 
     @Override
-    public ShapeDiagram getDiagram() {
-        return new ShapeDiagram(mLeftTop.y, mLeftTop.x, mRightBottom.x, mRightBottom.y);
-    }
-
-    @Override
     public void setCenter(Vector2f pos) {
         float width = mRightBottom.x - mLeftTop.x;
         float height = mRightBottom.y - mLeftTop.y;
@@ -56,12 +50,10 @@ public class Rectangle extends Shape {
     }
 
     @Override
-    public Vector<Vector2f> getVertices() {
+    public Vector<Vector2f> getDataShape() {
         Vector<Vector2f> v = new Vector<>();
         v.add(mLeftTop);
-        v.add(new Vector2f(mRightBottom.x, mLeftTop.y));
         v.add(mRightBottom);
-        v.add(new Vector2f(mLeftTop.x, mRightBottom.y));
         return v;
     }
 
@@ -74,10 +66,8 @@ public class Rectangle extends Shape {
 
     @Override
     public Vector2f getSize() {
-        ShapeDiagram diagram = getDiagram();
         return new Vector2f(
-                diagram.getRight() - diagram.getLeft(),
-                diagram.getBottom() - diagram.getTop());
+                mRightBottom.x - mLeftTop.x,
+                mRightBottom.y - mLeftTop.y);
     }
-
 }

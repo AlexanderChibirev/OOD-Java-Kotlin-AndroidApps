@@ -28,11 +28,4 @@ public class ShapeDiagram {
     public float getBottom() {
         return mBottom;
     }
-
-    public void setDiagram(float top, float left, float right, float bottom) {
-        mTop = top;
-        mLeft = left;
-        mRight = right;
-        mBottom = bottom;
-    }
 }

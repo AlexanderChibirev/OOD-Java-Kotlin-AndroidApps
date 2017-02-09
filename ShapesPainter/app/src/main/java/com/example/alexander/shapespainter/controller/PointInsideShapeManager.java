@@ -1,15 +1,16 @@
 package com.example.alexander.shapespainter.controller;
 
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.RectF;
-
+import com.example.alexander.shapespainter.model.SelectShapeDiagram;
 import com.example.alexander.shapespainter.model.Shape;
 import com.example.alexander.shapespainter.model.ShapeDiagram;
 
 import java.util.Vector;
 
 import javax.vecmath.Vector2f;
+
+import static com.example.alexander.shapespainter.constants.Constant.DATA_SHAPE_LEFT_VERTEX_TRIANGLE_INDEX;
+import static com.example.alexander.shapespainter.constants.Constant.DATA_SHAPE_RIGHT_VERTEX_TRIANGLE_INDEX;
+import static com.example.alexander.shapespainter.constants.Constant.DATA_SHAPE_TOP_VERTEX_TRIANGLE_INDEX;
 
 class PointInsideShapeManager {
 
@@ -25,16 +26,11 @@ class PointInsideShapeManager {
         return false;
     }
 
-    static boolean isPointInside(RectF rect, Vector2f point, Bitmap bitmap) {
-        return (rect.contains(point.x, point.y)) &&
-                bitmap.getPixel((int) (point.getX() - rect.left), (int) (point.getY() - rect.top)) != Color.TRANSPARENT;
-    }
-
     private static boolean isPointInsideTriangle(Shape shape, Vector2f point) {
-        Vector<Vector2f> vertices = shape.getVertices();
-        Vector2f vertex1 = vertices.get(0);
-        Vector2f vertex2 = vertices.get(1);
-        Vector2f vertex3 = vertices.get(2);
+        Vector<Vector2f> vertices = shape.getDataShape();
+        Vector2f vertex1 = vertices.get(DATA_SHAPE_LEFT_VERTEX_TRIANGLE_INDEX);
+        Vector2f vertex2 = vertices.get(DATA_SHAPE_RIGHT_VERTEX_TRIANGLE_INDEX);
+        Vector2f vertex3 = vertices.get(DATA_SHAPE_TOP_VERTEX_TRIANGLE_INDEX);
 
         boolean b1, b2, b3;
         b1 = sign(point, vertex1, vertex2) < 0;
@@ -45,7 +41,8 @@ class PointInsideShapeManager {
     }
 
     private static boolean isPointInsideRectangle(Shape shape, Vector2f point) {
-        ShapeDiagram shapeDiagram = shape.getDiagram();
+        SelectShapeDiagram selectShapeDiagram = new SelectShapeDiagram(shape);
+        ShapeDiagram shapeDiagram = selectShapeDiagram.getShapeDiagram();
         return point.x <= shapeDiagram.getRight()
                 && point.x >= shapeDiagram.getLeft()
                 && point.y >= shapeDiagram.getTop()
@@ -54,7 +51,8 @@ class PointInsideShapeManager {
 
     private static boolean isPointInsideEllipse(Shape shape, Vector2f point) {
         Vector2f center = shape.getCenter();
-        ShapeDiagram shapeDiagram = shape.getDiagram();
+        SelectShapeDiagram selectShapeDiagram = new SelectShapeDiagram(shape);
+        ShapeDiagram shapeDiagram = selectShapeDiagram.getShapeDiagram();
         float wRadius = center.y - shapeDiagram.getTop();
         float hRadius = center.x - shapeDiagram.getLeft();
 

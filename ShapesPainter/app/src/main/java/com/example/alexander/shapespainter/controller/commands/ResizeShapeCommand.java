@@ -2,6 +2,7 @@ package com.example.alexander.shapespainter.controller.commands;
 
 import com.example.alexander.shapespainter.controller.DragType;
 import com.example.alexander.shapespainter.controller.ICommand;
+import com.example.alexander.shapespainter.model.SelectShapeDiagram;
 import com.example.alexander.shapespainter.model.Shape;
 import com.example.alexander.shapespainter.model.ShapeDiagram;
 
@@ -13,20 +14,22 @@ public class ResizeShapeCommand implements ICommand {
     private Vector2f mEndSize = new Vector2f();
     private Vector2f mEndCenter = new Vector2f();
     private Shape mShape;
+    private SelectShapeDiagram mSelectShapeDiagram;
 
-    public ResizeShapeCommand(Shape shape,
+    public ResizeShapeCommand(SelectShapeDiagram selectShapeDiagram,
                               Vector2f startSize,
                               Vector2f startCenter,
                               Vector2f pos,
                               DragType dragType) {
-        mShape = shape;
+        mShape = selectShapeDiagram.getShape();
         mStartSize = startSize;
         mStartCenter = startCenter;
+        mSelectShapeDiagram = selectShapeDiagram;
         checkAnglesShape(pos, dragType);
     }
 
     private void checkAnglesShape(Vector2f pos, DragType dragType) {
-        ShapeDiagram diagram = mShape.getDiagram();
+        ShapeDiagram diagram = mSelectShapeDiagram.getShapeDiagram();
         switch (dragType) {
             case LeftBottom:
                 calculateDataForLeftBottomAngle(pos, diagram);

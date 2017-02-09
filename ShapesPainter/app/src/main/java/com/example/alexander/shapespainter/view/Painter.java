@@ -16,37 +16,50 @@ import java.util.Vector;
 
 import javax.vecmath.Vector2f;
 
+import static com.example.alexander.shapespainter.constants.Constant.DATA_SHAPE_CENTER_ELLIPSE_INDEX;
+import static com.example.alexander.shapespainter.constants.Constant.DATA_SHAPE_LEFT_TOP_RECTANGLE_INDEX;
+import static com.example.alexander.shapespainter.constants.Constant.DATA_SHAPE_LEFT_VERTEX_TRIANGLE_INDEX;
+import static com.example.alexander.shapespainter.constants.Constant.DATA_SHAPE_RIGHT_BOTTOM_RECTANGLE_INDEX;
+import static com.example.alexander.shapespainter.constants.Constant.DATA_SHAPE_RIGHT_VERTEX_TRIANGLE_INDEX;
+import static com.example.alexander.shapespainter.constants.Constant.DATA_SHAPE_SIZE_ELLIPSE_INDEX;
+import static com.example.alexander.shapespainter.constants.Constant.DATA_SHAPE_TOP_VERTEX_TRIANGLE_INDEX;
 import static com.example.alexander.shapespainter.constants.Constant.DEFAULT_RADIUS_DRAG_POINT;
 
 class Painter implements ICanvas {
     private Paint mPaint = new Paint();
 
     void drawPicture(ShapesList draft, Canvas canvas) {
-        ShapeDiagram diagram;
-        Vector<Vector2f> vertices;
+        Vector<Vector2f> dataShape;
         for (Shape shape : draft.getShapes()) {
-            diagram = shape.getDiagram();
-            vertices = shape.getVertices();
+            dataShape = shape.getDataShape();
             switch (shape.getType()) {
                 case Rectangle:
                     drawRectangle(
-                            vertices.get(0),// 0 = левый верхний угол прямоугольника
-                            vertices.get(2),//2 = правый нижний угол прямоугольника
+                            dataShape.get(DATA_SHAPE_LEFT_TOP_RECTANGLE_INDEX),
+                            dataShape.get(DATA_SHAPE_RIGHT_BOTTOM_RECTANGLE_INDEX),
                             canvas);
                     break;
                 case Ellipse:
                     drawEllipse(
                             shape.getCenter(),
-                            ((diagram.getRight() - diagram.getLeft()) / 2f),
-                            ((diagram.getBottom() - diagram.getTop()) / 2f),
+                            (((dataShape.get(DATA_SHAPE_CENTER_ELLIPSE_INDEX).x
+                                    + dataShape.get(DATA_SHAPE_SIZE_ELLIPSE_INDEX).x)
+                                    - (dataShape.get(DATA_SHAPE_CENTER_ELLIPSE_INDEX).x
+                                    - dataShape.get(DATA_SHAPE_SIZE_ELLIPSE_INDEX).x))
+                                    / 2f),
+                            ((((dataShape.get(DATA_SHAPE_CENTER_ELLIPSE_INDEX).y
+                                    + dataShape.get(DATA_SHAPE_SIZE_ELLIPSE_INDEX).y)
+                                    - (dataShape.get(DATA_SHAPE_CENTER_ELLIPSE_INDEX).y
+                                    - dataShape.get(DATA_SHAPE_SIZE_ELLIPSE_INDEX).y))
+                                    / 2f)),
                             canvas);
                     break;
                 case Triangle:
-                    vertices = shape.getVertices();
+                    dataShape = shape.getDataShape();
                     drawTriangle(
-                            vertices.get(0),// 0 = левая вершина треугольника
-                            vertices.get(1),// 1 = правая вершина треугольника
-                            vertices.get(2),// 2 = верхняя вершина треугольника
+                            dataShape.get(DATA_SHAPE_LEFT_VERTEX_TRIANGLE_INDEX),
+                            dataShape.get(DATA_SHAPE_RIGHT_VERTEX_TRIANGLE_INDEX),
+                            dataShape.get(DATA_SHAPE_TOP_VERTEX_TRIANGLE_INDEX),
                             canvas);
                     break;
             }
@@ -96,8 +109,7 @@ class Painter implements ICanvas {
     }
 
     void drawSelectDiagramShape(SelectShapeDiagram selectDiagramShape, Canvas canvas) {
-        Shape shape = selectDiagramShape.getShape();
-        ShapeDiagram shapeDiagram = shape.getDiagram();
+        ShapeDiagram shapeDiagram = selectDiagramShape.getShapeDiagram();
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setColor(Color.BLACK);
         canvas.drawRect(

@@ -1,7 +1,6 @@
 package com.example.alexander.shapespainter.model.shapes;
 
 import com.example.alexander.shapespainter.model.Shape;
-import com.example.alexander.shapespainter.model.ShapeDiagram;
 import com.example.alexander.shapespainter.model.ShapeType;
 
 import java.util.Vector;
@@ -28,11 +27,6 @@ public class Triangle extends Shape {
     }
 
     @Override
-    public ShapeDiagram getDiagram() {
-        return new ShapeDiagram(mVertex3.y, mVertex1.x, mVertex2.x, mVertex2.y);
-    }
-
-    @Override
     public void setCenter(Vector2f pos) {
         float height = mVertex2.y - mVertex3.y;
         float width = mVertex2.x - mVertex1.x;
@@ -50,7 +44,7 @@ public class Triangle extends Shape {
     }
 
     @Override
-    public Vector<Vector2f> getVertices() {
+    public Vector<Vector2f> getDataShape() {
         Vector<Vector2f> v = new Vector<>();
         v.add(mVertex1);
         v.add(mVertex2);
@@ -67,10 +61,8 @@ public class Triangle extends Shape {
 
     @Override
     public Vector2f getSize() {
-        ShapeDiagram diagram = getDiagram();
         return new Vector2f(
-                diagram.getRight() - diagram.getLeft(),
-                diagram.getBottom() - diagram.getTop());
+                mVertex2.x - mVertex1.x,
+                mVertex2.y - mVertex3.y);
     }
-
 }

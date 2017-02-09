@@ -8,9 +8,13 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import com.example.alexander.shapespainter.controller.Controller;
-import com.example.alexander.shapespainter.controller.MouseActionType;
+import com.example.alexander.shapespainter.model.Shape;
 
 import javax.vecmath.Vector2f;
+
+import static com.example.alexander.shapespainter.view.MouseActionType.Down;
+import static com.example.alexander.shapespainter.view.MouseActionType.Move;
+import static com.example.alexander.shapespainter.view.MouseActionType.Up;
 
 
 public class PainterCanvas extends SurfaceView implements SurfaceHolder.Callback {
@@ -85,21 +89,33 @@ public class PainterCanvas extends SurfaceView implements SurfaceHolder.Callback
         Vector2f mousePos = new Vector2f(event.getX(), event.getY());
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN://нажатие
-                mController.setMouseMotionType(MouseActionType.Down);
-                mController.updateShapes(mousePos);
+                updateShapes(mousePos, Down);
                 break;
             case MotionEvent.ACTION_MOVE://движение
-                mController.setMouseMotionType(MouseActionType.Move);
-                mController.updateShapes(mousePos);
+                updateShapes(mousePos, Move);
                 break;
             case MotionEvent.ACTION_UP: // отпускание
-                mController.setMouseMotionType(MouseActionType.Up);
-                mController.updateShapes(mousePos);
+                updateShapes(mousePos, Up);
             case MotionEvent.ACTION_CANCEL:
                 break;
         }
-        invalidate();
         return true;
+    }
+
+    public void updateShapes(Vector2f mousePos, MouseActionType actionType) {
+        for (Shape shape : mController.getShapesList().getShapes()) {
+            switch (actionType) {
+                case Down:
+                    mController.mouseDown(shape, mousePos);
+                    break;
+                case Move:
+                    mController.mouseMoved(shape, mousePos);
+                    break;
+                case Up:
+                    mController.mouseUp(mousePos);
+                    break;
+            }
+        }
     }
 
     public void setController(Controller controller) {

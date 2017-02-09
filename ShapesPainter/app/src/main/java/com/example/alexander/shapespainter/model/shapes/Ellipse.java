@@ -2,7 +2,6 @@ package com.example.alexander.shapespainter.model.shapes;
 
 
 import com.example.alexander.shapespainter.model.Shape;
-import com.example.alexander.shapespainter.model.ShapeDiagram;
 import com.example.alexander.shapespainter.model.ShapeType;
 
 import java.util.Vector;
@@ -29,15 +28,6 @@ public class Ellipse extends Shape {
     }
 
     @Override
-    public ShapeDiagram getDiagram() {
-        return new ShapeDiagram(
-                mCenter.y - mHRadius,
-                mCenter.x - mWRadius,
-                mCenter.x + mWRadius,
-                mCenter.y + mHRadius);
-    }
-
-    @Override
     public void setCenter(Vector2f pos) {
         mCenter = pos;
     }
@@ -49,9 +39,10 @@ public class Ellipse extends Shape {
     }
 
     @Override
-    public Vector<Vector2f> getVertices() {
+    public Vector<Vector2f> getDataShape() {
         Vector<Vector2f> v = new Vector<>();
         v.add(mCenter);
+        v.add(new Vector2f(mWRadius, mHRadius));
         return v;
     }
 
@@ -62,9 +53,8 @@ public class Ellipse extends Shape {
 
     @Override
     public Vector2f getSize() {
-        ShapeDiagram diagram = getDiagram();
         return new Vector2f(
-                diagram.getRight() - diagram.getLeft(),
-                diagram.getBottom() - diagram.getTop());
+                (mCenter.x + mWRadius) - (mCenter.x - mWRadius),
+                (mCenter.y + mHRadius) - (mCenter.y - mHRadius));
     }
 }
