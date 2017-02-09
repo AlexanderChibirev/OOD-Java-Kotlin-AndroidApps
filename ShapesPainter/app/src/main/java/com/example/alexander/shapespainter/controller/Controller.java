@@ -139,7 +139,11 @@ public class Controller {
 
     private MoveShapeCommand moveShapeCommand(Vector2f mousePos, Shape shape) {
         MoveShapeCommand moveShapeCommand = null;
-        if (shape == mSelectDiagramShape.getShape() && mDragType == null && mSelectDiagramShape.getShape() != null) {
+        if (shape == mSelectDiagramShape.getShape()
+                && mDragType == null
+                && mSelectDiagramShape.getShape() != null
+                && mousePos.x != mStartPositionClickMouse.x
+                && mousePos.y != mStartPositionClickMouse.y) {
             moveShapeCommand = new MoveShapeCommand(
                     mSelectDiagramShape.getShape(),
                     mousePos,
@@ -165,7 +169,8 @@ public class Controller {
 
     private ResizeShapeCommand resizeShapeCommand(Vector2f mousePos) {
         ResizeShapeCommand resizeCommand = null;
-        if (mDragType != null) {
+        if (mDragType != null
+                && mStartCenterShapeThenClickMouse != mousePos) {
             resizeCommand = new ResizeShapeCommand(mSelectDiagramShape,
                     mStartSizeShapeThenClickMouse,
                     mStartCenterShapeThenClickMouse,
@@ -216,38 +221,6 @@ public class Controller {
                     + Math.pow((mousePos.y - shapeDiagram.getBottom()), 2)
                     / Math.pow(DEFAULT_RADIUS_DRAG_POINT + sizeInvisibleRadiusForUsability, 2) <= 1) {
                 mDragType = DragType.RightBottom;
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean isDragPointInsideShape(Vector2f mousePos) {
-        int sizeInvisibleRadiusForUsability = 15;
-        if (mSelectDiagramShape.getShape() != null) {
-            ShapeDiagram shapeDiagram = mSelectDiagramShape.getShapeDiagram();
-            if (Math.pow((mousePos.x - shapeDiagram.getLeft()), 2)
-                    / Math.pow(DEFAULT_RADIUS_DRAG_POINT + sizeInvisibleRadiusForUsability, 2)
-                    + Math.pow((mousePos.y - shapeDiagram.getTop()), 2)
-                    / Math.pow(DEFAULT_RADIUS_DRAG_POINT + sizeInvisibleRadiusForUsability, 2) <= 1) {
-                return true;
-            }
-            if (Math.pow((mousePos.x - shapeDiagram.getRight()), 2)
-                    / Math.pow(DEFAULT_RADIUS_DRAG_POINT + sizeInvisibleRadiusForUsability, 2)
-                    + Math.pow((mousePos.y - shapeDiagram.getTop()), 2)
-                    / Math.pow(DEFAULT_RADIUS_DRAG_POINT + sizeInvisibleRadiusForUsability, 2) <= 1) {
-                return true;
-            }
-            if (Math.pow((mousePos.x - shapeDiagram.getLeft()), 2)
-                    / Math.pow(DEFAULT_RADIUS_DRAG_POINT + sizeInvisibleRadiusForUsability, 2)
-                    + Math.pow((mousePos.y - shapeDiagram.getBottom()), 2)
-                    / Math.pow(DEFAULT_RADIUS_DRAG_POINT + sizeInvisibleRadiusForUsability, 2) <= 1) {
-                return true;
-            }
-            if (Math.pow((mousePos.x - shapeDiagram.getRight()), 2)
-                    / Math.pow(DEFAULT_RADIUS_DRAG_POINT + sizeInvisibleRadiusForUsability, 2)
-                    + Math.pow((mousePos.y - shapeDiagram.getBottom()), 2)
-                    / Math.pow(DEFAULT_RADIUS_DRAG_POINT + sizeInvisibleRadiusForUsability, 2) <= 1) {
                 return true;
             }
         }
