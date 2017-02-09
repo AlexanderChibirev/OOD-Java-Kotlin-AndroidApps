@@ -154,15 +154,15 @@ public class Controller {
         return moveShapeCommand;
     }
 
-    public void mouseUp(Vector2f mousePos) {
-        if (mSelectDiagramShape.getShape() != null) {
+    public void mouseUp(Shape shape, Vector2f mousePos) {
+        if (mSelectDiagramShape.getShape() != null && mSelectDiagramShape.getShape() == shape) {
             ResizeShapeCommand resizeShapeCommand = resizeShapeCommand(mousePos);
             if (resizeShapeCommand != null) {
                 mCommandStack.add(resizeShapeCommand);
             }
         }
         MoveShapeCommand moveShapeCommand = moveShapeCommand(mousePos, mSelectDiagramShape.getShape());
-        if (moveShapeCommand != null) {
+        if (moveShapeCommand != null && mSelectDiagramShape.getShape() == shape) {
             mCommandStack.add(moveShapeCommand);
         }
     }

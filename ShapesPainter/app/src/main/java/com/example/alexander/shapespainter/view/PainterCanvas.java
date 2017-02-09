@@ -112,7 +112,7 @@ public class PainterCanvas extends SurfaceView implements SurfaceHolder.Callback
                     mController.mouseMoved(shape, mousePos);
                     break;
                 case Up:
-                    mController.mouseUp(mousePos);
+                    mController.mouseUp(shape, mousePos);
                     break;
             }
         }
