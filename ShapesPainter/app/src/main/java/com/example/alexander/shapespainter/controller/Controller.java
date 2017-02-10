@@ -18,8 +18,6 @@ import java.io.IOException;
 
 import javax.vecmath.Vector2f;
 
-import static com.example.alexander.shapespainter.constants.Constant.DEFAULT_RADIUS_DRAG_POINT;
-
 public class Controller {
     private ShapesList mShapesList = new ShapesList();
     private Context mContext;
@@ -192,34 +190,21 @@ public class Controller {
     }
 
     private boolean calculateDragType(Vector2f mousePos) {
-        int sizeInvisibleRadiusForUsability = 15;
         if (mSelectDiagramShape.getShape() != null) {
             ShapeDiagram shapeDiagram = mSelectDiagramShape.getShapeDiagram();
-            if (Math.pow((mousePos.x - shapeDiagram.getLeft()), 2)
-                    / Math.pow(DEFAULT_RADIUS_DRAG_POINT + sizeInvisibleRadiusForUsability, 2)
-                    + Math.pow((mousePos.y - shapeDiagram.getTop()), 2)
-                    / Math.pow(DEFAULT_RADIUS_DRAG_POINT + sizeInvisibleRadiusForUsability, 2) <= 1) {
+            if (PointInsideShapeManager.isPointInsideLeftTopDragPoint(shapeDiagram, mousePos)) {
                 mDragType = DragType.LeftTop;
                 return true;
             }
-            if (Math.pow((mousePos.x - shapeDiagram.getRight()), 2)
-                    / Math.pow(DEFAULT_RADIUS_DRAG_POINT + sizeInvisibleRadiusForUsability, 2)
-                    + Math.pow((mousePos.y - shapeDiagram.getTop()), 2)
-                    / Math.pow(DEFAULT_RADIUS_DRAG_POINT + sizeInvisibleRadiusForUsability, 2) <= 1) {
+            if (PointInsideShapeManager.isPointInsideRightTopDragPoint(shapeDiagram, mousePos)) {
                 mDragType = DragType.RightTop;
                 return true;
             }
-            if (Math.pow((mousePos.x - shapeDiagram.getLeft()), 2)
-                    / Math.pow(DEFAULT_RADIUS_DRAG_POINT + sizeInvisibleRadiusForUsability, 2)
-                    + Math.pow((mousePos.y - shapeDiagram.getBottom()), 2)
-                    / Math.pow(DEFAULT_RADIUS_DRAG_POINT + sizeInvisibleRadiusForUsability, 2) <= 1) {
+            if (PointInsideShapeManager.isPointInsideLeftBottomDragPoint(shapeDiagram, mousePos)) {
                 mDragType = DragType.LeftBottom;
                 return true;
             }
-            if (Math.pow((mousePos.x - shapeDiagram.getRight()), 2)
-                    / Math.pow(DEFAULT_RADIUS_DRAG_POINT + sizeInvisibleRadiusForUsability, 2)
-                    + Math.pow((mousePos.y - shapeDiagram.getBottom()), 2)
-                    / Math.pow(DEFAULT_RADIUS_DRAG_POINT + sizeInvisibleRadiusForUsability, 2) <= 1) {
+            if (PointInsideShapeManager.isPointInsideRightBottomDragPoint(shapeDiagram, mousePos)) {
                 mDragType = DragType.RightBottom;
                 return true;
             }

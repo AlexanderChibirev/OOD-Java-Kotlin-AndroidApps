@@ -14,4 +14,6 @@ public class Constant {
     public static final int DATA_SHAPE_CENTER_ELLIPSE_INDEX = 0;
     public static final int DATA_SHAPE_SIZE_ELLIPSE_INDEX = 1;
 
+    public static final int SIZE_INVISIBLE_RADIUS_FOR_USABILITY = 15;
+
 }

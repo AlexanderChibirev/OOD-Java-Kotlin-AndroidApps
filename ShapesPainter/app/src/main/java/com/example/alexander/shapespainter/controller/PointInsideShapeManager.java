@@ -11,6 +11,8 @@ import javax.vecmath.Vector2f;
 import static com.example.alexander.shapespainter.constants.Constant.DATA_SHAPE_LEFT_VERTEX_TRIANGLE_INDEX;
 import static com.example.alexander.shapespainter.constants.Constant.DATA_SHAPE_RIGHT_VERTEX_TRIANGLE_INDEX;
 import static com.example.alexander.shapespainter.constants.Constant.DATA_SHAPE_TOP_VERTEX_TRIANGLE_INDEX;
+import static com.example.alexander.shapespainter.constants.Constant.DEFAULT_RADIUS_DRAG_POINT;
+import static com.example.alexander.shapespainter.constants.Constant.SIZE_INVISIBLE_RADIUS_FOR_USABILITY;
 
 class PointInsideShapeManager {
 
@@ -49,6 +51,13 @@ class PointInsideShapeManager {
                 && point.y <= shapeDiagram.getBottom();
     }
 
+    static boolean isPointInsideLeftTopDragPoint(ShapeDiagram shapeDiagram, Vector2f mousePos) {
+        return (Math.pow((mousePos.x - shapeDiagram.getLeft()), 2)
+                / Math.pow(DEFAULT_RADIUS_DRAG_POINT + SIZE_INVISIBLE_RADIUS_FOR_USABILITY, 2)
+                + Math.pow((mousePos.y - shapeDiagram.getTop()), 2)
+                / Math.pow(DEFAULT_RADIUS_DRAG_POINT + SIZE_INVISIBLE_RADIUS_FOR_USABILITY, 2) <= 1);
+    }
+
     private static boolean isPointInsideEllipse(Shape shape, Vector2f point) {
         Vector2f center = shape.getCenter();
         SelectShapeDiagram selectShapeDiagram = new SelectShapeDiagram(shape);
@@ -62,5 +71,26 @@ class PointInsideShapeManager {
 
     private static float sign(Vector2f p1, Vector2f p2, Vector2f p3) {
         return (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y);
+    }
+
+    static boolean isPointInsideRightTopDragPoint(ShapeDiagram shapeDiagram, Vector2f mousePos) {
+        return (Math.pow((mousePos.x - shapeDiagram.getRight()), 2)
+                / Math.pow(DEFAULT_RADIUS_DRAG_POINT + SIZE_INVISIBLE_RADIUS_FOR_USABILITY, 2)
+                + Math.pow((mousePos.y - shapeDiagram.getTop()), 2)
+                / Math.pow(DEFAULT_RADIUS_DRAG_POINT + SIZE_INVISIBLE_RADIUS_FOR_USABILITY, 2) <= 1);
+    }
+
+    static boolean isPointInsideLeftBottomDragPoint(ShapeDiagram shapeDiagram, Vector2f mousePos) {
+        return (Math.pow((mousePos.x - shapeDiagram.getLeft()), 2)
+                / Math.pow(DEFAULT_RADIUS_DRAG_POINT + SIZE_INVISIBLE_RADIUS_FOR_USABILITY, 2)
+                + Math.pow((mousePos.y - shapeDiagram.getBottom()), 2)
+                / Math.pow(DEFAULT_RADIUS_DRAG_POINT + SIZE_INVISIBLE_RADIUS_FOR_USABILITY, 2) <= 1);
+    }
+
+    static boolean isPointInsideRightBottomDragPoint(ShapeDiagram shapeDiagram, Vector2f mousePos) {
+        return (Math.pow((mousePos.x - shapeDiagram.getRight()), 2)
+                / Math.pow(DEFAULT_RADIUS_DRAG_POINT + SIZE_INVISIBLE_RADIUS_FOR_USABILITY, 2)
+                + Math.pow((mousePos.y - shapeDiagram.getBottom()), 2)
+                / Math.pow(DEFAULT_RADIUS_DRAG_POINT + SIZE_INVISIBLE_RADIUS_FOR_USABILITY, 2) <= 1);
     }
 }
