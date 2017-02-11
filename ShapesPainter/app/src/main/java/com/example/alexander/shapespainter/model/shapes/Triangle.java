@@ -1,13 +1,13 @@
 package com.example.alexander.shapespainter.model.shapes;
 
-import com.example.alexander.shapespainter.model.Shape;
+import com.example.alexander.shapespainter.model.IShape;
 import com.example.alexander.shapespainter.model.ShapeType;
 
 import java.util.Vector;
 
 import javax.vecmath.Vector2f;
 
-public class Triangle extends Shape {
+public class Triangle implements IShape {
 
     private Vector2f mVertex1;
     private Vector2f mVertex2;

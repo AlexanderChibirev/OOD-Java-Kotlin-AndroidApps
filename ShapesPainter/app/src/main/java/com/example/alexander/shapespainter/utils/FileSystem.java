@@ -2,7 +2,7 @@ package com.example.alexander.shapespainter.utils;
 
 import android.content.Context;
 
-import com.example.alexander.shapespainter.model.Shape;
+import com.example.alexander.shapespainter.model.IShape;
 import com.example.alexander.shapespainter.model.ShapeFactory;
 import com.example.alexander.shapespainter.model.ShapeType;
 import com.example.alexander.shapespainter.model.ShapesList;
@@ -24,7 +24,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class FileSystem {
     private final static String FILENAME = "DateShapes.json";
 
-    public static boolean saveFileWithStateShapes(ShapesList shapesList, Context context) {
+    public static void saveFileWithStateShapes(ShapesList shapesList, Context context) {
         try {
             BufferedWriter bw = new BufferedWriter((new OutputStreamWriter(context.openFileOutput(FILENAME, MODE_PRIVATE))));
             writeDataShapeInFile(shapesList, bw);
@@ -32,23 +32,21 @@ public class FileSystem {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return false;
     }
 
-    public static boolean readFileWithStateShapes(ShapesList shapesList, Context context) throws IOException {
+    public static void readFileWithStateShapes(ShapesList shapesList, Context context) throws IOException {
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(context.openFileInput(FILENAME)));
             parseJson(shapesList, br);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return true;
     }
 
     @SuppressWarnings("unchecked")
     private static void writeDataShapeInFile(ShapesList shapesList, BufferedWriter bw) throws IOException {
         JSONObject shapeData = new JSONObject();
-        for (Shape shape : shapesList.getShapes()) {
+        for (IShape shape : shapesList.getShapes()) {
 
             shapeData.put("shapeType", shape.getType().toString());
 

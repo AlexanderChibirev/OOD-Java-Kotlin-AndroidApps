@@ -1,6 +1,6 @@
 package com.example.alexander.shapespainter.model.shapes;
 
-import com.example.alexander.shapespainter.model.Shape;
+import com.example.alexander.shapespainter.model.IShape;
 import com.example.alexander.shapespainter.model.ShapeType;
 
 import java.util.Vector;
@@ -8,7 +8,7 @@ import java.util.Vector;
 import javax.vecmath.Vector2f;
 
 
-public class Rectangle extends Shape {
+public class Rectangle implements IShape {
     private Vector2f mLeftTop;
     private Vector2f mRightBottom;
 

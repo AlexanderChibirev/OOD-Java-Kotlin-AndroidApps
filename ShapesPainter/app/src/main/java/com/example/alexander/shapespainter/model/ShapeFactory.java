@@ -9,7 +9,7 @@ import javax.vecmath.Vector2f;
 
 public class ShapeFactory {
 
-    public Shape createShape(Vector2f center, float width, float height, ShapeType shapeType) {
+    public IShape createShape(Vector2f center, float width, float height, ShapeType shapeType) {
         switch (shapeType) {
             case Ellipse:
                 return getEllipse(center, width, height);

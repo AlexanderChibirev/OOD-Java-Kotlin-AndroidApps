@@ -1,14 +1,14 @@
 package com.example.alexander.shapespainter.model.shapes;
 
 
-import com.example.alexander.shapespainter.model.Shape;
+import com.example.alexander.shapespainter.model.IShape;
 import com.example.alexander.shapespainter.model.ShapeType;
 
 import java.util.Vector;
 
 import javax.vecmath.Vector2f;
 
-public class Ellipse extends Shape {
+public class Ellipse implements IShape {
     private Vector2f mCenter;
     private float mWRadius;
     private float mHRadius;

@@ -8,8 +8,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import com.example.alexander.shapespainter.controller.Controller;
-import com.example.alexander.shapespainter.model.Shape;
-
+import com.example.alexander.shapespainter.model.IShape;
 import javax.vecmath.Vector2f;
 
 import static com.example.alexander.shapespainter.view.MouseActionType.Down;
@@ -103,7 +102,7 @@ public class PainterCanvas extends SurfaceView implements SurfaceHolder.Callback
     }
 
     public void updateShapes(Vector2f mousePos, MouseActionType actionType) {
-        for (Shape shape : mController.getShapesList().getShapes()) {
+        for (IShape shape : mController.getShapesList().getShapes()) {
             switch (actionType) {
                 case Down:
                     mController.mouseDown(shape, mousePos);

@@ -6,8 +6,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 
+import com.example.alexander.shapespainter.model.IShape;
 import com.example.alexander.shapespainter.model.SelectShapeDiagram;
-import com.example.alexander.shapespainter.model.Shape;
 import com.example.alexander.shapespainter.model.ShapeDiagram;
 import com.example.alexander.shapespainter.model.ShapesList;
 import com.example.alexander.shapespainter.utils.PainterUtils;
@@ -25,12 +25,12 @@ import static com.example.alexander.shapespainter.constants.Constant.DATA_SHAPE_
 import static com.example.alexander.shapespainter.constants.Constant.DATA_SHAPE_TOP_VERTEX_TRIANGLE_INDEX;
 import static com.example.alexander.shapespainter.constants.Constant.DEFAULT_RADIUS_DRAG_POINT;
 
-class Painter implements ICanvas {
+class Painter implements IPainter {
     private Paint mPaint = new Paint();
 
     void drawPicture(ShapesList draft, Canvas canvas) {
         Vector<Vector2f> dataShape;
-        for (Shape shape : draft.getShapes()) {
+        for (IShape shape : draft.getShapes()) {
             dataShape = shape.getDataShape();
             switch (shape.getType()) {
                 case Rectangle:
@@ -42,20 +42,11 @@ class Painter implements ICanvas {
                 case Ellipse:
                     drawEllipse(
                             shape.getCenter(),
-                            (((dataShape.get(DATA_SHAPE_CENTER_ELLIPSE_INDEX).x
-                                    + dataShape.get(DATA_SHAPE_SIZE_ELLIPSE_INDEX).x)
-                                    - (dataShape.get(DATA_SHAPE_CENTER_ELLIPSE_INDEX).x
-                                    - dataShape.get(DATA_SHAPE_SIZE_ELLIPSE_INDEX).x))
-                                    / 2f),
-                            ((((dataShape.get(DATA_SHAPE_CENTER_ELLIPSE_INDEX).y
-                                    + dataShape.get(DATA_SHAPE_SIZE_ELLIPSE_INDEX).y)
-                                    - (dataShape.get(DATA_SHAPE_CENTER_ELLIPSE_INDEX).y
-                                    - dataShape.get(DATA_SHAPE_SIZE_ELLIPSE_INDEX).y))
-                                    / 2f)),
+                            (getHRadius(dataShape)),
+                            (getWRadius(dataShape)),
                             canvas);
                     break;
                 case Triangle:
-                    dataShape = shape.getDataShape();
                     drawTriangle(
                             dataShape.get(DATA_SHAPE_LEFT_VERTEX_TRIANGLE_INDEX),
                             dataShape.get(DATA_SHAPE_RIGHT_VERTEX_TRIANGLE_INDEX),
@@ -65,7 +56,6 @@ class Painter implements ICanvas {
             }
         }
     }
-
 
     @Override
     public void drawRectangle(Vector2f leftTop, Vector2f topBottom, Canvas canvas) {
@@ -99,7 +89,7 @@ class Painter implements ICanvas {
                         new Vector2f(vertex3.x, vertex3.y)
                 });
 
-        int shiftForOutlineColor = 2;
+        float shiftForOutlineColor = 2f;
         PainterUtils.drawPolygon(canvas, Color.MAGENTA,
                 new Vector2f[]{
                         new Vector2f(vertex1.x + shiftForOutlineColor, vertex1.y - shiftForOutlineColor),
@@ -118,12 +108,27 @@ class Painter implements ICanvas {
                 shapeDiagram.getRight(),
                 shapeDiagram.getBottom(),
                 mPaint);
-
         mPaint.setStyle(Paint.Style.FILL);
         mPaint.setColor(Color.BLUE);
         canvas.drawCircle(shapeDiagram.getLeft(), shapeDiagram.getBottom(), DEFAULT_RADIUS_DRAG_POINT, mPaint);
         canvas.drawCircle(shapeDiagram.getRight(), shapeDiagram.getBottom(), DEFAULT_RADIUS_DRAG_POINT, mPaint);
         canvas.drawCircle(shapeDiagram.getRight(), shapeDiagram.getTop(), DEFAULT_RADIUS_DRAG_POINT, mPaint);
         canvas.drawCircle(shapeDiagram.getLeft(), shapeDiagram.getTop(), DEFAULT_RADIUS_DRAG_POINT, mPaint);
+    }
+
+    private float getHRadius(Vector<Vector2f> dataShape) {
+        return ((dataShape.get(DATA_SHAPE_CENTER_ELLIPSE_INDEX).x
+                + dataShape.get(DATA_SHAPE_SIZE_ELLIPSE_INDEX).x)
+                - (dataShape.get(DATA_SHAPE_CENTER_ELLIPSE_INDEX).x
+                - dataShape.get(DATA_SHAPE_SIZE_ELLIPSE_INDEX).x))
+                / 2f;
+    }
+
+    private float getWRadius(Vector<Vector2f> dataShape) {
+        return (((dataShape.get(DATA_SHAPE_CENTER_ELLIPSE_INDEX).y
+                + dataShape.get(DATA_SHAPE_SIZE_ELLIPSE_INDEX).y)
+                - (dataShape.get(DATA_SHAPE_CENTER_ELLIPSE_INDEX).y
+                - dataShape.get(DATA_SHAPE_SIZE_ELLIPSE_INDEX).y))
+                / 2f);
     }
 }

@@ -4,7 +4,7 @@ import java.util.Vector;
 
 import javax.vecmath.Vector2f;
 
-interface IShape {
+public interface IShape {
     ShapeType getType();
 
     void setCenter(final Vector2f pos);

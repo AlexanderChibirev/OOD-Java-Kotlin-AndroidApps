@@ -1,17 +1,17 @@
 package com.example.alexander.shapespainter.controller.commands;
 
 import com.example.alexander.shapespainter.controller.ICommand;
-import com.example.alexander.shapespainter.model.Shape;
+import com.example.alexander.shapespainter.model.IShape;
 
 import javax.vecmath.Vector2f;
 
 public class MoveShapeCommand implements ICommand {
-    private Shape mShape;
+    private IShape mShape;
     private Vector2f mToPoint;
     private Vector2f mFromPoint;
     private Vector2f mDistanceFromShapeCenterToMousePos;
 
-    public MoveShapeCommand(Shape shape, Vector2f toPoint, Vector2f fromPoint, Vector2f distanceFromShapeCenterToMousePos) {
+    public MoveShapeCommand(IShape shape, Vector2f toPoint, Vector2f fromPoint, Vector2f distanceFromShapeCenterToMousePos) {
         mShape = shape;
         mFromPoint = fromPoint;
         mToPoint = toPoint;

@@ -7,8 +7,8 @@ import com.example.alexander.shapespainter.controller.commands.AddShapeCommand;
 import com.example.alexander.shapespainter.controller.commands.MoveShapeCommand;
 import com.example.alexander.shapespainter.controller.commands.RemoveShapeCommand;
 import com.example.alexander.shapespainter.controller.commands.ResizeShapeCommand;
+import com.example.alexander.shapespainter.model.IShape;
 import com.example.alexander.shapespainter.model.SelectShapeDiagram;
-import com.example.alexander.shapespainter.model.Shape;
 import com.example.alexander.shapespainter.model.ShapeDiagram;
 import com.example.alexander.shapespainter.model.ShapeType;
 import com.example.alexander.shapespainter.model.ShapesList;
@@ -54,22 +54,8 @@ public class Controller {
         return mShapesList;
     }
 
-    public void addEllipse() {
-        AddShapeCommand addShapeCommand = new AddShapeCommand(mShapesList, ShapeType.Ellipse);
-        addShapeCommand.execute();
-        mCommandStack.add(addShapeCommand);
-        mSelectDiagramShape.setShape(mShapesList.getShapes().get(mShapesList.getShapes().size() - 1));
-    }
-
-    public void addTriangle() {
-        AddShapeCommand addShapeCommand = new AddShapeCommand(mShapesList, ShapeType.Triangle);
-        addShapeCommand.execute();
-        mCommandStack.add(addShapeCommand);
-        mSelectDiagramShape.setShape(mShapesList.getShapes().get(mShapesList.getShapes().size() - 1));
-    }
-
-    public void addRectangle() {
-        AddShapeCommand addShapeCommand = new AddShapeCommand(mShapesList, ShapeType.Rectangle);
+    public void addShape(ShapeType shapeType) {
+        AddShapeCommand addShapeCommand = new AddShapeCommand(mShapesList, shapeType);
         addShapeCommand.execute();
         mCommandStack.add(addShapeCommand);
         mSelectDiagramShape.setShape(mShapesList.getShapes().get(mShapesList.getShapes().size() - 1));
@@ -108,7 +94,7 @@ public class Controller {
         mSelectDiagramShape.setShape(null);
     }
 
-    public void mouseDown(Shape shape, Vector2f mousePos) {
+    public void mouseDown(IShape shape, Vector2f mousePos) {
         if (PointInsideShapeManager.isPointInside(shape, mousePos) && !calculateDragType(mousePos)) {
             mSelectDiagramShape.setShape(shape);
             mDragType = null;
@@ -117,33 +103,35 @@ public class Controller {
                     Math.abs(mousePos.x - shape.getCenter().x),
                     Math.abs(mousePos.y - shape.getCenter().y));
         }
-        if (mSelectDiagramShape.getShape() != null
-                && !PointInsideShapeManager.isPointInside(mSelectDiagramShape.getShape(), mousePos)
+        IShape selectedShape = mSelectDiagramShape.getShape();
+        if (selectedShape != null
+                && !PointInsideShapeManager.isPointInside(selectedShape, mousePos)
                 && !calculateDragType(mousePos)) {
             mDragType = null;
             mSelectDiagramShape.setShape(null);
         }
-        if (mSelectDiagramShape.getShape() != null) {
-            mStartCenterShapeThenClickMouse = mSelectDiagramShape.getShape().getCenter();
-            mStartSizeShapeThenClickMouse = mSelectDiagramShape.getShape().getSize();
+        if (selectedShape != null) {
+            mStartCenterShapeThenClickMouse = selectedShape.getCenter();
+            mStartSizeShapeThenClickMouse = selectedShape.getSize();
         }
         calculateDragType(mousePos);
     }
 
-    public void mouseMoved(Shape shape, Vector2f mousePos) {
+    public void mouseMoved(IShape shape, Vector2f mousePos) {
         moveShapeCommand(mousePos, shape);
         updateResizeShape(mousePos);
     }
 
-    private MoveShapeCommand moveShapeCommand(Vector2f mousePos, Shape shape) {
+    private MoveShapeCommand moveShapeCommand(Vector2f mousePos, IShape shape) {
         MoveShapeCommand moveShapeCommand = null;
-        if (shape == mSelectDiagramShape.getShape()
+        IShape selectedShape = mSelectDiagramShape.getShape();
+        boolean isMovedShape = mousePos.x != mStartPositionClickMouse.x || mousePos.y != mStartPositionClickMouse.y;
+        if (shape == selectedShape
+                && selectedShape != null
                 && mDragType == null
-                && mSelectDiagramShape.getShape() != null
-                && mousePos.x != mStartPositionClickMouse.x
-                && mousePos.y != mStartPositionClickMouse.y) {
+                && isMovedShape) {
             moveShapeCommand = new MoveShapeCommand(
-                    mSelectDiagramShape.getShape(),
+                    selectedShape,
                     mousePos,
                     mStartPositionClickMouse,
                     mDistanceFromShapeCenterToMousePos);
@@ -152,23 +140,23 @@ public class Controller {
         return moveShapeCommand;
     }
 
-    public void mouseUp(Shape shape, Vector2f mousePos) {
-        if (mSelectDiagramShape.getShape() != null && mSelectDiagramShape.getShape() == shape) {
+    public void mouseUp(IShape shape, Vector2f mousePos) {
+        IShape selectedShape = mSelectDiagramShape.getShape();
+        if (selectedShape == shape && shape != null) {
             ResizeShapeCommand resizeShapeCommand = resizeShapeCommand(mousePos);
             if (resizeShapeCommand != null) {
                 mCommandStack.add(resizeShapeCommand);
             }
         }
-        MoveShapeCommand moveShapeCommand = moveShapeCommand(mousePos, mSelectDiagramShape.getShape());
-        if (moveShapeCommand != null && mSelectDiagramShape.getShape() == shape) {
+        MoveShapeCommand moveShapeCommand = moveShapeCommand(mousePos, selectedShape);
+        if (moveShapeCommand != null && selectedShape == shape) {
             mCommandStack.add(moveShapeCommand);
         }
     }
 
     private ResizeShapeCommand resizeShapeCommand(Vector2f mousePos) {
         ResizeShapeCommand resizeCommand = null;
-        if (mDragType != null
-                && mStartCenterShapeThenClickMouse != mousePos) {
+        if (mDragType != null && mStartCenterShapeThenClickMouse != mousePos) {
             resizeCommand = new ResizeShapeCommand(mSelectDiagramShape,
                     mStartSizeShapeThenClickMouse,
                     mStartCenterShapeThenClickMouse,

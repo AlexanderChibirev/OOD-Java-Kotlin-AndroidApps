@@ -2,8 +2,8 @@ package com.example.alexander.shapespainter.controller.commands;
 
 import com.example.alexander.shapespainter.controller.DragType;
 import com.example.alexander.shapespainter.controller.ICommand;
+import com.example.alexander.shapespainter.model.IShape;
 import com.example.alexander.shapespainter.model.SelectShapeDiagram;
-import com.example.alexander.shapespainter.model.Shape;
 import com.example.alexander.shapespainter.model.ShapeDiagram;
 
 import javax.vecmath.Vector2f;
@@ -13,7 +13,7 @@ public class ResizeShapeCommand implements ICommand {
     private Vector2f mStartCenter;
     private Vector2f mEndSize = new Vector2f();
     private Vector2f mEndCenter = new Vector2f();
-    private Shape mShape;
+    private IShape mShape;
     private SelectShapeDiagram mSelectShapeDiagram;
 
     public ResizeShapeCommand(SelectShapeDiagram selectShapeDiagram,

@@ -12,17 +12,17 @@ import static com.example.alexander.shapespainter.constants.Constant.DATA_SHAPE_
 import static com.example.alexander.shapespainter.constants.Constant.DATA_SHAPE_TOP_VERTEX_TRIANGLE_INDEX;
 
 public class SelectShapeDiagram {
-    private Shape mShape;
+    private IShape mShape;
 
-    public SelectShapeDiagram(Shape shape) {
+    public SelectShapeDiagram(IShape shape) {
         mShape = shape;
     }
 
-    public void setShape(Shape shape) {
+    public void setShape(IShape shape) {
         mShape = shape;
     }
 
-    public Shape getShape() {
+    public IShape getShape() {
         return mShape;
     }
 

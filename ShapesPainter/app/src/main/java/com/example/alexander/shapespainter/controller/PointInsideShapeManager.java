@@ -1,7 +1,7 @@
 package com.example.alexander.shapespainter.controller;
 
+import com.example.alexander.shapespainter.model.IShape;
 import com.example.alexander.shapespainter.model.SelectShapeDiagram;
-import com.example.alexander.shapespainter.model.Shape;
 import com.example.alexander.shapespainter.model.ShapeDiagram;
 
 import java.util.Vector;
@@ -16,7 +16,7 @@ import static com.example.alexander.shapespainter.constants.Constant.SIZE_INVISI
 
 class PointInsideShapeManager {
 
-    static boolean isPointInside(Shape shape, Vector2f point) {
+    static boolean isPointInside(IShape shape, Vector2f point) {
         switch (shape.getType()) {
             case Ellipse:
                 return isPointInsideEllipse(shape, point);
@@ -28,7 +28,7 @@ class PointInsideShapeManager {
         return false;
     }
 
-    private static boolean isPointInsideTriangle(Shape shape, Vector2f point) {
+    private static boolean isPointInsideTriangle(IShape shape, Vector2f point) {
         Vector<Vector2f> vertices = shape.getDataShape();
         Vector2f vertex1 = vertices.get(DATA_SHAPE_LEFT_VERTEX_TRIANGLE_INDEX);
         Vector2f vertex2 = vertices.get(DATA_SHAPE_RIGHT_VERTEX_TRIANGLE_INDEX);
@@ -42,7 +42,7 @@ class PointInsideShapeManager {
         return ((b1 == b2) && (b2 == b3));
     }
 
-    private static boolean isPointInsideRectangle(Shape shape, Vector2f point) {
+    private static boolean isPointInsideRectangle(IShape shape, Vector2f point) {
         SelectShapeDiagram selectShapeDiagram = new SelectShapeDiagram(shape);
         ShapeDiagram shapeDiagram = selectShapeDiagram.getShapeDiagram();
         return point.x <= shapeDiagram.getRight()
@@ -58,7 +58,7 @@ class PointInsideShapeManager {
                 / Math.pow(DEFAULT_RADIUS_DRAG_POINT + SIZE_INVISIBLE_RADIUS_FOR_USABILITY, 2) <= 1);
     }
 
-    private static boolean isPointInsideEllipse(Shape shape, Vector2f point) {
+    private static boolean isPointInsideEllipse(IShape shape, Vector2f point) {
         Vector2f center = shape.getCenter();
         SelectShapeDiagram selectShapeDiagram = new SelectShapeDiagram(shape);
         ShapeDiagram shapeDiagram = selectShapeDiagram.getShapeDiagram();

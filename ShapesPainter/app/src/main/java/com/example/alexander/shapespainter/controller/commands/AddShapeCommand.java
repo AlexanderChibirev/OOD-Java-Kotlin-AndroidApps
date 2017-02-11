@@ -1,7 +1,7 @@
 package com.example.alexander.shapespainter.controller.commands;
 
 import com.example.alexander.shapespainter.controller.ICommand;
-import com.example.alexander.shapespainter.model.Shape;
+import com.example.alexander.shapespainter.model.IShape;
 import com.example.alexander.shapespainter.model.ShapeFactory;
 import com.example.alexander.shapespainter.model.ShapeType;
 import com.example.alexander.shapespainter.model.ShapesList;
@@ -14,7 +14,7 @@ public class AddShapeCommand implements ICommand {
     private final static float SHAPE_DEFAULT_SIZE_FOR_CIRCLE = 80;
     private final static float SHAPE_DEFAULT_POSITION = 250f;
     private ShapesList mShapesList;
-    private Shape mShape;
+    private IShape mShape;
 
     public AddShapeCommand(ShapesList shapesList, ShapeType shapeType) {
         mShapesList = shapesList;

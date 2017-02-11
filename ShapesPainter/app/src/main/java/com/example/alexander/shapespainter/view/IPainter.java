@@ -5,7 +5,7 @@ import android.graphics.Canvas;
 import javax.vecmath.Vector2f;
 
 
-interface ICanvas {
+interface IPainter {
     void drawRectangle(Vector2f leftTop,
                        Vector2f topBottom,
                        Canvas canvas);
