@@ -13,7 +13,6 @@ public class Ellipse implements IShape {
     private float mWRadius;
     private float mHRadius;
 
-
     public Ellipse(Vector2f center,
                    float wRadius,
                    float hRadius) {
@@ -40,10 +39,10 @@ public class Ellipse implements IShape {
 
     @Override
     public Vector<Vector2f> getDataShape() {
-        Vector<Vector2f> v = new Vector<>();
-        v.add(mCenter);
-        v.add(new Vector2f(mWRadius, mHRadius));
-        return v;
+        Vector<Vector2f> dataShape = new Vector<>();
+        dataShape.add(mCenter);
+        dataShape.add(new Vector2f(mWRadius, mHRadius));
+        return dataShape;
     }
 
     @Override

@@ -51,10 +51,10 @@ public class Rectangle implements IShape {
 
     @Override
     public Vector<Vector2f> getDataShape() {
-        Vector<Vector2f> v = new Vector<>();
-        v.add(mLeftTop);
-        v.add(mRightBottom);
-        return v;
+        Vector<Vector2f> dataShape = new Vector<>();
+        dataShape.add(mLeftTop);
+        dataShape.add(mRightBottom);
+        return dataShape;
     }
 
     @Override

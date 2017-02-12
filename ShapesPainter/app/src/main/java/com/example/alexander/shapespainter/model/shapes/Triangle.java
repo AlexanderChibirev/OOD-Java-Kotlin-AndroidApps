@@ -45,11 +45,11 @@ public class Triangle implements IShape {
 
     @Override
     public Vector<Vector2f> getDataShape() {
-        Vector<Vector2f> v = new Vector<>();
-        v.add(mVertex1);
-        v.add(mVertex2);
-        v.add(mVertex3);
-        return v;
+        Vector<Vector2f> mDataShape = new Vector<>();
+        mDataShape.add(mVertex1);
+        mDataShape.add(mVertex2);
+        mDataShape.add(mVertex3);
+        return mDataShape;
     }
 
     @Override

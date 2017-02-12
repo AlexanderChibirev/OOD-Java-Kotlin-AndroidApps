@@ -87,13 +87,13 @@ public class PainterCanvas extends SurfaceView implements SurfaceHolder.Callback
     public boolean onTouchEvent(MotionEvent event) {
         Vector2f mousePos = new Vector2f(event.getX(), event.getY());
         switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN://нажатие
+            case MotionEvent.ACTION_DOWN:
                 updateShapes(mousePos, Down);
                 break;
-            case MotionEvent.ACTION_MOVE://движение
+            case MotionEvent.ACTION_MOVE:
                 updateShapes(mousePos, Move);
                 break;
-            case MotionEvent.ACTION_UP: // отпускание
+            case MotionEvent.ACTION_UP:
                 updateShapes(mousePos, Up);
             case MotionEvent.ACTION_CANCEL:
                 break;
