@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 class CommandStack {
-    private List<ICommand> mCommands = new ArrayList();
+    private List<ICommand> mCommands = new ArrayList<>();
     private int mCurrentLocation = -1;
 
     public void add(ICommand command) {
