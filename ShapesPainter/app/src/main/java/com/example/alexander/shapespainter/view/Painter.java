@@ -12,6 +12,7 @@ import com.example.alexander.shapespainter.model.ShapeDiagram;
 import com.example.alexander.shapespainter.model.ShapesList;
 import com.example.alexander.shapespainter.utils.PainterUtils;
 
+import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.vecmath.Vector2f;
@@ -29,9 +30,10 @@ class Painter implements IPainter {
     private Paint mPaint = new Paint();
 
     void drawPicture(ShapesList draft, Canvas canvas) {
-        Vector<Vector2f> dataShape;
-        for (IShape shape : draft.getShapes()) {
-            dataShape = shape.getDataShape();
+        ArrayList<IShape> shapes = new ArrayList<>();
+        shapes.addAll(draft.getShapes());
+        for (IShape shape : shapes) {
+            Vector<Vector2f> dataShape = shape.getDataShape();
             switch (shape.getType()) {
                 case Rectangle:
                     drawRectangle(
