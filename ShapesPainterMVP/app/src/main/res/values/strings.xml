@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">ShapesPainter</string>
 
+    <!--  fragments -->
+    <string name="frag_toolbars">фрагмент тулбарсов</string>
+
     <!--  dialog -->
     <string name="yes">Да</string>
     <string name="no">Нет</string>

@@ -1,20 +1,19 @@
 package com.example.alexander.shapespaintermvp.mvp.views;
 
+
 import com.arellomobile.mvp.MvpView;
 import com.arellomobile.mvp.viewstate.strategy.AddToEndStrategy;
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
+import com.example.alexander.shapespaintermvp.mvp.models.ShapeType;
 
 @StateStrategyType(AddToEndStrategy.class)
-public interface CanvasView extends MvpView {
+public interface ToolbarsView extends MvpView {
 
-    void painterShapes();
+    void redo();
 
-    void painterShapeDiagram();
+    void undo();
 
-    void moveShape();
+    void trash();
 
-    void removeShape();
-
-    void resizeShape();
-
+    void addShape(ShapeType shapeType);
 }

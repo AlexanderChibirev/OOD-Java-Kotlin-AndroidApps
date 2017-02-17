@@ -42,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
         mController = new Controller(getApplicationContext());
         mController.readFileWithStateShape();
         mPainterCanvas.setController(mController);
-        
         initOnClickListenerImageButton();
     }
 

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:contentDescription="@string/create_circle"
+        android:src="@drawable/ic_menu_ellipse_background"
+        android:id="@+id/imageButtonCircle"
+        android:layout_marginLeft="9dp"
+        android:layout_marginStart="9dp"
+        android:layout_alignBottom="@+id/imageButtonTriangle"
+        android:layout_toRightOf="@+id/imageButtonTriangle"
+        android:layout_toEndOf="@+id/imageButtonTriangle" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:contentDescription="@string/undo"
+        android:src="@drawable/ic_menu_undo_background"
+        android:id="@+id/imageButtonUndo"
+        android:visibility="visible"
+        android:layout_marginRight="21dp"
+        android:layout_marginEnd="21dp"
+        android:layout_alignTop="@+id/imageButtonRectangle"
+        android:layout_toLeftOf="@+id/imageButtonRedo"
+        android:layout_toStartOf="@+id/imageButtonRedo" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/redo"
+        android:background="@null"
+        android:src="@drawable/ic_menu_redo_background"
+        android:id="@+id/imageButtonRedo"
+        android:layout_alignTop="@+id/imageButtonUndo"
+        android:layout_toLeftOf="@+id/imageButtonTrash"
+        android:layout_toStartOf="@+id/imageButtonTrash"
+        android:layout_marginRight="14dp"
+        android:layout_marginEnd="14dp" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/create_triangle"
+        android:src="@drawable/ic_menu_triangle_background"
+        android:background="@null"
+        android:id="@+id/imageButtonTriangle"
+        android:layout_marginTop="12dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/trash"
+        android:src="@drawable/ic_menu_trash_background"
+        android:id="@+id/imageButtonTrash"
+        android:background="@null"
+        android:layout_marginRight="13dp"
+        android:layout_marginEnd="13dp"
+        android:layout_alignTop="@+id/imageButtonRedo"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/create_rectangle"
+        android:background="@null"
+        android:src="@drawable/ic_menu_rectangle_background"
+        android:layout_marginLeft="14dp"
+        android:layout_marginStart="14dp"
+        android:id="@+id/imageButtonRectangle"
+        android:layout_alignBottom="@+id/imageButtonCircle"
+        android:layout_toRightOf="@+id/imageButtonCircle"
+        android:layout_toEndOf="@+id/imageButtonCircle" />
+</RelativeLayout>
