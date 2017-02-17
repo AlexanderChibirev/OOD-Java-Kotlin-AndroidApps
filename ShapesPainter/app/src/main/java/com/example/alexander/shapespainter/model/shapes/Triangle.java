@@ -9,9 +9,9 @@ import javax.vecmath.Vector2f;
 
 public class Triangle implements IShape {
 
-    private Vector2f mVertex1;
-    private Vector2f mVertex2;
-    private Vector2f mVertex3;
+    private Vector2f mVertex1 = new Vector2f();
+    private Vector2f mVertex2 = new Vector2f();
+    private Vector2f mVertex3 = new Vector2f();
 
     public Triangle(Vector2f vertex1,
                     Vector2f vertex2,

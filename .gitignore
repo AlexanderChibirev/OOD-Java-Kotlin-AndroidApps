@@ -1,11 +1,13 @@
 # Built application files
 *.apk
 *.ap_
+
 Pretty-Painter-master
 shapesApp
 Fabric
 MyApplication2
 MyApplication
+Moxy
 
 # Files for the ART/Dalvik VM
 *.dex

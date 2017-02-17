@@ -9,6 +9,32 @@ import javax.vecmath.Vector2f;
 
 public class ShapeFactory {
 
+    private final static float SHAPE_DEFAULT_WIDTH = 110f;
+    private final static float SHAPE_DEFAULT_HEIGHT = 80f;
+    private final static float SHAPE_DEFAULT_SIZE_FOR_CIRCLE = 80f;
+    private final static Vector2f SHAPE_DEFAULT_POSITION = new Vector2f(150f, 150f);
+
+    public IShape createDefaultShape(ShapeType shapeType) {
+        switch (shapeType) {
+            case Ellipse:
+                return getEllipse(
+                        SHAPE_DEFAULT_POSITION,
+                        SHAPE_DEFAULT_SIZE_FOR_CIRCLE,
+                        SHAPE_DEFAULT_SIZE_FOR_CIRCLE);
+            case Rectangle:
+                return getRectangle(
+                        SHAPE_DEFAULT_POSITION,
+                        SHAPE_DEFAULT_WIDTH,
+                        SHAPE_DEFAULT_HEIGHT);
+            case Triangle:
+                return getTriangle(
+                        SHAPE_DEFAULT_POSITION,
+                        SHAPE_DEFAULT_WIDTH,
+                        SHAPE_DEFAULT_HEIGHT);
+        }
+        return null;
+    }
+
     public IShape createShape(Vector2f center, float width, float height, ShapeType shapeType) {
         switch (shapeType) {
             case Ellipse:

@@ -7,12 +7,10 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 
 import com.example.alexander.shapespainter.model.IShape;
-import com.example.alexander.shapespainter.model.SelectShapeDiagram;
 import com.example.alexander.shapespainter.model.ShapeDiagram;
 import com.example.alexander.shapespainter.model.ShapesList;
 import com.example.alexander.shapespainter.utils.PainterUtils;
 
-import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.vecmath.Vector2f;
@@ -28,11 +26,8 @@ import static com.example.alexander.shapespainter.constants.Constant.DEFAULT_RAD
 
 class Painter implements IPainter {
     private Paint mPaint = new Paint();
-
     void drawPicture(ShapesList draft, Canvas canvas) {
-        ArrayList<IShape> shapes = new ArrayList<>();
-        shapes.addAll(draft.getShapes());
-        for (IShape shape : shapes) {
+        for (IShape shape : draft.getShapes()) {
             Vector<Vector2f> dataShape = shape.getDataShape();
             switch (shape.getType()) {
                 case Rectangle:
@@ -100,8 +95,7 @@ class Painter implements IPainter {
                 });
     }
 
-    void drawSelectDiagramShape(SelectShapeDiagram selectDiagramShape, Canvas canvas) {
-        ShapeDiagram shapeDiagram = selectDiagramShape.getShapeDiagram();
+    void drawSelectDiagramShape(ShapeDiagram shapeDiagram, Canvas canvas) {
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setColor(Color.BLACK);
         canvas.drawRect(

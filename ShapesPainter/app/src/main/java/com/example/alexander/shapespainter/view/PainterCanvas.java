@@ -9,6 +9,7 @@ import android.view.SurfaceView;
 
 import com.example.alexander.shapespainter.controller.Controller;
 import com.example.alexander.shapespainter.model.IShape;
+
 import javax.vecmath.Vector2f;
 
 import static com.example.alexander.shapespainter.view.MouseActionType.Down;
@@ -48,13 +49,13 @@ public class PainterCanvas extends SurfaceView implements SurfaceHolder.Callback
 
     public void stopApp() {
         if (mPainterThread != null) {
-            mPainterThread.stopThread();
+            getThread().stopThread();
             // Waiting for the mPainterThread to die by calling mPainterThread.join,
             // repeatedly if necessary
             boolean retry = true;
             while (retry) {
                 try {
-                    mPainterThread.join();
+                    getThread().join();
                     retry = false;
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -66,9 +67,25 @@ public class PainterCanvas extends SurfaceView implements SurfaceHolder.Callback
 
     public void drawModels(Canvas canvas) {
         mPainter.drawPicture(mController.getShapesDraft(), canvas);
-        if (mController.getSelectDiagramShape().getShape() != null) {
-            mPainter.drawSelectDiagramShape(mController.getSelectDiagramShape(), canvas);
+        if (mController.getSelectDiagramShape().getSelectedShape() != null) {
+            mPainter.drawSelectDiagramShape(mController.getSelectDiagramShape().getShapeDiagram(), canvas);
         }
+    }
+
+    public void freezePainterThread() {
+        mPainterThread.freezeThread();
+    }
+
+    public void activatePainterThread() {
+        mPainterThread.activateThread();
+    }
+
+    public PainterThread getThread() {
+        if (mPainterThread == null) {
+            mPainterThread = new PainterThread(this);
+            mPainterThread.startThread();
+        }
+        return mPainterThread;
     }
 
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
@@ -86,6 +103,7 @@ public class PainterCanvas extends SurfaceView implements SurfaceHolder.Callback
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         Vector2f mousePos = new Vector2f(event.getX(), event.getY());
+        freezePainterThread();
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 updateShapes(mousePos, Down);
@@ -98,6 +116,7 @@ public class PainterCanvas extends SurfaceView implements SurfaceHolder.Callback
             case MotionEvent.ACTION_CANCEL:
                 break;
         }
+        activatePainterThread();
         return true;
     }
 

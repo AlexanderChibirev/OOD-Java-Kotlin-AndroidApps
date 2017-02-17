@@ -21,7 +21,7 @@ public class ResizeShapeCommand implements ICommand {
                               Vector2f startCenter,
                               Vector2f pos,
                               DragType dragType) {
-        mShape = selectShapeDiagram.getShape();
+        mShape = selectShapeDiagram.getSelectedShape();
         mStartSize = startSize;
         mStartCenter = startCenter;
         mSelectShapeDiagram = selectShapeDiagram;

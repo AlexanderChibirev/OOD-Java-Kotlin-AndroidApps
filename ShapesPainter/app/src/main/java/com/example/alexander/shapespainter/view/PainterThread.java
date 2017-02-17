@@ -5,8 +5,6 @@ import android.graphics.Color;
 import android.view.SurfaceHolder;
 
 class PainterThread extends Thread {
-    private final static int SLEEP_TIME = 0;
-
     private boolean running = false;
     private PainterCanvas mCanvas = null;
     private SurfaceHolder mSurfaceHolder = null;
@@ -17,15 +15,26 @@ class PainterThread extends Thread {
         this.mSurfaceHolder = canvas.getHolder();
     }
 
-    void startThread() {
+    public void startThread() {
         running = true;
         super.start();
     }
 
-    void stopThread() {
+
+    public void stopThread() {
         running = false;
     }
 
+    public void freezeThread() {
+        stopThread();
+    }
+
+    public void activateThread() {
+        running = true;
+        run();
+    }
+
+    @Override
     public void run() {
         Canvas canvas;
         while (running) {
@@ -36,11 +45,9 @@ class PainterThread extends Thread {
                     if (canvas != null) {
                         canvas.drawColor(Color.WHITE);
                         mCanvas.drawModels(canvas);
+                        break;
                     }
                 }
-                sleep(SLEEP_TIME);
-            } catch (InterruptedException ie) {
-                ie.printStackTrace();
             } finally {
                 if (canvas != null) {
                     mSurfaceHolder.unlockCanvasAndPost(canvas);
@@ -48,6 +55,4 @@ class PainterThread extends Thread {
             }
         }
     }
-
-
 }

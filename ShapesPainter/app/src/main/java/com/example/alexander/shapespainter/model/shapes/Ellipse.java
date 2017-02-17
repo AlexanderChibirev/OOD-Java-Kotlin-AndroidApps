@@ -9,9 +9,9 @@ import java.util.Vector;
 import javax.vecmath.Vector2f;
 
 public class Ellipse implements IShape {
-    private Vector2f mCenter;
-    private float mWRadius;
-    private float mHRadius;
+    private Vector2f mCenter = new Vector2f();
+    private float mWRadius = 0f;
+    private float mHRadius = 0f;
 
     public Ellipse(Vector2f center,
                    float wRadius,

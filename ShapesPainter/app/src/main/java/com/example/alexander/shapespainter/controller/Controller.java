@@ -10,6 +10,7 @@ import com.example.alexander.shapespainter.controller.commands.ResizeShapeComman
 import com.example.alexander.shapespainter.model.IShape;
 import com.example.alexander.shapespainter.model.SelectShapeDiagram;
 import com.example.alexander.shapespainter.model.ShapeDiagram;
+import com.example.alexander.shapespainter.model.ShapeFactory;
 import com.example.alexander.shapespainter.model.ShapeType;
 import com.example.alexander.shapespainter.model.ShapesList;
 import com.example.alexander.shapespainter.utils.FileSystem;
@@ -24,6 +25,7 @@ public class Controller {
     private SelectShapeDiagram mSelectDiagramShape = new SelectShapeDiagram(null);
     private DragType mDragType = null;
     private CommandStack mCommandStack = new CommandStack();
+    private ShapeFactory mShapeFactory = new ShapeFactory();
 
     private Vector2f mStartPositionClickMouse = new Vector2f();
     private Vector2f mStartSizeShapeThenClickMouse = new Vector2f();
@@ -55,10 +57,10 @@ public class Controller {
     }
 
     public void addShape(ShapeType shapeType) {
-        AddShapeCommand addShapeCommand = new AddShapeCommand(mShapesList, shapeType);
+        AddShapeCommand addShapeCommand = new AddShapeCommand(mShapesList, shapeType, mShapeFactory);
         addShapeCommand.execute();
         mCommandStack.add(addShapeCommand);
-        mSelectDiagramShape.setShape(mShapesList.getShapes().get(mShapesList.getShapes().size() - 1));
+        mSelectDiagramShape.setSelectedShape(mShapesList.getShapes().get(mShapesList.getShapes().size() - 1));
     }
 
     public void undoCommand() {//назад
@@ -67,7 +69,7 @@ public class Controller {
         } else {
             setMessage("отменить нельзя");
         }
-        mSelectDiagramShape.setShape(null);
+        mSelectDiagramShape.setSelectedShape(null);
     }
 
     public void redoCommand() {//вперед
@@ -76,11 +78,11 @@ public class Controller {
         } else {
             setMessage("вернуть нельзя");
         }
-        mSelectDiagramShape.setShape(null);
+        mSelectDiagramShape.setSelectedShape(null);
     }
 
     public void deleteSelectedShape() {
-        if (mSelectDiagramShape.getShape() != null) {
+        if (mSelectDiagramShape.getSelectedShape() != null) {
             selectShapeClear();
         } else {
             setMessage("чтобы удалить фигуру, нужно ее сначала выделить");
@@ -88,27 +90,27 @@ public class Controller {
     }
 
     private void selectShapeClear() {
-        RemoveShapeCommand removeShapeCommand = new RemoveShapeCommand(mShapesList, mSelectDiagramShape.getShape());
+        RemoveShapeCommand removeShapeCommand = new RemoveShapeCommand(mShapesList, mSelectDiagramShape.getSelectedShape());
         removeShapeCommand.execute();
         mCommandStack.add(removeShapeCommand);
-        mSelectDiagramShape.setShape(null);
+        mSelectDiagramShape.setSelectedShape(null);
     }
 
     public void mouseDown(IShape shape, Vector2f mousePos) {
         if (PointInsideShapeManager.isPointInside(shape, mousePos) && !calculateDragType(mousePos)) {
-            mSelectDiagramShape.setShape(shape);
+            mSelectDiagramShape.setSelectedShape(shape);
             mDragType = null;
             mStartPositionClickMouse = mousePos;
             mDistanceFromShapeCenterToMousePos.set(
                     Math.abs(mousePos.x - shape.getCenter().x),
                     Math.abs(mousePos.y - shape.getCenter().y));
         }
-        IShape selectedShape = mSelectDiagramShape.getShape();
+        IShape selectedShape = mSelectDiagramShape.getSelectedShape();
         if (selectedShape != null
                 && !PointInsideShapeManager.isPointInside(selectedShape, mousePos)
                 && !calculateDragType(mousePos)) {
             mDragType = null;
-            mSelectDiagramShape.setShape(null);
+            mSelectDiagramShape.setSelectedShape(null);
         }
         if (selectedShape != null) {
             mStartCenterShapeThenClickMouse = selectedShape.getCenter();
@@ -124,7 +126,7 @@ public class Controller {
 
     private MoveShapeCommand moveShapeCommand(Vector2f mousePos, IShape shape) {
         MoveShapeCommand moveShapeCommand = null;
-        IShape selectedShape = mSelectDiagramShape.getShape();
+        IShape selectedShape = mSelectDiagramShape.getSelectedShape();
         boolean isMovedShape = mousePos.x != mStartPositionClickMouse.x || mousePos.y != mStartPositionClickMouse.y;
         if (shape == selectedShape
                 && selectedShape != null
@@ -141,7 +143,7 @@ public class Controller {
     }
 
     public void mouseUp(IShape shape, Vector2f mousePos) {
-        IShape selectedShape = mSelectDiagramShape.getShape();
+        IShape selectedShape = mSelectDiagramShape.getSelectedShape();
         if (selectedShape == shape && shape != null) {
             ResizeShapeCommand resizeShapeCommand = resizeShapeCommand(mousePos);
             if (resizeShapeCommand != null) {
@@ -178,7 +180,7 @@ public class Controller {
     }
 
     private boolean calculateDragType(Vector2f mousePos) {
-        if (mSelectDiagramShape.getShape() != null) {
+        if (mSelectDiagramShape.getSelectedShape() != null) {
             ShapeDiagram shapeDiagram = mSelectDiagramShape.getShapeDiagram();
             if (PointInsideShapeManager.isPointInsideLeftTopDragPoint(shapeDiagram, mousePos)) {
                 mDragType = DragType.LeftTop;

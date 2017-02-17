@@ -9,8 +9,8 @@ import javax.vecmath.Vector2f;
 
 
 public class Rectangle implements IShape {
-    private Vector2f mLeftTop;
-    private Vector2f mRightBottom;
+    private Vector2f mLeftTop = new Vector2f();
+    private Vector2f mRightBottom = new Vector2f();
 
     public Rectangle(
             final Vector2f leftTop,

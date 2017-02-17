@@ -12,48 +12,50 @@ import static com.example.alexander.shapespainter.constants.Constant.DATA_SHAPE_
 import static com.example.alexander.shapespainter.constants.Constant.DATA_SHAPE_TOP_VERTEX_TRIANGLE_INDEX;
 
 public class SelectShapeDiagram {
-    private IShape mShape;
+    private IShape mSelectedShape;
+    private ShapeDiagram mShapeDiagram = new ShapeDiagram(0, 0, 0, 0);
 
     public SelectShapeDiagram(IShape shape) {
-        mShape = shape;
+        mSelectedShape = shape;
     }
 
-    public void setShape(IShape shape) {
-        mShape = shape;
+    public void setSelectedShape(IShape shape) {
+        mSelectedShape = shape;
     }
 
-    public IShape getShape() {
-        return mShape;
+    public IShape getSelectedShape() {
+        return mSelectedShape;
     }
 
     public ShapeDiagram getShapeDiagram() {
-        ShapeDiagram shapeDiagram = null;
-        Vector<Vector2f> dataShape = mShape.getDataShape();
-        switch (mShape.getType()) {
-            case Ellipse:
-                shapeDiagram = new ShapeDiagram(
-                        dataShape.get(DATA_SHAPE_CENTER_ELLIPSE_INDEX).y - dataShape.get(DATA_SHAPE_SIZE_ELLIPSE_INDEX).y,
-                        dataShape.get(DATA_SHAPE_CENTER_ELLIPSE_INDEX).x - dataShape.get(DATA_SHAPE_SIZE_ELLIPSE_INDEX).x,
-                        dataShape.get(DATA_SHAPE_CENTER_ELLIPSE_INDEX).x + dataShape.get(DATA_SHAPE_SIZE_ELLIPSE_INDEX).x,
-                        dataShape.get(DATA_SHAPE_CENTER_ELLIPSE_INDEX).y + dataShape.get(DATA_SHAPE_SIZE_ELLIPSE_INDEX).y);
-
-                break;
-            case Triangle:
-                shapeDiagram = new ShapeDiagram(
-                        dataShape.get(DATA_SHAPE_TOP_VERTEX_TRIANGLE_INDEX).y,
-                        dataShape.get(DATA_SHAPE_LEFT_TOP_RECTANGLE_INDEX).x,
-                        dataShape.get(DATA_SHAPE_RIGHT_VERTEX_TRIANGLE_INDEX).x,
-                        dataShape.get(DATA_SHAPE_RIGHT_VERTEX_TRIANGLE_INDEX).y);
-                break;
-            case Rectangle:
-                shapeDiagram = new ShapeDiagram(
-                        dataShape.get(DATA_SHAPE_LEFT_TOP_RECTANGLE_INDEX).y,
-                        dataShape.get(DATA_SHAPE_LEFT_TOP_RECTANGLE_INDEX).x,
-                        dataShape.get(DATA_SHAPE_RIGHT_BOTTOM_RECTANGLE_INDEX).x,
-                        dataShape.get(DATA_SHAPE_RIGHT_BOTTOM_RECTANGLE_INDEX).y);
-                break;
+        Vector<Vector2f> dataShape = mSelectedShape.getDataShape();
+        if (mSelectedShape != null) {
+            ShapeType shapeType = mSelectedShape.getType();
+            switch (shapeType) {
+                case Ellipse:
+                    mShapeDiagram.setTop(dataShape.get(DATA_SHAPE_CENTER_ELLIPSE_INDEX).y
+                            - dataShape.get(DATA_SHAPE_SIZE_ELLIPSE_INDEX).y);
+                    mShapeDiagram.setLeft(dataShape.get(DATA_SHAPE_CENTER_ELLIPSE_INDEX).x
+                            - dataShape.get(DATA_SHAPE_SIZE_ELLIPSE_INDEX).x);
+                    mShapeDiagram.setRight(dataShape.get(DATA_SHAPE_CENTER_ELLIPSE_INDEX).x
+                            + dataShape.get(DATA_SHAPE_SIZE_ELLIPSE_INDEX).x);
+                    mShapeDiagram.setBottom(dataShape.get(DATA_SHAPE_CENTER_ELLIPSE_INDEX).y
+                            + dataShape.get(DATA_SHAPE_SIZE_ELLIPSE_INDEX).y);
+                    break;
+                case Triangle:
+                    mShapeDiagram.setTop(dataShape.get(DATA_SHAPE_TOP_VERTEX_TRIANGLE_INDEX).y);
+                    mShapeDiagram.setLeft(dataShape.get(DATA_SHAPE_LEFT_TOP_RECTANGLE_INDEX).x);
+                    mShapeDiagram.setRight(dataShape.get(DATA_SHAPE_RIGHT_VERTEX_TRIANGLE_INDEX).x);
+                    mShapeDiagram.setBottom(dataShape.get(DATA_SHAPE_RIGHT_VERTEX_TRIANGLE_INDEX).y);
+                    break;
+                case Rectangle:
+                    mShapeDiagram.setTop(dataShape.get(DATA_SHAPE_LEFT_TOP_RECTANGLE_INDEX).y);
+                    mShapeDiagram.setLeft(dataShape.get(DATA_SHAPE_LEFT_TOP_RECTANGLE_INDEX).x);
+                    mShapeDiagram.setRight(dataShape.get(DATA_SHAPE_RIGHT_BOTTOM_RECTANGLE_INDEX).x);
+                    mShapeDiagram.setBottom(dataShape.get(DATA_SHAPE_RIGHT_BOTTOM_RECTANGLE_INDEX).y);
+                    break;
+            }
         }
-        return shapeDiagram;
+        return mShapeDiagram;
     }
-
 }
