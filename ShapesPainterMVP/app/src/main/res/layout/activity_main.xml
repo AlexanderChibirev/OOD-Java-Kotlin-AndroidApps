@@ -1,17 +1,98 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.alexander.shapespaintermvp.MainActivity">
+    android:weightSum="1">
 
-    <TextView
+    <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:background="@null"
+        android:contentDescription="@string/create_circle"
+        app:srcCompat="@drawable/ic_menu_ellipse_background"
+        android:id="@+id/imageButtonCircle"
+        android:layout_marginLeft="9dp"
+        android:layout_marginStart="9dp"
+        android:layout_alignBottom="@+id/imageButtonTriangle"
+        android:layout_toRightOf="@+id/imageButtonTriangle"
+        android:layout_toEndOf="@+id/imageButtonTriangle" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/create_rectangle"
+        android:background="@null"
+        app:srcCompat="@drawable/ic_menu_rectangle_background"
+        android:layout_marginLeft="14dp"
+        android:layout_marginStart="14dp"
+        android:id="@+id/imageButtonRectangle"
+        android:layout_alignBottom="@+id/imageButtonCircle"
+        android:layout_toRightOf="@+id/imageButtonCircle"
+        android:layout_toEndOf="@+id/imageButtonCircle" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:contentDescription="@string/undo"
+        app:srcCompat="@drawable/ic_menu_undo_background"
+        android:id="@+id/imageButtonUndo"
+        android:elevation="0dp"
+        android:visibility="visible"
+        tools:targetApi="lollipop"
+        android:layout_marginRight="21dp"
+        android:layout_marginEnd="21dp"
+        android:layout_alignTop="@+id/imageButtonRectangle"
+        android:layout_toLeftOf="@+id/imageButtonRedo"
+        android:layout_toStartOf="@+id/imageButtonRedo" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/redo"
+        android:background="@null"
+        app:srcCompat="@drawable/ic_menu_redo_background"
+        android:id="@+id/imageButtonRedo"
+        android:layout_alignTop="@+id/imageButtonUndo"
+        android:layout_toLeftOf="@+id/imageButtonTrash"
+        android:layout_toStartOf="@+id/imageButtonTrash"
+        android:layout_marginRight="14dp"
+        android:layout_marginEnd="14dp" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/create_triangle"
+        app:srcCompat="@drawable/ic_menu_triangle_background"
+        android:background="@null"
+        android:id="@+id/imageButtonTriangle"
+        android:layout_marginTop="12dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/trash"
+        app:srcCompat="@drawable/ic_menu_trash_background"
+        android:id="@+id/imageButtonTrash"
+        android:background="@null"
+        android:layout_marginRight="13dp"
+        android:layout_marginEnd="13dp"
+        android:layout_alignTop="@+id/imageButtonRedo"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <com.example.alexander.shapespainter.view.PainterCanvas
+        android:id="@+id/myView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/imageButtonCircle"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp" />
+
 </RelativeLayout>
