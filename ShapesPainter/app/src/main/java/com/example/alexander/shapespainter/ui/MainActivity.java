@@ -42,14 +42,7 @@ public class MainActivity extends AppCompatActivity {
         mController = new Controller(getApplicationContext());
         mController.readFileWithStateShape();
         mPainterCanvas.setController(mController);
-
-
-        imageButtonCircle.setOnClickListener(view -> mController.addShape(ShapeType.Ellipse));
-        imageButtonRectangle.setOnClickListener(view -> mController.addShape(ShapeType.Rectangle));
-        imageButtonTriangle.setOnClickListener(view -> mController.addShape(ShapeType.Triangle));
-        imageButtonUndo.setOnClickListener(view -> mController.undoCommand());
-        imageButtonRedo.setOnClickListener(view -> mController.redoCommand());
-        imageButtonTrash.setOnClickListener(view -> mController.deleteSelectedShape());
+        
         initOnClickListenerImageButton();
     }
 
@@ -59,6 +52,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initOnClickListenerImageButton() {
+        imageButtonCircle.setOnClickListener(view -> mController.addShape(ShapeType.Ellipse));
+        imageButtonRectangle.setOnClickListener(view -> mController.addShape(ShapeType.Rectangle));
+        imageButtonTriangle.setOnClickListener(view -> mController.addShape(ShapeType.Triangle));
+        imageButtonUndo.setOnClickListener(view -> mController.undoCommand());
+        imageButtonRedo.setOnClickListener(view -> mController.redoCommand());
+        imageButtonTrash.setOnClickListener(view -> mController.deleteSelectedShape());
     }
 
 
