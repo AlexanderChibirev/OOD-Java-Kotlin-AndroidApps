@@ -68,8 +68,8 @@ public class Controller {
             mCommandStack.undo();
         } else {
             setMessage("отменить нельзя");
+            mSelectDiagramShape.setSelectedShape(null);
         }
-        mSelectDiagramShape.setSelectedShape(null);
     }
 
     public void redoCommand() {//вперед
@@ -77,8 +77,8 @@ public class Controller {
             mCommandStack.redo();
         } else {
             setMessage("вернуть нельзя");
+            mSelectDiagramShape.setSelectedShape(null);
         }
-        mSelectDiagramShape.setSelectedShape(null);
     }
 
     public void deleteSelectedShape() {

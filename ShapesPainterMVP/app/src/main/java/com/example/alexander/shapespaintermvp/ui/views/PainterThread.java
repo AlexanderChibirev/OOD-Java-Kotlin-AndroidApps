@@ -45,8 +45,8 @@ public class PainterThread extends Thread {
                     if (canvas != null) {
                         canvas.drawColor(Color.WHITE);
                         mCanvas.updateShape();
-                        mCanvas.draw();
-                        break;
+                        mCanvas.painterShapes(canvas);
+                        mCanvas.painterShapeDiagram(canvas);
                     }
                 }
             } finally {

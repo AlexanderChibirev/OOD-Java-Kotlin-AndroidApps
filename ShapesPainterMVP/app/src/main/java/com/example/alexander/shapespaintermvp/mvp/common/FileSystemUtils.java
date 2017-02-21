@@ -76,17 +76,7 @@ public class FileSystemUtils {
             float width = (float) (double) jsonObject.get("width");
             float height = (float) (double) jsonObject.get("height");
 
-            switch (ShapeType.valueOf(shapeType)) {
-                case Triangle:
-                    shapesList.addShape(shapeFactory.createShape(new Vector2f(x, y), width, height, ShapeType.Triangle));
-                    break;
-                case Ellipse:
-                    shapesList.addShape(shapeFactory.createShape(new Vector2f(x, y), width, height, ShapeType.Ellipse));
-                    break;
-                case Rectangle:
-                    shapesList.addShape(shapeFactory.createShape(new Vector2f(x, y), width, height, ShapeType.Rectangle));
-                    break;
-            }
+            shapesList.addShape(shapeFactory.createShape(new Vector2f(x, y), width, height, ShapeType.valueOf(shapeType)));
         }
     }
 }

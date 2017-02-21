@@ -4,7 +4,7 @@ package com.example.alexander.shapespaintermvp.mvp.views;
 import com.arellomobile.mvp.MvpView;
 import com.arellomobile.mvp.viewstate.strategy.AddToEndStrategy;
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
-import com.example.alexander.shapespaintermvp.mvp.models.ShapeType;
+import com.example.alexander.shapespaintermvp.mvp.models.IShape;
 
 @StateStrategyType(AddToEndStrategy.class)
 public interface ToolbarsView extends MvpView {
@@ -15,5 +15,7 @@ public interface ToolbarsView extends MvpView {
 
     void trash();
 
-    void addShape(ShapeType shapeType);
+    void addShape(IShape shape);
+
+    void showMessage(String message);
 }

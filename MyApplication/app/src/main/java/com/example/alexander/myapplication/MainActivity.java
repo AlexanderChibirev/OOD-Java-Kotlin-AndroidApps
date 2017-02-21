@@ -2,68 +2,152 @@ package com.example.alexander.myapplication;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.ListView;
-
-import java.io.File;
+import android.view.MotionEvent;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 
 public class MainActivity extends AppCompatActivity {
 
-    ListView mLvImages;
+    private GameView gameView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        mLvImages = (ListView) findViewById(R.id.lvImages);
-
-
-        File dir = new File(Environment.getExternalStorageDirectory(), "Download/L0161");
-        File[] filesArray = dir.listFiles();
-
-        if (filesArray != null) {
-            ImageAdapter adapter = new ImageAdapter(this, filesArray);
-            mLvImages.setAdapter(adapter);
-        }
-
+        gameView = new GameView(this);
+        setContentView(gameView);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        gameView.resume();
+    }
 
-    static class ImageAdapter extends ArrayAdapter<File> {
+    @Override
+    protected void onPause() {
+        super.onPause();
+        gameView.pause();
+    }
 
-        LayoutInflater mInflater;
-        int mSize;
+    class GameView extends SurfaceView implements Runnable {
 
-        public ImageAdapter(Context context, File[] objects) {
-            super(context, R.layout.list_item, objects);
-            mInflater = LayoutInflater.from(context);
-            mSize = context.getResources().getDimensionPixelSize(R.dimen.image_size);
+        private Thread gameThread;
+        private SurfaceHolder ourHolder;
+        private volatile boolean playing;
+        private Canvas canvas;
+        private Bitmap bitmapRunningMan;
+        private boolean isMoving;
+        private float runSpeedPerSecond = 500;
+        private float manXPos = 10, manYPos = 10;
+        private int frameWidth = 230, frameHeight = 274;
+        private int frameCount = 8;
+        private int currentFrame = 0;
+        private long fps;
+        private long timeThisFrame;
+        private long lastFrameChangeTime = 0;
+        private int frameLengthInMillisecond = 50;
+
+        private Rect frameToDraw = new Rect(0, 0, frameWidth, frameHeight);
+
+        private RectF whereToDraw = new RectF(manXPos, manYPos, manXPos + frameWidth, frameHeight);
+
+        public GameView(Context context) {
+            super(context);
+            ourHolder = getHolder();
+            bitmapRunningMan = BitmapFactory.decodeResource(getResources(), R.drawable.ic_menu_ellipse_focused);
+            bitmapRunningMan = Bitmap.createScaledBitmap(bitmapRunningMan, frameWidth * frameCount, frameHeight, false);
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View view = convertView;
-            if (view == null) {
-                view = mInflater.inflate(R.layout.list_item, parent, false);
+        public void run() {
+            while (playing) {
+                long startFrameTime = System.currentTimeMillis();
+                update();
+                draw();
+
+                timeThisFrame = System.currentTimeMillis() - startFrameTime;
+
+                if (timeThisFrame >= 1) {
+                    fps = 1000 / timeThisFrame;
+                }
             }
-            ImageView imageView = (ImageView) view.findViewById(R.id.imageView);
-            Bitmap bitmap = getBitmap(position);
-            imageView.setImageBitmap(bitmap);
-            return view;
         }
 
-        private Bitmap getBitmap(int position) {
-            String filePath = getItem(position).getAbsolutePath();
-            return Utils.decodeSampledBitmapFromResource(filePath, mSize, mSize);
+        public void update() {
+            if (isMoving) {
+                manXPos = manXPos + runSpeedPerSecond / fps;
+
+                if (manXPos > getWidth()) {
+                    manYPos += (int) frameHeight;
+                    manXPos = 10;
+                }
+
+                if (manYPos + frameHeight > getHeight()) {
+                    manYPos = 10;
+                }
+            }
         }
 
+        public void manageCurrentFrame() {
+            long time = System.currentTimeMillis();
 
+            if (isMoving) {
+                if (time > lastFrameChangeTime + frameLengthInMillisecond) {
+                    lastFrameChangeTime = time;
+                    currentFrame++;
+
+                    if (currentFrame >= frameCount) {
+                        currentFrame = 0;
+                    }
+                }
+            }
+
+            frameToDraw.left = currentFrame * frameWidth;
+            frameToDraw.right = frameToDraw.left + frameWidth;
+        }
+
+        public void draw() {
+            if (ourHolder.getSurface().isValid()) {
+                canvas = ourHolder.lockCanvas();
+                canvas.drawColor(Color.WHITE);
+                whereToDraw.set((int) manXPos, (int) manYPos, (int) manXPos + frameWidth, (int) manYPos + frameHeight);
+                manageCurrentFrame();
+                canvas.drawBitmap(bitmapRunningMan, frameToDraw, whereToDraw, null);
+                ourHolder.unlockCanvasAndPost(canvas);
+            }
+        }
+
+        public void pause() {
+            playing = false;
+
+            try {
+                gameThread.join();
+            } catch(InterruptedException e) {
+            }
+        }
+
+        public void resume() {
+            playing = true;
+            gameThread = new Thread(this);
+            gameThread.start();
+        }
+
+        @Override
+        public boolean onTouchEvent(MotionEvent event) {
+            switch (event.getAction() & MotionEvent.ACTION_MASK) {
+                case MotionEvent.ACTION_DOWN :
+                    isMoving = !isMoving;
+                    break;
+            }
+
+            return true;
+        }
     }
 }

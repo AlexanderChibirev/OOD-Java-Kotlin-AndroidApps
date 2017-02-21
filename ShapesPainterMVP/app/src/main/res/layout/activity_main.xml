@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:weightSum="1">
-
     <com.example.alexander.shapespaintermvp.ui.views.PainterCanvas
         android:id="@+id/myView"
         android:layout_width="match_parent"
@@ -13,14 +12,14 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-    <fragment
-        android:name="com.example.alexander.shapespaintermvp.ui.fragments.ToolsFragment"
+    <FrameLayout
+        android:id="@+id/fragment_toolbars"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
-    </fragment>
+    </FrameLayout>
 
 </RelativeLayout>

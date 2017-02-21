@@ -1,5 +1,4 @@
-package com.example.alexander.shapespaintermvp.mvp.presenters;
-
+package com.example.alexander.shapespaintermvp.mvp.presenters.commands;
 
 import com.example.alexander.shapespaintermvp.mvp.models.IShape;
 import com.example.alexander.shapespaintermvp.mvp.models.ShapeFactory;

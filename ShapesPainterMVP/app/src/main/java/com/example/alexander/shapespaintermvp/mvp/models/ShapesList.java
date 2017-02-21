@@ -19,6 +19,9 @@ public class ShapesList {
     }
 
     public ArrayList<IShape> getShapes() {
+        if (mShapeList.size() != 0) {
+            return mShapeList;
+        }
         return mShapeList;
     }
 
