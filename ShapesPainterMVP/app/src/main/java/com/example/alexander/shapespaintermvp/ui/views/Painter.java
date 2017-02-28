@@ -26,6 +26,7 @@ import static com.example.alexander.shapespaintermvp.constants.Constant.DEFAULT_
 public class Painter implements IPainter {
     private Paint mPaint = new Paint();
     public void drawShapes(ShapesList draft, Canvas canvas) {
+        canvas.drawColor(Color.WHITE);
         for (IShape shape : draft.getShapes()) {
             Vector<Vector2f> dataShape = shape.getDataShape();
             switch (shape.getType()) {
@@ -94,7 +95,7 @@ public class Painter implements IPainter {
                 });
     }
 
-    void drawSelectDiagramShape(ShapeDiagram shapeDiagram, Canvas canvas) {
+   public void drawSelectDiagramShape(ShapeDiagram shapeDiagram, Canvas canvas) {
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setColor(Color.BLACK);
         canvas.drawRect(

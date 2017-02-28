@@ -6,7 +6,7 @@ public class ShapeDiagram {
     private float mLeft;
     private float mBottom;
 
-    ShapeDiagram(float top, float left, float right, float bottom) {
+    public ShapeDiagram(float top, float left, float right, float bottom) {
         mTop = top;
         mLeft = left;
         mRight = right;
@@ -29,19 +29,19 @@ public class ShapeDiagram {
         return mBottom;
     }
 
-    void setTop(float top) {
+    public void setTop(float top) {
         mTop = top;
     }
 
-    void setRight(float right) {
+    public void setRight(float right) {
         mRight = right;
     }
 
-    void setBottom(float bottom) {
+    public void setBottom(float bottom) {
         mBottom = bottom;
     }
 
-    void setLeft(float left) {
+    public void setLeft(float left) {
         mLeft = left;
     }
 }

@@ -2,7 +2,6 @@ package com.example.alexander.shapespaintermvp.mvp.presenters;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
-import com.example.alexander.shapespaintermvp.mvp.models.IShape;
 import com.example.alexander.shapespaintermvp.mvp.models.ShapeFactory;
 import com.example.alexander.shapespaintermvp.mvp.models.ShapeType;
 import com.example.alexander.shapespaintermvp.mvp.models.ShapesList;
@@ -36,11 +35,8 @@ public class ToolbarsPresenter extends MvpPresenter<ToolbarsView> {
     }
 
     public void addShape(ShapeType shapeType, ShapesList shapesList) {
-        IShape shape = mShapeFactory.createDefaultShape(shapeType);
-        getViewState().addShape(shape);
-
         AddShapeCommand addShapeCommand = new AddShapeCommand(shapesList, shapeType, mShapeFactory);
-        addShapeCommand.execute();
         CommandStack.getInstance().add(addShapeCommand);
+        getViewState().addShape();
     }
 }

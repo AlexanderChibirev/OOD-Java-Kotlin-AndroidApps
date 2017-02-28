@@ -74,10 +74,10 @@
         android:contentDescription="@string/create_rectangle"
         android:background="@null"
         android:src="@drawable/ic_menu_rectangle_background"
-        android:layout_marginLeft="14dp"
-        android:layout_marginStart="14dp"
+        android:layout_marginLeft="13dp"
+        android:layout_marginStart="13dp"
         android:id="@+id/imageButtonRectangle"
-        android:layout_alignBottom="@+id/imageButtonCircle"
+        android:layout_alignTop="@+id/imageButtonCircle"
         android:layout_toRightOf="@+id/imageButtonCircle"
         android:layout_toEndOf="@+id/imageButtonCircle" />
 </RelativeLayout>

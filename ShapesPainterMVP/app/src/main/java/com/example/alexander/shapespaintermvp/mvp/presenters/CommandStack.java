@@ -26,6 +26,7 @@ class CommandStack {
 
     public void add(ICommand command) {
         clearInFrontOfCurrent();
+        command.execute();
         mCommands.add(command);
         mCurrentLocation++;
     }
