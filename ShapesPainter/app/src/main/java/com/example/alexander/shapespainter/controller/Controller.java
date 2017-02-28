@@ -66,18 +66,18 @@ public class Controller {
     public void undoCommand() {//назад
         if (mCommandStack.undoEnabled()) {
             mCommandStack.undo();
+            mSelectDiagramShape.setSelectedShape(null);
         } else {
             setMessage("отменить нельзя");
-            mSelectDiagramShape.setSelectedShape(null);
         }
     }
 
     public void redoCommand() {//вперед
         if (mCommandStack.redoEnabled()) {
             mCommandStack.redo();
+            mSelectDiagramShape.setSelectedShape(null);
         } else {
             setMessage("вернуть нельзя");
-            mSelectDiagramShape.setSelectedShape(null);
         }
     }
 

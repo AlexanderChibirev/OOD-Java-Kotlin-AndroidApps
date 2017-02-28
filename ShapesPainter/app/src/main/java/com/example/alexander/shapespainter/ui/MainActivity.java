@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ImageButton;
 
 import com.example.alexander.shapespainter.R;
@@ -12,26 +13,17 @@ import com.example.alexander.shapespainter.controller.Controller;
 import com.example.alexander.shapespainter.model.ShapeType;
 import com.example.alexander.shapespainter.view.PainterCanvas;
 
+import java.util.Vector;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
+    private Vector<ImageButton> mImageButtons = new Vector<>();
     private Controller mController;
 
     @BindView(R.id.myView)
     PainterCanvas mPainterCanvas;
-    @BindView(R.id.imageButtonCircle)
-    ImageButton imageButtonCircle;
-    @BindView(R.id.imageButtonRectangle)
-    ImageButton imageButtonRectangle;
-    @BindView(R.id.imageButtonTriangle)
-    ImageButton imageButtonTriangle;
-    @BindView(R.id.imageButtonUndo)
-    ImageButton imageButtonUndo;
-    @BindView(R.id.imageButtonRedo)
-    ImageButton imageButtonRedo;
-    @BindView(R.id.imageButtonTrash)
-    ImageButton imageButtonTrash;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         mController = new Controller(getApplicationContext());
         mController.readFileWithStateShape();
         mPainterCanvas.setController(mController);
+        initButtonToolbars();
         initOnClickListenerImageButton();
     }
 
@@ -51,12 +44,36 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initOnClickListenerImageButton() {
-        imageButtonCircle.setOnClickListener(view -> mController.addShape(ShapeType.Ellipse));
-        imageButtonRectangle.setOnClickListener(view -> mController.addShape(ShapeType.Rectangle));
-        imageButtonTriangle.setOnClickListener(view -> mController.addShape(ShapeType.Triangle));
-        imageButtonUndo.setOnClickListener(view -> mController.undoCommand());
-        imageButtonRedo.setOnClickListener(view -> mController.redoCommand());
-        imageButtonTrash.setOnClickListener(view -> mController.deleteSelectedShape());
+        for (final ImageButton imageButton : mImageButtons) {
+            imageButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int imageButtonId = imageButton.getId();
+                    mPainterCanvas.freezePainterThread();
+                    switch (imageButtonId) {
+                        case R.id.imageButtonTriangle:
+                            mController.addShape(ShapeType.Triangle);
+                            break;
+                        case R.id.imageButtonCircle:
+                            mController.addShape(ShapeType.Ellipse);
+                            break;
+                        case R.id.imageButtonRectangle:
+                            mController.addShape(ShapeType.Rectangle);
+                            break;
+                        case R.id.imageButtonUndo:
+                            mController.undoCommand();
+                            break;
+                        case R.id.imageButtonRedo:
+                            mController.redoCommand();
+                            break;
+                        case R.id.imageButtonTrash:
+                            mController.deleteSelectedShape();
+                            break;
+                    }
+                    mPainterCanvas.activatePainterThread();
+                }
+            });
+        }
     }
 
 
@@ -80,5 +97,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         quitDialog.show();
+    }
+
+    private void initButtonToolbars() {
+        mImageButtons.add((ImageButton) findViewById(R.id.imageButtonTriangle));
+        mImageButtons.add((ImageButton) findViewById(R.id.imageButtonCircle));
+        mImageButtons.add((ImageButton) findViewById(R.id.imageButtonRectangle));
+        mImageButtons.add((ImageButton) findViewById(R.id.imageButtonUndo));
+        mImageButtons.add((ImageButton) findViewById(R.id.imageButtonRedo));
+        mImageButtons.add((ImageButton) findViewById(R.id.imageButtonTrash));
     }
 }
