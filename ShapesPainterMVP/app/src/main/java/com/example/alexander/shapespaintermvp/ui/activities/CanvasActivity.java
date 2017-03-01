@@ -27,6 +27,8 @@ import javax.vecmath.Vector2f;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.example.alexander.shapespaintermvp.constants.Constant.SHIFT_POSITION_Y_FOR_PAINTER_CANVAS;
+
 public class CanvasActivity extends MvpAppCompatActivity implements CanvasView, ToolbarsView {
 
     @InjectPresenter
@@ -123,7 +125,7 @@ public class CanvasActivity extends MvpAppCompatActivity implements CanvasView, 
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        Vector2f mousePos = new Vector2f(event.getX(), event.getY());
+        Vector2f mousePos = new Vector2f(event.getX(), event.getY() - SHIFT_POSITION_Y_FOR_PAINTER_CANVAS);
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 mCanvasPresenter.down(mousePos, mShapesList.getShapes());

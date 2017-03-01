@@ -47,9 +47,9 @@ public class PointInsideShapeManager {
 
     private static boolean isPointInsideRectangle(IShape shape, Vector2f point) {
         Vector<Vector2f> dataShape = shape.getDataShape();
-        return point.x <= dataShape.get(DATA_SHAPE_LEFT_TOP_RECTANGLE_INDEX).y
+        return point.x <= dataShape.get(DATA_SHAPE_RIGHT_BOTTOM_RECTANGLE_INDEX).x
                 && point.x >= dataShape.get(DATA_SHAPE_LEFT_TOP_RECTANGLE_INDEX).x
-                && point.y >= dataShape.get(DATA_SHAPE_RIGHT_BOTTOM_RECTANGLE_INDEX).x
+                && point.y >=   dataShape.get(DATA_SHAPE_LEFT_TOP_RECTANGLE_INDEX).y
                 && point.y <= dataShape.get(DATA_SHAPE_RIGHT_BOTTOM_RECTANGLE_INDEX).y;
     }
 
