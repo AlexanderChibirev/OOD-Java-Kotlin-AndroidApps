@@ -50,6 +50,8 @@ public class CanvasPresenter extends MvpPresenter<CanvasView> {
     private void painterShapeDiagram() {
         if (mSelectedShape != null) {
             getViewState().painterShapeDiagram(getShapeDiagram(mSelectedShape));
+        } else {
+            getViewState().painterShapeDiagram(null);
         }
     }
 

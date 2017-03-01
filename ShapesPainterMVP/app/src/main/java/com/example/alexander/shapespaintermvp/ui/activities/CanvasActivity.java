@@ -73,8 +73,8 @@ public class CanvasActivity extends MvpAppCompatActivity implements CanvasView, 
     public void painterShapeDiagram(ShapeDiagram shapeDiagram) {
         if (shapeDiagram == null) {
             mCanvasPresenter.painterShapes(mPainterCanvas.getCanvas(), mShapesList);
-        }
-        else {
+        } else {
+            mCanvasPresenter.painterShapes(mPainterCanvas.getCanvas(), mShapesList);
             Canvas canvas = mPainterCanvas.getCanvas();
             mPainter.drawSelectDiagramShape(shapeDiagram, canvas);
             mPainterCanvas.unlockCanvasAndPost(canvas);
