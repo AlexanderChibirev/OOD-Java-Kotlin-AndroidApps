@@ -7,20 +7,24 @@ import java.util.Vector;
 
 import javax.vecmath.Vector2f;
 
+import static com.example.alexander.shapespaintermvp.constants.Constant.DATA_SHAPE_CENTER_ELLIPSE_INDEX;
+import static com.example.alexander.shapespaintermvp.constants.Constant.DATA_SHAPE_LEFT_TOP_RECTANGLE_INDEX;
 import static com.example.alexander.shapespaintermvp.constants.Constant.DATA_SHAPE_LEFT_VERTEX_TRIANGLE_INDEX;
+import static com.example.alexander.shapespaintermvp.constants.Constant.DATA_SHAPE_RIGHT_BOTTOM_RECTANGLE_INDEX;
 import static com.example.alexander.shapespaintermvp.constants.Constant.DATA_SHAPE_RIGHT_VERTEX_TRIANGLE_INDEX;
+import static com.example.alexander.shapespaintermvp.constants.Constant.DATA_SHAPE_SIZE_ELLIPSE_INDEX;
 import static com.example.alexander.shapespaintermvp.constants.Constant.DATA_SHAPE_TOP_VERTEX_TRIANGLE_INDEX;
 import static com.example.alexander.shapespaintermvp.constants.Constant.DEFAULT_RADIUS_DRAG_POINT;
 import static com.example.alexander.shapespaintermvp.constants.Constant.SIZE_INVISIBLE_RADIUS_FOR_USABILITY;
 
 public class PointInsideShapeManager {
 
-    public static boolean isPointInside(IShape shape, Vector2f point, ShapeDiagram shapeDiagram) {
+    public static boolean isPointInside(IShape shape, Vector2f point) {
         switch (shape.getType()) {
             case Ellipse:
-                return isPointInsideEllipse(shape, point, shapeDiagram);
+                return isPointInsideEllipse(shape, point);
             case Rectangle:
-                return isPointInsideRectangle(shape, point, shapeDiagram);
+                return isPointInsideRectangle(shape, point);
             case Triangle:
                 return isPointInsideTriangle(shape, point);
         }
@@ -41,11 +45,12 @@ public class PointInsideShapeManager {
         return ((b1 == b2) && (b2 == b3));
     }
 
-    private static boolean isPointInsideRectangle(IShape shape, Vector2f point, ShapeDiagram shapeDiagram) {
-        return point.x <= shapeDiagram.getRight()
-                && point.x >= shapeDiagram.getLeft()
-                && point.y >= shapeDiagram.getTop()
-                && point.y <= shapeDiagram.getBottom();
+    private static boolean isPointInsideRectangle(IShape shape, Vector2f point) {
+        Vector<Vector2f> dataShape = shape.getDataShape();
+        return point.x <= dataShape.get(DATA_SHAPE_LEFT_TOP_RECTANGLE_INDEX).y
+                && point.x >= dataShape.get(DATA_SHAPE_LEFT_TOP_RECTANGLE_INDEX).x
+                && point.y >= dataShape.get(DATA_SHAPE_RIGHT_BOTTOM_RECTANGLE_INDEX).x
+                && point.y <= dataShape.get(DATA_SHAPE_RIGHT_BOTTOM_RECTANGLE_INDEX).y;
     }
 
     static boolean isPointInsideLeftTopDragPoint(ShapeDiagram shapeDiagram, Vector2f mousePos) {
@@ -55,10 +60,14 @@ public class PointInsideShapeManager {
                 / Math.pow(DEFAULT_RADIUS_DRAG_POINT + SIZE_INVISIBLE_RADIUS_FOR_USABILITY, 2) <= 1);
     }
 
-    private static boolean isPointInsideEllipse(IShape shape, Vector2f point, ShapeDiagram shapeDiagram) {
+    private static boolean isPointInsideEllipse(IShape shape, Vector2f point) {
+
+        Vector<Vector2f> dataShape = shape.getDataShape();
         Vector2f center = shape.getCenter();
-        float wRadius = center.y - shapeDiagram.getTop();
-        float hRadius = center.x - shapeDiagram.getLeft();
+        float wRadius = center.y - (dataShape.get(DATA_SHAPE_CENTER_ELLIPSE_INDEX).y
+                - dataShape.get(DATA_SHAPE_SIZE_ELLIPSE_INDEX).y);
+        float hRadius = center.x - (dataShape.get(DATA_SHAPE_CENTER_ELLIPSE_INDEX).x
+                - dataShape.get(DATA_SHAPE_SIZE_ELLIPSE_INDEX).x);
 
         return Math.pow(point.x - center.x, 2) / Math.pow(wRadius, 2)
                 + Math.pow(point.y - center.y, 2) / Math.pow(hRadius, 2) <= 1;

@@ -37,7 +37,7 @@ public class CanvasPresenter extends MvpPresenter<CanvasView> {
     public void down(Vector2f mousePos, ArrayList<IShape> shapesList) {
         for (int i = shapesList.size() - 1; i > -1; i--) {
             IShape shape = shapesList.get(i);
-            if (PointInsideShapeManager.isPointInside(shape, mousePos, getShapeDiagram(shape))) {
+            if (PointInsideShapeManager.isPointInside(shape, mousePos)) {
                 mSelectedShape = shape;
                 break;
             } else {
@@ -69,31 +69,31 @@ public class CanvasPresenter extends MvpPresenter<CanvasView> {
     private ShapeDiagram getShapeDiagram(IShape shape) {
         Vector<Vector2f> dataShape = shape.getDataShape();
         ShapeType shapeType = shape.getType();
-        ShapeDiagram hapeDiagram = new ShapeDiagram(0, 0, 0, 0);
+        ShapeDiagram shapeDiagram = new ShapeDiagram(0, 0, 0, 0);
         switch (shapeType) {
             case Ellipse:
-                hapeDiagram.setTop(dataShape.get(DATA_SHAPE_CENTER_ELLIPSE_INDEX).y
+                shapeDiagram.setTop(dataShape.get(DATA_SHAPE_CENTER_ELLIPSE_INDEX).y
                         - dataShape.get(DATA_SHAPE_SIZE_ELLIPSE_INDEX).y);
-                hapeDiagram.setLeft(dataShape.get(DATA_SHAPE_CENTER_ELLIPSE_INDEX).x
+                shapeDiagram.setLeft(dataShape.get(DATA_SHAPE_CENTER_ELLIPSE_INDEX).x
                         - dataShape.get(DATA_SHAPE_SIZE_ELLIPSE_INDEX).x);
-                hapeDiagram.setRight(dataShape.get(DATA_SHAPE_CENTER_ELLIPSE_INDEX).x
+                shapeDiagram.setRight(dataShape.get(DATA_SHAPE_CENTER_ELLIPSE_INDEX).x
                         + dataShape.get(DATA_SHAPE_SIZE_ELLIPSE_INDEX).x);
-                hapeDiagram.setBottom(dataShape.get(DATA_SHAPE_CENTER_ELLIPSE_INDEX).y
+                shapeDiagram.setBottom(dataShape.get(DATA_SHAPE_CENTER_ELLIPSE_INDEX).y
                         + dataShape.get(DATA_SHAPE_SIZE_ELLIPSE_INDEX).y);
                 break;
             case Triangle:
-                hapeDiagram.setTop(dataShape.get(DATA_SHAPE_TOP_VERTEX_TRIANGLE_INDEX).y);
-                hapeDiagram.setLeft(dataShape.get(DATA_SHAPE_LEFT_TOP_RECTANGLE_INDEX).x);
-                hapeDiagram.setRight(dataShape.get(DATA_SHAPE_RIGHT_VERTEX_TRIANGLE_INDEX).x);
-                hapeDiagram.setBottom(dataShape.get(DATA_SHAPE_RIGHT_VERTEX_TRIANGLE_INDEX).y);
+                shapeDiagram.setTop(dataShape.get(DATA_SHAPE_TOP_VERTEX_TRIANGLE_INDEX).y);
+                shapeDiagram.setLeft(dataShape.get(DATA_SHAPE_LEFT_TOP_RECTANGLE_INDEX).x);
+                shapeDiagram.setRight(dataShape.get(DATA_SHAPE_RIGHT_VERTEX_TRIANGLE_INDEX).x);
+                shapeDiagram.setBottom(dataShape.get(DATA_SHAPE_RIGHT_VERTEX_TRIANGLE_INDEX).y);
                 break;
             case Rectangle:
-                hapeDiagram.setTop(dataShape.get(DATA_SHAPE_LEFT_TOP_RECTANGLE_INDEX).y);
-                hapeDiagram.setLeft(dataShape.get(DATA_SHAPE_LEFT_TOP_RECTANGLE_INDEX).x);
-                hapeDiagram.setRight(dataShape.get(DATA_SHAPE_RIGHT_BOTTOM_RECTANGLE_INDEX).x);
-                hapeDiagram.setBottom(dataShape.get(DATA_SHAPE_RIGHT_BOTTOM_RECTANGLE_INDEX).y);
+                shapeDiagram.setTop(dataShape.get(DATA_SHAPE_LEFT_TOP_RECTANGLE_INDEX).y);
+                shapeDiagram.setLeft(dataShape.get(DATA_SHAPE_LEFT_TOP_RECTANGLE_INDEX).x);
+                shapeDiagram.setRight(dataShape.get(DATA_SHAPE_RIGHT_BOTTOM_RECTANGLE_INDEX).x);
+                shapeDiagram.setBottom(dataShape.get(DATA_SHAPE_RIGHT_BOTTOM_RECTANGLE_INDEX).y);
                 break;
         }
-        return hapeDiagram;
+        return shapeDiagram;
     }
 }

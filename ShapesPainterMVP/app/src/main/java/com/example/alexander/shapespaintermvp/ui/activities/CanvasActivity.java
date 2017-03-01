@@ -32,7 +32,7 @@ public class CanvasActivity extends MvpAppCompatActivity implements CanvasView, 
     @InjectPresenter
     CanvasPresenter mCanvasPresenter;
     @InjectPresenter
-    ToolbarsPresenter mToolbarsPresenter;
+    ToolbarsPresenter mToolbarPresenter;
 
     @BindView(R.id.imageButtonCircle)
     ImageButton imageButtonCircle;
@@ -58,7 +58,7 @@ public class CanvasActivity extends MvpAppCompatActivity implements CanvasView, 
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         ButterKnife.bind(this);
-        initButtonToolbars();
+        initButtonsToolbar();
     }
 
     @Override
@@ -167,13 +167,13 @@ public class CanvasActivity extends MvpAppCompatActivity implements CanvasView, 
     }
 
 
-    private void initButtonToolbars() {
-        imageButtonCircle.setOnClickListener(imageButton -> mToolbarsPresenter.addShape(ShapeType.Ellipse, mShapesList));
-        imageButtonRectangle.setOnClickListener(imageButton -> mToolbarsPresenter.addShape(ShapeType.Rectangle, mShapesList));
-        imageButtonTriangle.setOnClickListener(imageButton -> mToolbarsPresenter.addShape(ShapeType.Triangle, mShapesList));
-        imageButtonUndo.setOnClickListener(imageButton -> mToolbarsPresenter.undo());
-        imageButtonRedo.setOnClickListener(imageButton -> mToolbarsPresenter.redo());
-        imageButtonTrash.setOnClickListener(imageButton -> mToolbarsPresenter.trash());
+    private void initButtonsToolbar() {
+        imageButtonCircle.setOnClickListener(imageButton -> mToolbarPresenter.addShape(ShapeType.Ellipse, mShapesList));
+        imageButtonRectangle.setOnClickListener(imageButton -> mToolbarPresenter.addShape(ShapeType.Rectangle, mShapesList));
+        imageButtonTriangle.setOnClickListener(imageButton -> mToolbarPresenter.addShape(ShapeType.Triangle, mShapesList));
+        imageButtonUndo.setOnClickListener(imageButton -> mToolbarPresenter.undo());
+        imageButtonRedo.setOnClickListener(imageButton -> mToolbarPresenter.redo());
+        imageButtonTrash.setOnClickListener(imageButton -> mToolbarPresenter.trash());
     }
 }
 
