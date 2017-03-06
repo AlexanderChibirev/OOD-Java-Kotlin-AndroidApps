@@ -1,3 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">TestApplication</string>
+    <!--  app -->
+    <string name="app_name">RRS-reader</string>
+
+    <!-- menu -->
+    <string name="menu_preference">Preference</string>
+
+    <!-- language -->
+    <string-array name="languages">
+        <item>English</item>
+        <item>Русский</item>
+    </string-array>
+    <string-array name="locales">
+        <item>en</item>
+        <item>ru</item>
+    </string-array>
+
+
+    <!-- preferences -->
+    <string name="preferences_language_title">Language</string>
+    <string name="preferences_language_summary">Set interface language. Restart needed</string>
+    <string name="preferences_language_key">Preferences language key</string>
+
+    <string name="preferences_address_rrs_flow_title">Address RRS-flow</string>
+    <string name="preferences_address_rrs_flow_summary">Set address RRS-flow</string>
+    <string name="preferences_address_rrs_flow_dialog_title">Write url</string>
+    <string name="preference_address_rrs_key">Edit text preference key</string>
+
+    <!--  dialog -->
+    <string name="select_language_title">Select Language</string>
 </resources>
