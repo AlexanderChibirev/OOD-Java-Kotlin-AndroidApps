@@ -12,10 +12,10 @@
     <string name="preferences_language_summary">Установить язык приложения. Требуется перезапуск</string>
     <string name="preferences_language_key">Настройка языка</string>
 
-    <string name="preferences_address_rrs_flow_title">Адрес RSS-потока</string>
-    <string name="preferences_address_rrs_flow_summary">Задайте адрес RSS-потока</string>
-    <string name="preferences_address_rrs_flow_dialog_title">Введите url</string>
-    <string name="preference_address_rrs_key">Ключ для edit text</string>
+    <string name="preferences_address_rss_flow_title">Адрес RSS-потока</string>
+    <string name="preferences_address_rss_flow_summary">Задайте адрес RSS-потока</string>
+    <string name="preferences_address_rss_flow_dialog_title">Введите url</string>
+    <string name="preference_address_rss_key">Ключ для edit text</string>
 
     <!--  dialog -->
     <string name="select_language_title">Выберите язык</string>
