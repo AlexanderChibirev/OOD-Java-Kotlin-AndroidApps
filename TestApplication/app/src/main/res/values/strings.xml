@@ -22,10 +22,10 @@
     <string name="preferences_language_summary">Set interface language. Restart needed</string>
     <string name="preferences_language_key">Preferences language key</string>
 
-    <string name="preferences_address_rrs_flow_title">Address RRS-flow</string>
-    <string name="preferences_address_rrs_flow_summary">Set address RRS-flow</string>
-    <string name="preferences_address_rrs_flow_dialog_title">Write url</string>
-    <string name="preference_address_rrs_key">Edit text preference key</string>
+    <string name="preferences_address_rss_flow_title">Address RSS-flow</string>
+    <string name="preferences_address_rss_flow_summary">Set address RSS-flow</string>
+    <string name="preferences_address_rss_flow_dialog_title">Write url</string>
+    <string name="preference_address_rss_key">Edit text preference key</string>
 
     <!--  dialog -->
     <string name="select_language_title">Select Language</string>
