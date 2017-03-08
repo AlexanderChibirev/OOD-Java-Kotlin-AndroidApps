@@ -11,6 +11,7 @@ import static com.example.alexander.testapplication.R.xml.preferences;
 
 @EFragment
 public class PreferencesFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
