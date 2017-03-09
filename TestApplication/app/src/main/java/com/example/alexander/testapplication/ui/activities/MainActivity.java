@@ -8,6 +8,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -21,15 +22,20 @@ import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.ViewById;
 
+import static com.example.alexander.testapplication.R.id.rv;
+
 @EActivity(R.layout.activity_main)
 @OptionsMenu(R.menu.main)
 public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
-    @ViewById(R.id.rv)
+    @ViewById(rv)
     RecyclerView recyclerView;
 
     @ViewById(R.id.swipe_refresh_layout)
     SwipeRefreshLayout swipeRefreshLayout;
+
+    @ViewById(R.id.toolbar)
+    Toolbar toolbar;
 
     private SharedPreferences mSharedPreferences;
     private RecyclerAdapter mRecyclerAdapter;
@@ -37,7 +43,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     @AfterViews
     void init() {
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        setSupportActionBar(toolbar);
         initRecyclerView();
+        initRVAdapter();
         initBackdropImage();
         initSwipeRefreshLayout();
     }
@@ -50,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     @Override
     public void onRefresh() {
+        updateRV();
         //TODO::add refresh then you create rss model
     }
 
@@ -63,9 +72,16 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         }
     }
 
+    private void updateRV() {
+        swipeRefreshLayout.setRefreshing(true);
+        mRecyclerAdapter.notifyDataSetChanged();
+        //TODO::add parse rss url if you need
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
+
     private void showPreferences() {
         PreferencesActivity_.intent(this).start();
-        //WebViewActivity_.intent(this).extra("link", "http://developer.alexanderklimov.ru/android").start();
     }
 
     private void initBackdropImage() {
@@ -73,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 load(R.drawable.backdrop_title_bg).
                 into((ImageView) findViewById(R.id.backdrop));
     }
-    
+
     private String getRssUrl() {
         return mSharedPreferences.getString(
                 getString(R.string.preference_address_rss_key), null);
@@ -83,17 +99,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         swipeRefreshLayout.setOnRefreshListener(this);
         if (isInternetConnection()) {
-            swipeRefreshLayout.
-                    post(new Runnable() {
-                             @Override
-                             public void run() {
-                                 swipeRefreshLayout.setRefreshing(true);
-                                 mRecyclerAdapter.notifyDataSetChanged();
-                                 //TODO::add parse rss url
-                                 swipeRefreshLayout.setRefreshing(false);
-                             }
-                         }
-                    );
+            swipeRefreshLayout.post(this::updateRV);
         }
     }
 
@@ -113,7 +119,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private void initRecyclerView() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        mRecyclerAdapter = new RecyclerAdapter();
+    }
+
+    private void initRVAdapter() {
+        mRecyclerAdapter = new RecyclerAdapter((v, position) ->
+                PreviewRssItemActivity_.intent(v.getContext()).start());
         recyclerView.setAdapter(mRecyclerAdapter);
     }
 
