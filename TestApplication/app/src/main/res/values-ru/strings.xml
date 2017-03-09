@@ -24,5 +24,6 @@
     <string name="backdrop_title">Omega-R</string>
     <string name="backdrop_subtitle">Будьте в курсе последних событий!</string>
     <string name="internet_connection_error">Ошибка подключения к интернету</string>
+    <string name="rrs_item_image">Картинка из записи</string>
 
 </resources>

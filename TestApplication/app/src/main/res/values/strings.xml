@@ -34,5 +34,6 @@
     <!--  dialog -->
     <string name="select_language_title">Select Language</string>
     <string name="internet_connection_error">internet connection error</string>
+    <string name="rrs_item_image">Image from rrs</string>
 
 </resources>
