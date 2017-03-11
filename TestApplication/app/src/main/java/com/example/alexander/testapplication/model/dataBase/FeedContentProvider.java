@@ -174,7 +174,7 @@ public class FeedContentProvider extends ContentProvider {
                         "=" + uri.getPathSegments().get(SEGMENT_PATH_INDEX));
                 break;
             default:
-                throw new IllegalArgumentException(mContext.getString(R.string.unknown_uri) + uri);
+                throw new IllegalArgumentException(mContext.getString(R.string.unknown_error) + uri);
         }
         Cursor c = qb.query(mDb, projection, selection, selectionArgs,
                 null, null, sortOrder);
@@ -211,7 +211,7 @@ public class FeedContentProvider extends ContentProvider {
                         + mContext.getString(R.string.app_name)
                         + ".feeds_channels";
             default:
-                throw new IllegalArgumentException(mContext.getString(R.string.unknown_uri) + uri);
+                throw new IllegalArgumentException(mContext.getString(R.string.unknown_error) + uri);
         }
     }
 
@@ -226,7 +226,7 @@ public class FeedContentProvider extends ContentProvider {
             case FEEDS_RSS_CHANNELS:
                 return getUriFeedsRssChannel(uri, contentValues);
             default:
-                throw new IllegalArgumentException(mContext.getString(R.string.unknown_uri) + uri);
+                throw new IllegalArgumentException(mContext.getString(R.string.unknown_error) + uri);
         }
     }
 
@@ -292,7 +292,7 @@ public class FeedContentProvider extends ContentProvider {
                                 selection + ")" : ""), selectionArgs);
                 break;
             default:
-                throw new IllegalArgumentException(mContext.getString(R.string.unknown_uri) + uri);
+                throw new IllegalArgumentException(mContext.getString(R.string.unknown_error) + uri);
         }
         mContext.getContentResolver().notifyChange(uri, null);
         return count;
@@ -315,7 +315,7 @@ public class FeedContentProvider extends ContentProvider {
                                 selection + ")" : ""), selectionArgs);
                 break;
             default:
-                throw new IllegalArgumentException(mContext.getString(R.string.unknown_uri) + uri);
+                throw new IllegalArgumentException(mContext.getString(R.string.unknown_error) + uri);
         }
         mContext.getContentResolver().notifyChange(uri, null);
         return count;

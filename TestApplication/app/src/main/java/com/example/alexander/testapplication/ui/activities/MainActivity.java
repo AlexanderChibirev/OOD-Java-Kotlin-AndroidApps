@@ -1,8 +1,6 @@
 package com.example.alexander.testapplication.ui.activities;
 
 
-import android.content.Context;
-import android.net.ConnectivityManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,11 +12,9 @@ import com.bumptech.glide.Glide;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.example.alexander.testapplication.R;
-import com.example.alexander.testapplication.common.utils.ToastMessageUtils;
 import com.example.alexander.testapplication.controller.AppController;
 import com.example.alexander.testapplication.controller.ReadRss;
 import com.example.alexander.testapplication.model.FeedItem;
-import com.example.alexander.testapplication.ui.adapters.RecyclerAdapter;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -30,7 +26,7 @@ import java.util.ArrayList;
 
 @EActivity(R.layout.activity_main)
 @OptionsMenu(R.menu.main)
-public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class MainActivity extends AppCompatActivity{
 
     @ViewById(R.id.rv)
     RecyclerView recyclerView;
@@ -41,7 +37,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     @ViewById(R.id.toolbar)
     Toolbar toolbar;
 
-    private RecyclerAdapter mRecyclerAdapter;
     private AppController mAppController;
     private ArrayList<FeedItem> mFeedItems = new ArrayList<>();
 
@@ -51,10 +46,26 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         //mAppController.updateRssData();
         setSupportActionBar(toolbar);
         initRecyclerView();
-        //initRVAdapter();
         initBackdropImage();
         initSwipeRefreshLayout();
         startAnimationLogotype();
+
+       /* recyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(getApplicationContext(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                       // mFeedItems.get(position);
+                             // PreviewRssItemActivity_.
+                              //        intent(getApplicationContext())
+                             //          .extra(FeedItem.class.getCanonicalName(), mFeedItems.get(position)).start();
+                    }
+
+                    @Override
+                    public void onLongItemClick(View view, int position) {
+                        // do whatever
+                    }
+                })
+        );*/
     }
 
 
@@ -68,27 +79,21 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     }
 
     @Override
-    public void onRefresh() {
-      //  updateRV();
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
-        ReadRss readRss = new ReadRss(
-                getApplicationContext(),
-                recyclerView,
-                mAppController.getRssUrl(),
-                swipeRefreshLayout);
-        readRss.execute();
-        //updateRV();
+        if (!mAppController.canUpdateRV()) {
+            ReadRss readRss = new ReadRss(
+                    getApplicationContext(),
+                    recyclerView,
+                    "https://www.amazon.de/rss/movers-and-shakers/beauty?tag=bodyfun-21",
+                    // mAppController.getRssUrl(),
+                    swipeRefreshLayout,
+                    mFeedItems);
+            readRss.execute();
+        }
     }
-
-    private void updateRV() {
-        swipeRefreshLayout.setRefreshing(true);
-        mRecyclerAdapter.notifyDataSetChanged();
-        swipeRefreshLayout.setRefreshing(false);
-    }
+    //если настройки изменились(проверяем в контроллере),
+    // то обновляем в readrss заполняем либо через парсер либо через базу данных
 
 
     private void showPreferences() {
@@ -102,32 +107,21 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     }
 
     private void initSwipeRefreshLayout() {
-        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
-        swipeRefreshLayout.setOnRefreshListener(this);
-       /* if (isInternetConnection()) {
-            swipeRefreshLayout.post(this::updateRV);
-        }*/
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            if (mAppController.canUpdateRV()) {
+                swipeRefreshLayout.post(this::updateRV);
+            }
+        });
     }
 
-    private boolean isInternetConnection() {
-        ConnectivityManager cm =
-                (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (cm.getActiveNetworkInfo() == null) {
-            ToastMessageUtils.showMessage(
-                    getString(R.string.internet_connection_error),
-                    getApplicationContext());
-            return false;
-        }
-        return true;
+    private void updateRV() {
+        swipeRefreshLayout.setRefreshing(true);
+        recyclerView.getAdapter().notifyDataSetChanged();
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     private void initRecyclerView() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-    }
-
-    private void initRVAdapter() {
-        mRecyclerAdapter = new RecyclerAdapter((v, position) -> PreviewRssItemActivity_.intent(v.getContext()).
-                extra(FeedItem.class.getCanonicalName(), mFeedItems.get(position)).start(), mFeedItems);
     }
 }

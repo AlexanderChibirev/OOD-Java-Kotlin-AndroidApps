@@ -41,7 +41,7 @@
     <string name="feed_inserting_error">Feed inserting error: Failed insert values to</string>
     <string name="rss_inserting_error">RSS inserting error: Failed insert values to</string>
     <string name="feed_and_rss_binding_error">Feed and RSS binding error: Failed insert values to</string>
-    <string name="unknown_uri">Unknown URI</string>
+    <string name="unknown_error">Unknown error</string>
     <string name="server_error">Server Error</string>
     <string name="bad_url_or_rss_channel">Bad url of rss channel</string>
     <string name="check_network_connection">Check your Network Connection</string>
