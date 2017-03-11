@@ -35,7 +35,13 @@ public class PreferencesFragment extends PreferenceFragment implements SharedPre
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         EditTextPreference editTextPreference = (EditTextPreference) findPreference(key);
-        editTextPreference.setText(editTextPreference.getText());
-        //TODO::add check correct url address for rrs flow
+        String text = editTextPreference.getText();
+       /* if (NetworkUtils.getXmlDocument(text) != null) {// is correct url
+            editTextPreference.setText(text);
+        } else {
+            ToastMessageUtils.showMessage(
+                    getString(R.string.rrs_url_error),
+                    editTextPreference.getContext());
+        }*/
     }
 }

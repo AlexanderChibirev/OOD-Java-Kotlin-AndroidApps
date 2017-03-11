@@ -22,5 +22,4 @@ public class PreferencesActivity extends PreferenceActivity {
     public void onBuildHeaders(List<Header> target) {
         getFragmentManager().beginTransaction().replace(android.R.id.content, new PreferencesFragment()).commit();
     }
-
 }

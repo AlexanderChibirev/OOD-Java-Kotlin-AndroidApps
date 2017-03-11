@@ -46,7 +46,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/love_music"
+                        android:id="@+id/omega_r_logotype"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/backdrop_title"
@@ -58,7 +58,8 @@
                         android:layout_height="wrap_content"
                         android:text="@string/backdrop_subtitle"
                         android:textColor="@android:color/white"
-                        android:textSize="@dimen/backdrop_subtitle" />
+                        android:textSize="@dimen/backdrop_subtitle"
+                        android:id="@+id/omega_r_message" />
 
                 </LinearLayout>
             </RelativeLayout>
