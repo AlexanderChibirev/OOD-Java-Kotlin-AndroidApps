@@ -19,8 +19,8 @@ public class AppController {
     }
 
     public void updateRssData() {
-        ReadRss readRss = new ReadRss(mCurrentRssUrl);
-        readRss.execute();
+       // ReadRss readRss = new ReadRss(mContext, mCurrentRssUrl);
+        //readRss.execute();
     }
 
     public String getRssUrl() {
