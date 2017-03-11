@@ -2,13 +2,7 @@ package com.example.alexander.testapplication.ui.activities;
 
 
 import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
 import android.net.ConnectivityManager;
-import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,13 +14,10 @@ import com.bumptech.glide.Glide;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.example.alexander.testapplication.R;
-import com.example.alexander.testapplication.common.FeedLoader;
-import com.example.alexander.testapplication.common.RSSResultReceiver;
 import com.example.alexander.testapplication.common.utils.ToastMessageUtils;
 import com.example.alexander.testapplication.controller.AppController;
+import com.example.alexander.testapplication.controller.ReadRss;
 import com.example.alexander.testapplication.model.FeedItem;
-import com.example.alexander.testapplication.model.dataBase.DataUtils;
-import com.example.alexander.testapplication.model.dataBase.FeedContentProvider;
 import com.example.alexander.testapplication.ui.adapters.RecyclerAdapter;
 
 import org.androidannotations.annotations.AfterViews;
@@ -39,10 +30,7 @@ import java.util.ArrayList;
 
 @EActivity(R.layout.activity_main)
 @OptionsMenu(R.menu.main)
-public class MainActivity extends AppCompatActivity
-        implements SwipeRefreshLayout.OnRefreshListener
-        , LoaderManager.LoaderCallbacks<Cursor> {
-
+public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     @ViewById(R.id.rv)
     RecyclerView recyclerView;
@@ -50,49 +38,20 @@ public class MainActivity extends AppCompatActivity
     @ViewById(R.id.swipe_refresh_layout)
     SwipeRefreshLayout swipeRefreshLayout;
 
-    Cursor cursor;
-
     @ViewById(R.id.toolbar)
     Toolbar toolbar;
 
-    SimpleCursorAdapter adapter;
-    RSSResultReceiver receiver;
     private RecyclerAdapter mRecyclerAdapter;
     private AppController mAppController;
     private ArrayList<FeedItem> mFeedItems = new ArrayList<>();
 
     @AfterViews
     void init() {
-        DataUtils.loadContentResolver(getContentResolver());
-
-        int layoutID = android.R.layout.simple_list_item_1;
-        String from[] = {
-                FeedContentProvider.RSS_CHANNEL_TITLE,
-        };
-        int to[] = {
-                android.R.id.text1
-        };
-
-        cursor = DataUtils.getAllChannels();
-        startManagingCursor(cursor);
-        adapter = new SimpleCursorAdapter(this, layoutID, cursor, from, to, 0);
-        //DataUtils.loadContentResolver(getContentResolver());
-       // cursor = DataUtils.getAllChannels();
-        //startManagingCursor(cursor);
-
-
-        //receiver = new RSSResultReceiver(new Handler(), this);
-
-
-
-
-
         mAppController = new AppController(this);
         //mAppController.updateRssData();
         setSupportActionBar(toolbar);
-
         initRecyclerView();
-        initRVAdapter();
+        //initRVAdapter();
         initBackdropImage();
         initSwipeRefreshLayout();
         startAnimationLogotype();
@@ -110,17 +69,19 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onRefresh() {
-        Intent intent = new Intent(getApplicationContext(), FeedLoader.class);
-        intent.putExtra("url", mAppController.getRssUrl());
-        intent.putExtra("receiver", receiver);
-        startService(intent);
-        updateRV();
+      //  updateRV();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        updateRV();
+        ReadRss readRss = new ReadRss(
+                getApplicationContext(),
+                recyclerView,
+                mAppController.getRssUrl(),
+                swipeRefreshLayout);
+        readRss.execute();
+        //updateRV();
     }
 
     private void updateRV() {
@@ -143,9 +104,9 @@ public class MainActivity extends AppCompatActivity
     private void initSwipeRefreshLayout() {
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         swipeRefreshLayout.setOnRefreshListener(this);
-        if (isInternetConnection()) {
+       /* if (isInternetConnection()) {
             swipeRefreshLayout.post(this::updateRV);
-        }
+        }*/
     }
 
     private boolean isInternetConnection() {
@@ -168,21 +129,5 @@ public class MainActivity extends AppCompatActivity
     private void initRVAdapter() {
         mRecyclerAdapter = new RecyclerAdapter((v, position) -> PreviewRssItemActivity_.intent(v.getContext()).
                 extra(FeedItem.class.getCanonicalName(), mFeedItems.get(position)).start(), mFeedItems);
-        recyclerView.setAdapter(mRecyclerAdapter);
-    }
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return null;
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-
     }
 }

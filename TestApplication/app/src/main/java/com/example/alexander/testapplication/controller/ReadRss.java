@@ -1,8 +1,13 @@
 package com.example.alexander.testapplication.controller;
 
+import android.content.Context;
 import android.os.AsyncTask;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.RecyclerView;
 
 import com.example.alexander.testapplication.model.FeedItem;
+import com.example.alexander.testapplication.ui.activities.PreviewRssItemActivity_;
+import com.example.alexander.testapplication.ui.adapters.RecyclerAdapter;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -22,19 +27,30 @@ public class ReadRss extends AsyncTask<Void, Void, Void> {
     private String mAddress;
     private ArrayList<FeedItem> mFeedItems = new ArrayList<>();
     private URL mUrl;
+    private RecyclerView mRecyclerView;
+    private SwipeRefreshLayout mRefreshLayout;
+    private Context mContext;
 
-    public ReadRss(String address) {
+    public ReadRss(Context context, RecyclerView recyclerView, String address, SwipeRefreshLayout refreshLayout) {
         mAddress = address;
+        mRecyclerView = recyclerView;
+        mRefreshLayout = refreshLayout;
+        mContext = context;
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
+        mRefreshLayout.setRefreshing(true);
     }
 
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
+        mRefreshLayout.setRefreshing(false);
+        RecyclerAdapter adapter = new RecyclerAdapter((v, position) -> PreviewRssItemActivity_.intent(v.getContext()).
+                extra(FeedItem.class.getCanonicalName(), mFeedItems.get(position)).start(), mFeedItems);
+        mRecyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -72,6 +88,8 @@ public class ReadRss extends AsyncTask<Void, Void, Void> {
                             item.setPubDate(cureent.getTextContent());
                         } else if (cureent.getNodeName().equalsIgnoreCase("link")) {
                             item.setLink(cureent.getTextContent());
+                        } else if (cureent.getNodeName().equalsIgnoreCase("author")) {
+                            item.setAuthor(cureent.getTextContent());
                         }
                         if (cureent.getNodeName().equalsIgnoreCase("enclosure")
                                 || cureent.getNodeName().equalsIgnoreCase("media:thumbnail")) {
