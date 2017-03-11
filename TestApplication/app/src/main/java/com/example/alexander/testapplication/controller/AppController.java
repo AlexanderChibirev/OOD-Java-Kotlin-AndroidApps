@@ -2,7 +2,9 @@ package com.example.alexander.testapplication.controller;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.preference.PreferenceManager;
+import android.widget.Toast;
 
 import com.example.alexander.testapplication.R;
 
@@ -15,12 +17,6 @@ public class AppController {
         mContext = context;
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         mCurrentRssUrl = getRssUrl();
-
-    }
-
-    public void updateRssData() {
-       // ReadRss readRss = new ReadRss(mContext, mCurrentRssUrl);
-        //readRss.execute();
     }
 
     public String getRssUrl() {
@@ -32,14 +28,20 @@ public class AppController {
         return android.util.Patterns.WEB_URL.matcher(getRssUrl()).matches();
     }
 
+
+    public boolean isInternetConnection() {
+        ConnectivityManager cm =
+                (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (cm.getActiveNetworkInfo() == null) {
+            Toast.makeText(mContext,
+                    R.string.internet_connection_error, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
+
     public boolean canUpdateRV() {//TODO:: add tests
         String newUrl = getRssUrl();
-        if (mCurrentRssUrl.equals(newUrl)) {
-            return false;
-        } else if (isCorrectRssUrl() && !mCurrentRssUrl.equals(newUrl)) {
-            mCurrentRssUrl = newUrl;
-            return true;
-        }
-        return false;
+        return !mCurrentRssUrl.equals(newUrl);
     }
 }

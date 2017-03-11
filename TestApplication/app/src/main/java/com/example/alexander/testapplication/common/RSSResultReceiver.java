@@ -9,7 +9,11 @@ import android.widget.Toast;
 import com.example.alexander.testapplication.R;
 
 public class RSSResultReceiver extends ResultReceiver {
-    Context mContext;
+    private Context mContext;
+    public static int NETWORK_CONNECTION_ERROR = 1;
+    public static int URL_OR_RSS_CHANNEL_ERROR = 2;
+    public static int SERVER_ERROR = 3;
+    public static int UNKNOWN_ERROR = 4;
 
     public RSSResultReceiver(Handler handler, Context context) {
         super(handler);
@@ -19,12 +23,14 @@ public class RSSResultReceiver extends ResultReceiver {
     @Override
     protected void onReceiveResult(int resultCode, Bundle resultData) {
         // Code to process resultData here
-        if (resultCode == 1) {
+        if (resultCode == NETWORK_CONNECTION_ERROR) {
             Toast.makeText(mContext, R.string.check_network_connection, Toast.LENGTH_SHORT).show();
-        } else if (resultCode == 2) {
+        } else if (resultCode == URL_OR_RSS_CHANNEL_ERROR) {
             Toast.makeText(mContext, R.string.bad_url_or_rss_channel, Toast.LENGTH_SHORT).show();
-        } else if (resultCode == 3) {
+        } else if (resultCode == SERVER_ERROR) {
             Toast.makeText(mContext, R.string.server_error, Toast.LENGTH_SHORT).show();
+        } else if (resultCode == UNKNOWN_ERROR) {
+            Toast.makeText(mContext, R.string.unknown_error, Toast.LENGTH_SHORT).show();
         }
     }
 }
