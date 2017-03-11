@@ -2,7 +2,7 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="item_offset">10dp</dimen>
     <dimen name="card_margin">5dp</dimen>
-    <dimen name="card_album_radius">5dp</dimen>
+    <dimen name="card_radius">5dp</dimen>
     <dimen name="backdrop_bg_height">160dp</dimen>
     <dimen name="rss_news_title_padding">10dp</dimen>
     <dimen name="rss_news_title">15dp</dimen>

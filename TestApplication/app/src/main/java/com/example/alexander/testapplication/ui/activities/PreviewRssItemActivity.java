@@ -5,7 +5,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.example.alexander.testapplication.R;
+import com.example.alexander.testapplication.model.FeedItem;
 import com.squareup.picasso.Picasso;
 
 import org.androidannotations.annotations.AfterViews;
@@ -18,6 +21,7 @@ import java.util.List;
 
 @EActivity(R.layout.activity_preview)
 public class PreviewRssItemActivity extends AppCompatActivity {
+    private FeedItem mFeedItem;
 
     @ViewsById({
             R.id.date_text,
@@ -27,40 +31,44 @@ public class PreviewRssItemActivity extends AppCompatActivity {
     })
     List<TextView> textViews;
 
-    @ViewById(R.id.thumb_img)
+    @ViewById(R.id.item_thumbnail)
     ImageView thumbnail;
 
     @AfterViews
     void init() {
-        setTextViewWithRssDate();
+        mFeedItem = getIntent().getParcelableExtra(
+                FeedItem.class.getCanonicalName());
+        initTextViewWithRssDate();
         initImageView();
     }
 
-    private void setTextViewWithRssDate() {
+
+    private void initTextViewWithRssDate() {
         for (TextView textView : textViews) {
             switch (textView.getId()) {
                 case R.id.date_text:
-                    textView.setText("data");
+                    textView.setText(mFeedItem.getPubDate());
                     break;
                 case R.id.title_text:
-                    textView.setText("title");
+                    textView.setText(mFeedItem.getTitle());
                     textView.setOnClickListener(title -> WebViewActivity_.intent(this).
-                            extra("link", "http://pmg.org.ru/nehe/").start());
+                            extra("link", mFeedItem.getLink()).start());
+                    YoYo.with(Techniques.BounceInDown).playOn(textView);
                     break;
                 case R.id.description_text:
-                    textView.setText("description");
+                    textView.setText(mFeedItem.getDescription());
                     break;
                 case R.id.author_text:
-                    textView.setText("author");
+                    textView.setText(mFeedItem.getAuthor());
                     break;
             }
         }
     }
 
     private void initImageView() {
-        //TODO:: transfer picture from rv_activity with @extra picture annotation
         Picasso.with(thumbnail.getContext())
-                .load("http://i.imgur.com/DvpvklR.png")
+                .load(mFeedItem.getThumbnailUrl())
+                .fit()
                 .placeholder(R.drawable.ic_placeholder)
                 .error(R.drawable.ic_error_fallback)
                 .into(thumbnail);

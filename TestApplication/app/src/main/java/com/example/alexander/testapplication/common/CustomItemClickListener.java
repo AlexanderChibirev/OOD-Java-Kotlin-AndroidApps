@@ -1,4 +1,4 @@
-package com.example.alexander.testapplication;
+package com.example.alexander.testapplication.common;
 
 import android.view.View;
 

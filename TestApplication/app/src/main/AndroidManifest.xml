@@ -25,21 +25,24 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".ui.activities.PreferencesActivity_"
-            android:configChanges="locale"
-            android:hardwareAccelerated="false" />
+        <activity android:name=".ui.activities.PreferencesActivity_" />
 
         <activity
             android:name=".ui.activities.PreviewRssItemActivity_"
-            android:configChanges="locale"
-            android:hardwareAccelerated="false"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
 
         <activity
             android:name=".ui.activities.WebViewActivity_"
             android:label="@string/app_name"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
+
+        <service android:name=".common.FeedLoader" />
+
+        <provider
+            android:name=".model.dataBase.FeedContentProvider"
+            android:authorities="com.example.alexander.testapplication"
+            android:exported="false" />
     </application>
+
 
 </manifest>
