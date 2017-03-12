@@ -26,8 +26,8 @@
     <string name="preferences_language_summary">Set interface language. Restart needed</string>
     <string name="preferences_language_key">Preferences language key</string>
 
-    <string name="preferences_address_rss_flow_title">Address RSS-flow</string>
-    <string name="preferences_address_rss_flow_summary">Set address RSS-flow</string>
+    <string name="preferences_address_rss_flow_title">Address RSS-channel</string>
+    <string name="preferences_address_rss_flow_summary">Set address RSS-channel</string>
     <string name="preferences_address_rss_flow_dialog_title">Write url</string>
     <string name="preference_address_rss_key">Edit text preference key</string>
 
@@ -37,13 +37,13 @@
 
     <!--  error -->
     <string name="internet_connection_error">internet connection error</string>
-    <string name="rrs_url_error">Incorrect rss flow address, please change it in the settings</string>
+    <string name="rrs_url_empty">rss channel address is empty, please change it in the settings</string>
     <string name="feed_inserting_error">Feed inserting error: Failed insert values to</string>
     <string name="rss_inserting_error">RSS inserting error: Failed insert values to</string>
     <string name="feed_and_rss_binding_error">Feed and RSS binding error: Failed insert values to</string>
     <string name="unknown_error">Unknown error</string>
-    <string name="server_error">Server Error</string>
-    <string name="bad_url_or_rss_channel">Bad url of rss channel</string>
+    <string name="unknown_host">Unsuccessfully connect to the RSS channel</string>
+    <string name="bad_url_or_rss_channel">Bad url</string>
     <string name="check_network_connection">Check your Network Connection</string>
-
+    <string name="defoult_rss_url">http://zptown.zp.ua/feed</string>
 </resources>

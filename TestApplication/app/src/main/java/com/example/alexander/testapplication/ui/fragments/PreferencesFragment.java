@@ -22,7 +22,6 @@ public class PreferencesFragment extends PreferenceFragment implements SharedPre
     public void onResume() {
         super.onResume();
         getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
-
     }
 
     @Override
@@ -36,12 +35,6 @@ public class PreferencesFragment extends PreferenceFragment implements SharedPre
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         EditTextPreference editTextPreference = (EditTextPreference) findPreference(key);
         String text = editTextPreference.getText();
-       /* if (NetworkUtils.getXmlDocument(text) != null) {// is correct url
-            editTextPreference.setText(text);
-        } else {
-            ToastMessageUtils.showMessage(
-                    getString(R.string.rrs_url_error),
-                    editTextPreference.getContext());
-        }*/
+        editTextPreference.setText(text);
     }
 }

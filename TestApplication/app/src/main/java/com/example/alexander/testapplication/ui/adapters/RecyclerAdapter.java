@@ -8,8 +8,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.alexander.testapplication.R;
-import com.example.alexander.testapplication.common.CustomItemClickListener;
 import com.example.alexander.testapplication.model.FeedItem;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -29,9 +29,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         ImageView itemImage;
         TextView itemTitle;
         TextView itemDescription;
+        View view;
 
         ViewHolder(View itemView) {
             super(itemView);
+            view = itemView;
             itemImage = (ImageView) itemView.findViewById(R.id.item_thumbnail);
             itemTitle = (TextView) itemView.findViewById(R.id.item_title);
             itemDescription = (TextView) itemView.findViewById(R.id.item_detail);
@@ -39,14 +41,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View v = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.rrs_item_model_for_recycler_view, viewGroup, false);
-        final int position = i;
-        v.setOnClickListener(v1 -> mListener.onItemClick(v1, position));
         return new ViewHolder(v);
     }
-
 
     @Override
     public int getItemCount() {
@@ -54,25 +53,18 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        viewHolder.itemTitle.setText(mFeedItems.get(i).getTitle());
-        viewHolder.itemDescription.setText(mFeedItems.get(i).getDescription());
-
-     /*   new Picasso.Builder(viewHolder.itemImage.getContext())
-                .downloader(new OkHttpDownloader(viewHolder.itemImage.getContext(), Integer.MAX_VALUE))
-                .build()
-                .load("http://i.imgur.com/DvpvklR.png")
-                .fit()
-                .placeholder(R.drawable.ic_placeholder)
-                .error(R.drawable.ic_error_fallback)
-                .into(viewHolder.itemImage);*/
-
+    public void onBindViewHolder(ViewHolder viewHolder, int position) {
+        viewHolder.itemTitle.setText(mFeedItems.get(position).getTitle());
+        viewHolder.itemDescription.setText(mFeedItems.get(position).getDescription());
         Picasso.with(viewHolder.itemImage.getContext())
-                .load(mFeedItems.get(i).getThumbnailUrl())
-                //.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                .load(mFeedItems.get(position).getThumbnailUrl())
+                .networkPolicy(NetworkPolicy.OFFLINE)
                 .fit()
                 .placeholder(R.drawable.ic_placeholder)
                 .error(R.drawable.ic_error_fallback)
                 .into(viewHolder.itemImage);
+
+        viewHolder.view.setOnClickListener(
+                view -> mListener.onItemClick(view, mFeedItems.get(position)));
     }
 }

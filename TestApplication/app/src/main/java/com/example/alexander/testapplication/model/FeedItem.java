@@ -4,25 +4,18 @@ package com.example.alexander.testapplication.model;
 import android.content.ContentValues;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
 
 import com.example.alexander.testapplication.model.dataBase.FeedContentProvider;
 
 
 public class FeedItem implements Parcelable {
 
-    @NonNull
-    private String mTitle = "";
-    @NonNull
-    private String mLink = "";
-    @NonNull
-    private String mDescription = "";
-    @NonNull
-    private String mPubDate = "";
-    @NonNull
-    private String mThumbnailUrl = "";
-    @NonNull
-    private String mAuthor = "";
+    private String mTitle;
+    private String mLink;
+    private String mDescription;
+    private String mPubDate;
+    private String mAuthor;
+    private String mThumbnailUrl;
 
     private int mRssChannelID;
     private int mFeedID;
@@ -57,7 +50,6 @@ public class FeedItem implements Parcelable {
         parcel.writeInt(mRssChannelID);
         parcel.writeInt(mFeedID);
     }
-
 
     public FeedItem() {
 

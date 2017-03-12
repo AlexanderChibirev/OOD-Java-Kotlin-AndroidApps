@@ -11,7 +11,7 @@ import com.example.alexander.testapplication.R;
 public class AppController {
     private SharedPreferences mSharedPreferences;
     private Context mContext;
-    private String mCurrentRssUrl = "";
+    private String mCurrentRssUrl;
 
     public AppController(Context context) {
         mContext = context;
@@ -24,11 +24,6 @@ public class AppController {
                 mContext.getString(R.string.preference_address_rss_key), null);
     }
 
-    public boolean isCorrectRssUrl() {
-        return android.util.Patterns.WEB_URL.matcher(getRssUrl()).matches();
-    }
-
-
     public boolean isInternetConnection() {
         ConnectivityManager cm =
                 (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -40,8 +35,17 @@ public class AppController {
         return true;
     }
 
-    public boolean canUpdateRV() {//TODO:: add tests
+    public boolean isChangeUrl() {
         String newUrl = getRssUrl();
-        return !mCurrentRssUrl.equals(newUrl);
+        if (newUrl.equals(mCurrentRssUrl)) {
+            return false;
+        } else {
+            mCurrentRssUrl = newUrl;
+            return true;
+        }
+    }
+
+    public boolean isUrlEmpty() {
+        return mCurrentRssUrl == null;
     }
 }
