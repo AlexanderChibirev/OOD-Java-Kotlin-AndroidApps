@@ -6,7 +6,7 @@ import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 
-import com.example.alexander.testapplication.common.RSSResultReceiver;
+import com.example.alexander.testapplication.common.parsers.RSSResultReceiver;
 import com.example.alexander.testapplication.common.parsers.XMLParser;
 import com.example.alexander.testapplication.model.FeedItem;
 import com.example.alexander.testapplication.ui.activities.PreviewRssItemActivity_;
@@ -14,6 +14,7 @@ import com.example.alexander.testapplication.ui.adapters.RecyclerAdapter;
 
 import org.w3c.dom.Document;
 
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -54,14 +55,18 @@ public class ReadRss extends AsyncTask<Void, Void, Void> {
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
         mSwipeRefreshLayout.setRefreshing(false);
-        RecyclerAdapter adapter = new RecyclerAdapter((v, position) -> PreviewRssItemActivity_.intent(v.getContext()).
-                extra(FeedItem.class.getCanonicalName(), mFeedItems.get(position)).start(), mFeedItems);
+        RecyclerAdapter adapter = new RecyclerAdapter((view, feedItem) -> //set click listener
+                PreviewRssItemActivity_.intent(view.getContext()).//transfer data to previewActivity
+                        extra(FeedItem.class.getCanonicalName(), feedItem).start(), mFeedItems);
         mRecyclerView.setAdapter(adapter);
     }
 
     @Override
     protected Void doInBackground(Void... params) {
-        mFeedItems = XMLParser.getFeedItemsXml(getData());
+        Document document = getData();
+        if (document != null) {
+            mFeedItems = XMLParser.getFeedItemsXml(document);
+        }
         return null;
     }
 
@@ -69,22 +74,15 @@ public class ReadRss extends AsyncTask<Void, Void, Void> {
         try {
             URL mUrl = new URL(mAddress);
             HttpURLConnection connection = (HttpURLConnection) mUrl.openConnection();
-            connection.setRequestMethod("GET");
-            if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                InputStream inputStream = connection.getInputStream();
-                DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
-                DocumentBuilder builder = builderFactory.newDocumentBuilder();
-                Document xmlDoc = builder.parse(inputStream);
-                return xmlDoc;
-            } else {
-                mReceiver.send(RSSResultReceiver.SERVER_ERROR, null);
-                return null;
-            }
+            InputStream inputStream = connection.getInputStream();
+            DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = builderFactory.newDocumentBuilder();
+            return builder.parse(inputStream);
         } catch (MalformedURLException e) {
             mReceiver.send(RSSResultReceiver.URL_OR_RSS_CHANNEL_ERROR, null);
             e.printStackTrace();
-        } catch (UnknownHostException e) {
-            mReceiver.send(RSSResultReceiver.NETWORK_CONNECTION_ERROR, null);
+        } catch (UnknownHostException | FileNotFoundException e) {
+            mReceiver.send(RSSResultReceiver.UNKNOWN_HOST, null);
         } catch (Exception e) {
             mReceiver.send(RSSResultReceiver.UNKNOWN_ERROR, null);
             e.printStackTrace();

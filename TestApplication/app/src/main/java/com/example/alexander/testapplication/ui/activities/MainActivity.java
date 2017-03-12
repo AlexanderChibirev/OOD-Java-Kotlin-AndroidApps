@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.daimajia.androidanimations.library.Techniques;
@@ -26,7 +27,7 @@ import java.util.ArrayList;
 
 @EActivity(R.layout.activity_main)
 @OptionsMenu(R.menu.main)
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
 
     @ViewById(R.id.rv)
     RecyclerView recyclerView;
@@ -43,29 +44,11 @@ public class MainActivity extends AppCompatActivity{
     @AfterViews
     void init() {
         mAppController = new AppController(this);
-        //mAppController.updateRssData();
         setSupportActionBar(toolbar);
         initRecyclerView();
         initBackdropImage();
         initSwipeRefreshLayout();
         startAnimationLogotype();
-
-       /* recyclerView.addOnItemTouchListener(
-                new RecyclerItemClickListener(getApplicationContext(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position) {
-                       // mFeedItems.get(position);
-                             // PreviewRssItemActivity_.
-                              //        intent(getApplicationContext())
-                             //          .extra(FeedItem.class.getCanonicalName(), mFeedItems.get(position)).start();
-                    }
-
-                    @Override
-                    public void onLongItemClick(View view, int position) {
-                        // do whatever
-                    }
-                })
-        );*/
     }
 
 
@@ -81,20 +64,14 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onResume() {
         super.onResume();
-        if (!mAppController.canUpdateRV()) {
-            ReadRss readRss = new ReadRss(
-                    getApplicationContext(),
-                    recyclerView,
-                    "https://www.amazon.de/rss/movers-and-shakers/beauty?tag=bodyfun-21",
-                    // mAppController.getRssUrl(),
-                    swipeRefreshLayout,
-                    mFeedItems);
-            readRss.execute();
+        if (mAppController.isInternetConnection()) {
+            if (mAppController.isChangeUrl()) {
+                refreshRV();
+            }
+        } else {
+            Toast.makeText(this, R.string.check_network_connection, Toast.LENGTH_SHORT).show();
         }
     }
-    //если настройки изменились(проверяем в контроллере),
-    // то обновляем в readrss заполняем либо через парсер либо через базу данных
-
 
     private void showPreferences() {
         PreferencesActivity_.intent(this).start();
@@ -108,7 +85,7 @@ public class MainActivity extends AppCompatActivity{
 
     private void initSwipeRefreshLayout() {
         swipeRefreshLayout.setOnRefreshListener(() -> {
-            if (mAppController.canUpdateRV()) {
+            if (!mAppController.isUrlEmpty()) {
                 swipeRefreshLayout.post(this::updateRV);
             }
         });
@@ -123,5 +100,22 @@ public class MainActivity extends AppCompatActivity{
     private void initRecyclerView() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
+        if (!mAppController.isUrlEmpty()) {
+            refreshRV();
+        } else {
+            Toast.makeText(this, R.string.rrs_url_empty, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void refreshRV() {
+        ReadRss readRss = new ReadRss(
+                getApplicationContext(),
+                recyclerView,
+                // "https://www.amazon.de/rss/movers-and-shakers/beauty?tag=bodyfun-21",
+                //http://backend.deviantart.com/rss.xml? //TODO:: rss urls for example
+                mAppController.getRssUrl(),
+                swipeRefreshLayout,
+                mFeedItems);
+        readRss.execute();
     }
 }

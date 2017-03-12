@@ -1,6 +1,5 @@
 package com.example.alexander.testapplication.ui.activities;
 
-
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -8,6 +7,7 @@ import android.widget.TextView;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.example.alexander.testapplication.R;
+import com.example.alexander.testapplication.common.utils.DateUtils;
 import com.example.alexander.testapplication.model.FeedItem;
 import com.squareup.picasso.Picasso;
 
@@ -47,7 +47,16 @@ public class PreviewRssItemActivity extends AppCompatActivity {
         for (TextView textView : textViews) {
             switch (textView.getId()) {
                 case R.id.date_text:
-                    textView.setText(mFeedItem.getPubDate());
+                  /*  try { //TODO:: add testing in different languages
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.ENGLISH);
+                        Date pubDate = dateFormat.parse(mFeedItem.getPubDate());
+                        textView.setText(DateUtils.getDateDifference(pubDate));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }*/
+                    textView.setText(DateUtils.getLocateDate(
+                            mFeedItem.getPubDate(),
+                            getApplicationContext()));
                     break;
                 case R.id.title_text:
                     textView.setText(mFeedItem.getTitle());
