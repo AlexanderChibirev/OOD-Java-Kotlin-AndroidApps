@@ -31,7 +31,6 @@ public class ReadRss extends AsyncTask<Void, Void, Void> {
     private ArrayList<FeedItem> mFeedItems;
     private RecyclerView mRecyclerView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private Context mContext;
     private final RSSResultReceiver mReceiver;
 
     public ReadRss(Context context, RecyclerView recyclerView,
@@ -39,8 +38,7 @@ public class ReadRss extends AsyncTask<Void, Void, Void> {
         mAddress = address;
         mRecyclerView = recyclerView;
         mSwipeRefreshLayout = refreshLayout;
-        mContext = context;
-        mReceiver = new RSSResultReceiver(new Handler(), mContext);
+        mReceiver = new RSSResultReceiver(new Handler(), context);
         mFeedItems = feedItems;
     }
 
@@ -49,7 +47,6 @@ public class ReadRss extends AsyncTask<Void, Void, Void> {
         super.onPreExecute();
         mSwipeRefreshLayout.setRefreshing(true);
     }
-
 
     @Override
     protected void onPostExecute(Void aVoid) {

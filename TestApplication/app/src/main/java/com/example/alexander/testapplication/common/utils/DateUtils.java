@@ -12,19 +12,9 @@ import java.util.Locale;
 public class DateUtils {
 
     public static String getDateDifference(Date thenDate) {
-        Locale local = new Locale("ru","RU");
+        Locale local = new Locale("ru", "RU");
         Calendar now = Calendar.getInstance(local);
         Calendar then = Calendar.getInstance(local);
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(thenDate.getTime());
-
-        int mYear = calendar.get(Calendar.YEAR);
-        int mMonth = calendar.get(Calendar.MONTH);
-        int mDay = calendar.get(Calendar.DAY_OF_MONTH);
-        int hour       = calendar.get(Calendar.HOUR);
-        int hourOfDay  = calendar.get(Calendar.HOUR_OF_DAY);
-        int minute     = calendar.get(Calendar.MINUTE);
 
         now.setTime(new Date());
         then.setTime(thenDate);
@@ -60,7 +50,6 @@ public class DateUtils {
             return "a long time ago..";
         }
     }
-
 
     public static String getLocateDate(String date, Context context) {
         try {

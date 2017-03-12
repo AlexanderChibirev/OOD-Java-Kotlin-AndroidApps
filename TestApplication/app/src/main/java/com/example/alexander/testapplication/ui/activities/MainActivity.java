@@ -13,17 +13,15 @@ import com.bumptech.glide.Glide;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.example.alexander.testapplication.R;
+import com.example.alexander.testapplication.common.utils.InternetUtils;
 import com.example.alexander.testapplication.controller.AppController;
 import com.example.alexander.testapplication.controller.ReadRss;
-import com.example.alexander.testapplication.model.FeedItem;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.ViewById;
-
-import java.util.ArrayList;
 
 @EActivity(R.layout.activity_main)
 @OptionsMenu(R.menu.main)
@@ -39,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolbar;
 
     private AppController mAppController;
-    private ArrayList<FeedItem> mFeedItems = new ArrayList<>();
 
     @AfterViews
     void init() {
@@ -51,11 +48,6 @@ public class MainActivity extends AppCompatActivity {
         startAnimationLogotype();
     }
 
-
-    private void startAnimationLogotype() {
-        YoYo.with(Techniques.FadeIn).playOn(findViewById(R.id.omega_r_logotype));
-    }
-
     @OptionsItem(R.id.menu_preference)
     void onPreferencesClick() {
         showPreferences();
@@ -64,13 +56,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (mAppController.isInternetConnection()) {
+        if (InternetUtils.isInternetConnection(this)) {
             if (mAppController.isChangeUrl()) {
                 refreshRV();
             }
         } else {
             Toast.makeText(this, R.string.check_network_connection, Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void startAnimationLogotype() {
+        YoYo.with(Techniques.FadeIn).playOn(findViewById(R.id.omega_r_logotype));
     }
 
     private void showPreferences() {
@@ -107,6 +103,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mAppController.getRealmDB().close();
+    }
+
     private void refreshRV() {
         ReadRss readRss = new ReadRss(
                 getApplicationContext(),
@@ -115,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
                 //http://backend.deviantart.com/rss.xml? //TODO:: rss urls for example
                 mAppController.getRssUrl(),
                 swipeRefreshLayout,
-                mFeedItems);
+                mAppController.getFeedItems());
         readRss.execute();
     }
 }

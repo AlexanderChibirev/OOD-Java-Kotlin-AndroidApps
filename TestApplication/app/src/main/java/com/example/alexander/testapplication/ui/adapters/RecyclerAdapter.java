@@ -14,8 +14,10 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import io.realm.RealmChangeListener;
 
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
+
+public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> implements RealmChangeListener {
 
     private CustomItemClickListener mListener;
     private ArrayList<FeedItem> mFeedItems;
@@ -23,6 +25,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     public RecyclerAdapter(CustomItemClickListener listener, ArrayList<FeedItem> feedItems) {
         mListener = listener;
         mFeedItems = feedItems;
+    }
+
+    @Override
+    public void onChange(Object element) {
+        notifyDataSetChanged();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

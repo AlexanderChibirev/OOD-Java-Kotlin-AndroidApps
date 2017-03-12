@@ -1,14 +1,13 @@
 package com.example.alexander.testapplication.model;
 
 
-import android.content.ContentValues;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.example.alexander.testapplication.model.dataBase.FeedContentProvider;
+import io.realm.RealmObject;
 
 
-public class FeedItem implements Parcelable {
+public class FeedItem extends RealmObject implements Parcelable {
 
     private String mTitle;
     private String mLink;
@@ -21,6 +20,10 @@ public class FeedItem implements Parcelable {
     private int mFeedID;
 
 
+    public FeedItem() {
+
+    }
+
     public static final Creator<FeedItem> CREATOR = new Creator<FeedItem>() {
         @Override
         public FeedItem createFromParcel(Parcel in) {
@@ -32,7 +35,6 @@ public class FeedItem implements Parcelable {
             return new FeedItem[size];
         }
     };
-
 
     @Override
     public int describeContents() {
@@ -49,10 +51,6 @@ public class FeedItem implements Parcelable {
         parcel.writeString(mAuthor);
         parcel.writeInt(mRssChannelID);
         parcel.writeInt(mFeedID);
-    }
-
-    public FeedItem() {
-
     }
 
     public String getAuthor() {
@@ -103,6 +101,14 @@ public class FeedItem implements Parcelable {
         mThumbnailUrl = thumbnailUrl;
     }
 
+    public void setFeedID(int feedID) {
+        mFeedID = feedID;
+    }
+
+    public void setChannelID(int rssChannelID) {
+        mRssChannelID = rssChannelID;
+    }
+
 
     private FeedItem(Parcel in) {
         mTitle = in.readString();
@@ -115,29 +121,4 @@ public class FeedItem implements Parcelable {
         mFeedID = in.readInt();
     }
 
-    public ContentValues getContentValuesForFeed() {
-        ContentValues cv = new ContentValues();
-        cv.put(FeedContentProvider.FEED_TITLE, mTitle);
-        cv.put(FeedContentProvider.FEED_LINK, mLink);
-        cv.put(FeedContentProvider.FEED_AUTHOR, mAuthor);
-        cv.put(FeedContentProvider.FEED_DESCRIPTION, mDescription);
-        cv.put(FeedContentProvider.FEED_PUB_DATE, mPubDate);
-        cv.put(FeedContentProvider.FEED_THUMBNAIL_URL, mThumbnailUrl);
-        return cv;
-    }
-
-    public ContentValues getContentValuesForBinding() {
-        ContentValues cv = new ContentValues();
-        cv.put(FeedContentProvider.FEED_RSS_CHANNEL_FEED_ID, mFeedID);
-        cv.put(FeedContentProvider.FEED_RSS_CHANNEL_CHANNEL_ID, mRssChannelID);
-        return cv;
-    }
-
-    public void setFeedID(int feedID) {
-        mFeedID = feedID;
-    }
-
-    public void setChannelID(int rssChannelID) {
-        mRssChannelID = rssChannelID;
-    }
 }
