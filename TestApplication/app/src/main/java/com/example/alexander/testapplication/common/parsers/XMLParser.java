@@ -17,9 +17,9 @@ public class XMLParser {
         Node channel = root.getChildNodes().item(1);
         NodeList items = channel.getChildNodes();
         for (int i = 0; i < items.getLength(); i++) {
-            Node cureentChild = items.item(i);
-            if (cureentChild.getNodeName().equalsIgnoreCase("item")) {
-                NodeList itemChildNodes = cureentChild.getChildNodes();
+            Node child = items.item(i);
+            if (child.getNodeName().equalsIgnoreCase("item")) {
+                NodeList itemChildNodes = child.getChildNodes();
                 FeedItem item = new FeedItem();
                 parseItemChildNodes(itemChildNodes, item);
                 feedItems.add(item);

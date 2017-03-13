@@ -77,12 +77,10 @@ public class ReadRss extends AsyncTask<Void, Void, Void> {
             return builder.parse(inputStream);
         } catch (MalformedURLException e) {
             mReceiver.send(RSSResultReceiver.URL_OR_RSS_CHANNEL_ERROR, null);
-            e.printStackTrace();
         } catch (UnknownHostException | FileNotFoundException e) {
             mReceiver.send(RSSResultReceiver.UNKNOWN_HOST, null);
         } catch (Exception e) {
             mReceiver.send(RSSResultReceiver.UNKNOWN_ERROR, null);
-            e.printStackTrace();
         }
         return null;
     }

@@ -47,7 +47,7 @@ public class PreviewRssItemActivity extends AppCompatActivity {
         for (TextView textView : textViews) {
             switch (textView.getId()) {
                 case R.id.date_text:
-                  /*  try { //TODO:: add testing in different languages
+                   /* try { //TODO:: add testing in different languages
                         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.ENGLISH);
                         Date pubDate = dateFormat.parse(mFeedItem.getPubDate());
                         textView.setText(DateUtils.getDateDifference(pubDate));
@@ -56,7 +56,7 @@ public class PreviewRssItemActivity extends AppCompatActivity {
                     }*/
                     textView.setText(DateUtils.getLocateDate(
                             mFeedItem.getPubDate(),
-                            getApplicationContext()));
+                           getApplicationContext()));
                     break;
                 case R.id.title_text:
                     textView.setText(mFeedItem.getTitle());
