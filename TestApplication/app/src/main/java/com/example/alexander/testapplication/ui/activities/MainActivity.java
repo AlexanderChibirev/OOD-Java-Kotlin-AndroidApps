@@ -114,7 +114,10 @@ public class MainActivity extends AppCompatActivity {
                 getApplicationContext(),
                 recyclerView,
                 // "https://www.amazon.de/rss/movers-and-shakers/beauty?tag=bodyfun-21",
-                //http://backend.deviantart.com/rss.xml? //TODO:: rss urls for example
+                // "http://backend.deviantart.com/rss.xml?", //TODO:: rss urls for example
+                //  " https://www.amazon.co.uk/rss/bestsellers/books/275389?tag=gold7-21",
+                //"http://backend.deviantart.com/rss.xml?q=boost%3Apopular+in%3Adigitalart+max_age%3A24h&type=deviation",
+                // "http://feeds.feedburner.com/yandex/RiRo",
                 mAppController.getRssUrl(),
                 swipeRefreshLayout,
                 mAppController.getFeedItems());

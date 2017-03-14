@@ -15,11 +15,13 @@ import com.example.alexander.testapplication.ui.adapters.RecyclerAdapter;
 import org.w3c.dom.Document;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.text.ParseException;
 import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -60,14 +62,16 @@ public class ReadRss extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... params) {
-        Document document = getData();
-        if (document != null) {
+        try {
+            Document document = getData();
             mFeedItems = XMLParser.getFeedItemsXml(document);
+        } catch (ParseException | IOException e) {
+            e.printStackTrace();
         }
         return null;
     }
 
-    private Document getData() {
+    private Document getData() throws IOException {
         try {
             URL mUrl = new URL(mAddress);
             HttpURLConnection connection = (HttpURLConnection) mUrl.openConnection();

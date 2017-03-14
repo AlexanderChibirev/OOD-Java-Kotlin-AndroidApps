@@ -7,14 +7,20 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 
 public class XMLParser {
 
-    public static ArrayList<FeedItem> getFeedItemsXml(Document data) {
+    public static ArrayList<FeedItem> getFeedItemsXml(Document data) throws ParseException {
         ArrayList<FeedItem> feedItems = new ArrayList<>();
         Element root = data.getDocumentElement();
-        Node channel = root.getChildNodes().item(1);
+        int startWithChannelTag = 1;
+        Node channel = root.getChildNodes().item(startWithChannelTag);
+        if (channel == null) { //start parser for wrong pages html
+            int startWithoutChannelTag = 0;
+            channel = root.getChildNodes().item(startWithoutChannelTag);
+        }
         NodeList items = channel.getChildNodes();
         for (int i = 0; i < items.getLength(); i++) {
             Node child = items.item(i);
@@ -41,6 +47,7 @@ public class XMLParser {
             } else if (nodeName.equalsIgnoreCase("description")) {
                 String text = node.getTextContent();
                 item.setDescription(getPlainText(text));
+                //If the photo was not found in enclosure or media:thumbnail tag
                 setThumbnailFromDescriptionTag(text, item);
             } else if (nodeName.equalsIgnoreCase("pubDate")) {
                 item.setPubDate(getPlainText(node.getTextContent()));
@@ -54,10 +61,10 @@ public class XMLParser {
 
 
     private static String getPlainText(String html) {
-        String htmlBody = html.replaceAll("<hr>", "");
-        String plainTextBody = htmlBody.replaceAll("<[^<>]+>([^<>]*)<[^<>]+>", "$1");
-        plainTextBody = plainTextBody.replaceAll("<br ?/>", "");
-        return plainTextBody;
+        html = html.replaceAll("<[a-zA-Z\\s]+>", ""); // It deletes <div>, <br /> tag
+        html = html.replaceAll("<(.)+?>", "");  // It deletes image tag
+        html = html.replaceAll("&quot", ""); // It  deletes &quot tag
+        return html;
     }
 
     private static void setThumbnailFromDescriptionTag(String text, FeedItem item) {
