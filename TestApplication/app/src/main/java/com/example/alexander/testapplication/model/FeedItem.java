@@ -5,9 +5,16 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 
 public class FeedItem extends RealmObject implements Parcelable {
+    //когда базу данных добавлю, нужно будет убрать Parcelable
+    //и уже не нужно будет передавать в активити сложный объект
+    //передавать нужно будет стринг mFeedID и в превьюшке просто будем обращаться из базы данных к обх
+
+    @PrimaryKey
+    private String mFeedID;
 
     private String mTitle;
     private String mLink;
@@ -15,10 +22,7 @@ public class FeedItem extends RealmObject implements Parcelable {
     private String mPubDate;
     private String mAuthor;
     private String mThumbnailUrl;
-
-    private int mRssChannelID;
-    private int mFeedID;
-
+    private String mRssChannelUrl;
 
     public FeedItem() {
 
@@ -49,8 +53,8 @@ public class FeedItem extends RealmObject implements Parcelable {
         parcel.writeString(mPubDate);
         parcel.writeString(mThumbnailUrl);
         parcel.writeString(mAuthor);
-        parcel.writeInt(mRssChannelID);
-        parcel.writeInt(mFeedID);
+        parcel.writeString(mRssChannelUrl);
+        parcel.writeString(mFeedID);
     }
 
     public String getAuthor() {
@@ -101,15 +105,6 @@ public class FeedItem extends RealmObject implements Parcelable {
         mThumbnailUrl = thumbnailUrl;
     }
 
-    public void setFeedID(int feedID) {
-        mFeedID = feedID;
-    }
-
-    public void setChannelID(int rssChannelID) {
-        mRssChannelID = rssChannelID;
-    }
-
-
     private FeedItem(Parcel in) {
         mTitle = in.readString();
         mLink = in.readString();
@@ -117,8 +112,23 @@ public class FeedItem extends RealmObject implements Parcelable {
         mPubDate = in.readString();
         mThumbnailUrl = in.readString();
         mAuthor = in.readString();
-        mRssChannelID = in.readInt();
-        mFeedID = in.readInt();
+        mRssChannelUrl = in.readString();
+        mFeedID = in.readString();
     }
 
+    public String getRssChannelUrl() {
+        return mRssChannelUrl;
+    }
+
+    public void setRssChannelUrl(String rssChannelUrl) {
+        mRssChannelUrl = rssChannelUrl;
+    }
+
+    public String getFeedID() {
+        return mFeedID;
+    }
+
+    public void setFeedID(String feedID) {
+        mFeedID = feedID;
+    }
 }

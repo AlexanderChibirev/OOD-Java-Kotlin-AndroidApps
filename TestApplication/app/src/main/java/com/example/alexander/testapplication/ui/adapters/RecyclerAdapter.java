@@ -8,11 +8,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.alexander.testapplication.R;
+import com.example.alexander.testapplication.common.utils.ImageLoaderUtils;
+import com.example.alexander.testapplication.controller.AppController;
 import com.example.alexander.testapplication.model.FeedItem;
-import com.squareup.picasso.NetworkPolicy;
-import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
 
 import io.realm.RealmChangeListener;
 
@@ -20,11 +18,11 @@ import io.realm.RealmChangeListener;
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> implements RealmChangeListener {
 
     private CustomItemClickListener mListener;
-    private ArrayList<FeedItem> mFeedItems;
+    private AppController mAppController;
 
-    public RecyclerAdapter(CustomItemClickListener listener, ArrayList<FeedItem> feedItems) {
+    public RecyclerAdapter(CustomItemClickListener listener, AppController controller) {
         mListener = listener;
-        mFeedItems = feedItems;
+        mAppController = controller;
     }
 
     @Override
@@ -56,22 +54,20 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        return mFeedItems.size();
+        return mAppController.getFeedItems().size();
     }
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
-        viewHolder.itemTitle.setText(mFeedItems.get(position).getTitle());
-        viewHolder.itemDescription.setText(mFeedItems.get(position).getDescription());
-        Picasso.with(viewHolder.itemImage.getContext())
-                .load(mFeedItems.get(position).getThumbnailUrl())
-                .networkPolicy(NetworkPolicy.OFFLINE)
-                .fit()
-                .placeholder(R.drawable.ic_placeholder)
-                .error(R.drawable.ic_error_fallback)
-                .into(viewHolder.itemImage);
+        FeedItem feedItem = mAppController.getFeedItems().get(position);
+        viewHolder.itemTitle.setText(feedItem.getTitle());
+        viewHolder.itemDescription.setText(feedItem.getDescription());
+        ImageLoaderUtils.downloadImage(
+                viewHolder.itemImage.getContext(),
+                feedItem.getThumbnailUrl(),
+                viewHolder.itemImage);
 
         viewHolder.view.setOnClickListener(
-                view -> mListener.onItemClick(view, mFeedItems.get(position)));
+                view -> mListener.onItemClick(view, feedItem));
     }
 }

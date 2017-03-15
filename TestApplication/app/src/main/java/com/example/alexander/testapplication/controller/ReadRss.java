@@ -13,6 +13,7 @@ import com.example.alexander.testapplication.ui.activities.PreviewRssItemActivit
 import com.example.alexander.testapplication.ui.adapters.RecyclerAdapter;
 
 import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -21,27 +22,24 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
-import java.text.ParseException;
-import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 
 public class ReadRss extends AsyncTask<Void, Void, Void> {
-    private String mAddress;
-    private ArrayList<FeedItem> mFeedItems;
     private RecyclerView mRecyclerView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private final RSSResultReceiver mReceiver;
+    private AppController mAppController;
 
     public ReadRss(Context context, RecyclerView recyclerView,
-                   String address, SwipeRefreshLayout refreshLayout, ArrayList<FeedItem> feedItems) {
-        mAddress = address;
+                   SwipeRefreshLayout refreshLayout, AppController appController) {
+        mAppController = appController;
         mRecyclerView = recyclerView;
         mSwipeRefreshLayout = refreshLayout;
         mReceiver = new RSSResultReceiver(new Handler(), context);
-        mFeedItems = feedItems;
     }
 
     @Override
@@ -53,32 +51,21 @@ public class ReadRss extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
-        mSwipeRefreshLayout.setRefreshing(false);
-        RecyclerAdapter adapter = new RecyclerAdapter((view, feedItem) -> //set click listener
-                PreviewRssItemActivity_.intent(view.getContext()).//transfer data to previewActivity
-                        extra(FeedItem.class.getCanonicalName(), feedItem).start(), mFeedItems);
+        mAppController.UpdateDataFromDB();
+        RecyclerAdapter adapter = new RecyclerAdapter((view, feedItem) ->
+                PreviewRssItemActivity_.intent(
+                        view.getContext()).
+                        extra(FeedItem.class.getCanonicalName(), feedItem).start(),
+                mAppController);
         mRecyclerView.setAdapter(adapter);
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
     protected Void doInBackground(Void... params) {
         try {
             Document document = getData();
-            mFeedItems = XMLParser.getFeedItemsXml(document);
-        } catch (ParseException | IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    private Document getData() throws IOException {
-        try {
-            URL mUrl = new URL(mAddress);
-            HttpURLConnection connection = (HttpURLConnection) mUrl.openConnection();
-            InputStream inputStream = connection.getInputStream();
-            DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = builderFactory.newDocumentBuilder();
-            return builder.parse(inputStream);
+            mAppController.setFeedItems(XMLParser.getFeedItemsXml(document, mAppController.getRssUrl()));
         } catch (MalformedURLException e) {
             mReceiver.send(RSSResultReceiver.URL_OR_RSS_CHANNEL_ERROR, null);
         } catch (UnknownHostException | FileNotFoundException e) {
@@ -87,5 +74,14 @@ public class ReadRss extends AsyncTask<Void, Void, Void> {
             mReceiver.send(RSSResultReceiver.UNKNOWN_ERROR, null);
         }
         return null;
+    }
+
+    private Document getData() throws IOException, ParserConfigurationException, SAXException {
+        URL url = new URL(mAppController.getRssUrl());
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        InputStream inputStream = connection.getInputStream();
+        DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = builderFactory.newDocumentBuilder();
+        return builder.parse(inputStream);
     }
 }

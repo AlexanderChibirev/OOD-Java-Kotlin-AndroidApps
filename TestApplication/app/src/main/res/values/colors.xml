@@ -5,4 +5,6 @@
     <color name="colorAccent">#fd0056</color>
     <color name="news_title">#4c4c4c</color>
     <color name="viewBg">#f1f5f8</color>
+    <color name="light_blue">#B0BEC5</color>
+    <color name="teal">#CFD8DC</color>
 </resources>

@@ -27,14 +27,13 @@
 
     <!-- error -->
     <string name="internet_connection_error">Ошибка подключения к интернету</string>
-    <string name="rrs_url_empty">адресс rss потока пустой, пожалуйста смените его в настройках</string>
+    <string name="rrs_url_empty">Адресс rss потока пустой, пожалуйста смените его в настройках</string>
     <string name="feed_inserting_error">Ошибка вставки элемента: не удалось вставить значения в</string>
     <string name="feed_and_rss_binding_error">Ошибка привязки элемента и rss-потока: не удалось вставить значения в</string>
     <string name="rss_inserting_error">Ошибка ввода rss-потока. Не удалось вставить значения в</string>
     <string name="unknown_error">Неизвестная ошибка</string>
-    <string name="bad_url_or_rss_channel">Bad url</string>
-    <string name="check_network_connection">Check your Network Connection</string>
-    <string name="unknown_host">Неудается подключится к RSS-потоку</string>
-    <string name="defoult_rss_url">http://zptown.zp.ua/feed</string>
+    <string name="bad_url_or_rss_channel">Неккоректная ссылка RSS-потока, поменяйте в настройках</string>
+    <string name="check_network_connection">Ошибка, проверьте соединение с интерентом</string>
+    <string name="unknown_host">Неудается подключится к RSS-потоку, если данные есть в локальном харнилище,они будут загружены</string>
 
 </resources>

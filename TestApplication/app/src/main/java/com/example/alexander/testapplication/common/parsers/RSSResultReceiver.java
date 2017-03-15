@@ -9,7 +9,7 @@ import android.widget.Toast;
 import com.example.alexander.testapplication.R;
 
 public class RSSResultReceiver extends ResultReceiver {
-    private Context mContext;
+    private final Context mContext;
     public static final int NETWORK_CONNECTION_ERROR = 1;
     public static final int URL_OR_RSS_CHANNEL_ERROR = 2;
     public static final int UNKNOWN_HOST = 3;

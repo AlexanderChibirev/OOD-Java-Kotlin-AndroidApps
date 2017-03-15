@@ -18,4 +18,8 @@ public class InternetUtils {
         }
         return true;
     }
+
+    public static boolean isCorrectUrl(String url) {
+        return android.util.Patterns.WEB_URL.matcher(url).matches();
+    }
 }

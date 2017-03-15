@@ -2,6 +2,7 @@ package com.example.alexander.testapplication.common.parsers;
 
 import com.example.alexander.testapplication.model.FeedItem;
 
+import org.jsoup.Jsoup;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 
 public class XMLParser {
 
-    public static ArrayList<FeedItem> getFeedItemsXml(Document data) throws ParseException {
+    public static ArrayList<FeedItem> getFeedItemsXml(Document data, String rssUrl) throws ParseException, NullPointerException {
         ArrayList<FeedItem> feedItems = new ArrayList<>();
         Element root = data.getDocumentElement();
         int startWithChannelTag = 1;
@@ -28,6 +29,7 @@ public class XMLParser {
                 NodeList itemChildNodes = child.getChildNodes();
                 FeedItem item = new FeedItem();
                 parseItemChildNodes(itemChildNodes, item);
+                item.setRssChannelUrl(rssUrl);
                 feedItems.add(item);
             }
         }
@@ -41,8 +43,10 @@ public class XMLParser {
             if (nodeName.equalsIgnoreCase("title")) {
                 item.setTitle(getPlainText(node.getTextContent()));
             } else if (nodeName.equalsIgnoreCase("enclosure")
-                    || nodeName.equalsIgnoreCase("media:thumbnail")) {
-                String url = node.getAttributes().item(0).getTextContent();
+                    || nodeName.equalsIgnoreCase("media:thumbnail")
+                    || nodeName.equalsIgnoreCase("image")) {
+                int startPositionTagForImage = 0;
+                String url = node.getAttributes().item(startPositionTagForImage).getTextContent();
                 item.setThumbnailUrl(url);
             } else if (nodeName.equalsIgnoreCase("description")) {
                 String text = node.getTextContent();
@@ -57,14 +61,21 @@ public class XMLParser {
                 item.setAuthor(getPlainText(node.getTextContent()));
             }
         }
+        initFeedID(item);
+    }
+
+    private static void initFeedID(FeedItem item) {
+        item.setFeedID(item.getTitle()
+                + item.getDescription()
+                + item.getLink()
+                + item.getPubDate()
+                + item.getAuthor()
+                + item.getThumbnailUrl());
     }
 
 
     private static String getPlainText(String html) {
-        html = html.replaceAll("<[a-zA-Z\\s]+>", ""); // It deletes <div>, <br /> tag
-        html = html.replaceAll("<(.)+?>", "");  // It deletes image tag
-        html = html.replaceAll("&quot", ""); // It  deletes &quot tag
-        return html;
+        return Jsoup.parse(html).text();
     }
 
     private static void setThumbnailFromDescriptionTag(String text, FeedItem item) {

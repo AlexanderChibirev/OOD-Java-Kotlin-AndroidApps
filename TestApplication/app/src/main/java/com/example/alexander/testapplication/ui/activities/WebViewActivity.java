@@ -2,6 +2,7 @@ package com.example.alexander.testapplication.ui.activities;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -27,7 +28,15 @@ public class WebViewActivity extends Activity {
     void init() {
         webView.loadUrl(link);
         webView.getSettings().setJavaScriptEnabled(true);
-        webView.setWebViewClient(new WebViewClient());
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                //hide loading image
+                findViewById(R.id.imageLoading).setVisibility(View.GONE);
+                //show webView
+                findViewById(R.id.webView).setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     @Override

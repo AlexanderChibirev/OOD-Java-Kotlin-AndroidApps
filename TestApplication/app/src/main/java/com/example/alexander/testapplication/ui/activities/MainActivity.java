@@ -13,7 +13,6 @@ import com.bumptech.glide.Glide;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.example.alexander.testapplication.R;
-import com.example.alexander.testapplication.common.utils.InternetUtils;
 import com.example.alexander.testapplication.controller.AppController;
 import com.example.alexander.testapplication.controller.ReadRss;
 
@@ -56,12 +55,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (InternetUtils.isInternetConnection(this)) {
-            if (mAppController.isChangeUrl()) {
-                refreshRV();
-            }
-        } else {
-            Toast.makeText(this, R.string.check_network_connection, Toast.LENGTH_SHORT).show();
+        if (mAppController.isChangeUrl()) {
+            refreshRV();
         }
     }
 
@@ -82,15 +77,9 @@ public class MainActivity extends AppCompatActivity {
     private void initSwipeRefreshLayout() {
         swipeRefreshLayout.setOnRefreshListener(() -> {
             if (!mAppController.isUrlEmpty()) {
-                swipeRefreshLayout.post(this::updateRV);
+                swipeRefreshLayout.post(this::refreshRV);
             }
         });
-    }
-
-    private void updateRV() {
-        swipeRefreshLayout.setRefreshing(true);
-        recyclerView.getAdapter().notifyDataSetChanged();
-        swipeRefreshLayout.setRefreshing(false);
     }
 
     private void initRecyclerView() {
@@ -113,14 +102,8 @@ public class MainActivity extends AppCompatActivity {
         ReadRss readRss = new ReadRss(
                 getApplicationContext(),
                 recyclerView,
-                // "https://www.amazon.de/rss/movers-and-shakers/beauty?tag=bodyfun-21",
-                // "http://backend.deviantart.com/rss.xml?", //TODO:: rss urls for example
-                //  " https://www.amazon.co.uk/rss/bestsellers/books/275389?tag=gold7-21",
-                //"http://backend.deviantart.com/rss.xml?q=boost%3Apopular+in%3Adigitalart+max_age%3A24h&type=deviation",
-                // "http://feeds.feedburner.com/yandex/RiRo",
-                mAppController.getRssUrl(),
                 swipeRefreshLayout,
-                mAppController.getFeedItems());
+                mAppController);
         readRss.execute();
     }
 }
