@@ -9,9 +9,6 @@ import io.realm.annotations.PrimaryKey;
 
 
 public class FeedItem extends RealmObject implements Parcelable {
-    //когда базу данных добавлю, нужно будет убрать Parcelable
-    //и уже не нужно будет передавать в активити сложный объект
-    //передавать нужно будет стринг mFeedID и в превьюшке просто будем обращаться из базы данных к обх
 
     @PrimaryKey
     private String mFeedID;
